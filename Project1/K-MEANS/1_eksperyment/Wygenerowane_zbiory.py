@@ -1,0 +1,77 @@
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.spatial import Voronoi, voronoi_plot_2d
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+from Project1.main import load_generated_datasets
+
+"""
+ STRONA - 1 - RAPORTU
+ 
+ Wyniki pierwszego eksperymentu dla sześciu sztucznie wygenerowanych zbiorów danych i metody K-Means.
+ Dla każdego zbioru należy pokazać wykres obrazujący zmianę wartości miary silhouette score przy zmieniającym
+ się parametrze n-clusters oraz wizualizację klastrów (diagram Woronoja) dla najlepszego i najgorszego przypadku
+ (wskazując, który to był przypadek i dlaczego).
+"""
+
+
+def perform_clustering_experiments(dataset, dataset_name):
+    kmeans_experiment(dataset, dataset_name)
+
+
+# Eksperyment z algorytmem K-MEANS
+def kmeans_experiment(X, dataset_name):
+    silhouette_scores = []
+    cluster_range = range(2, 10)
+
+    for n_clusters in cluster_range:
+        kmeans = KMeans(n_clusters=n_clusters)
+        kmeans.fit(X)
+        labels = kmeans.labels_
+        silhouette_avg = silhouette_score(X, labels)
+        silhouette_scores.append(silhouette_avg)
+
+    plt.plot(cluster_range, silhouette_scores, marker='o')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Silhouette score')
+    plt.title(f'K-means experiment ({dataset_name})')
+    plt.show()
+
+    # Best and worst cases of silhouette scores
+    best_cluster_index = silhouette_scores.index(max(silhouette_scores))
+    worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
+
+    # Visualizing for the best and worst using VORONOI
+    plot_voronoi_diagram(X[:, :2], None, cluster_range[best_cluster_index], dataset_name, 'Best case')
+    plot_voronoi_diagram(X[:, :2], None, cluster_range[worst_cluster_index], dataset_name, 'Worst case')
+
+
+def plot_voronoi_diagram(X, y_true, n_clusters, dataset_name, case):
+    kmeans = KMeans(n_clusters=n_clusters)
+    kmeans.fit(X)
+
+    vor = Voronoi(X)
+
+    fig, ax = plt.subplots()
+    voronoi_plot_2d(vor, ax=ax, show_vertices=False, line_colors='gray', line_width=2)
+
+    if y_true is not None:
+        for label in np.unique(y_true):
+            ax.plot(X[y_true == label, 0], X[y_true == label, 1], 'o', label=f'True Label {int(label)}')
+    else:
+        for label in range(n_clusters):
+            ax.plot(X[kmeans.labels_ == label, 0], X[kmeans.labels_ == label, 1],
+                    'o', label=f'Cluster {int(label)}')
+
+    ax.legend()
+    ax.grid(True)
+    plt.title(f'Voronoi Diagram ({dataset_name}) - {case}')
+    plt.show()
+
+
+if __name__ == "__main__":
+    datasets = load_generated_datasets()
+
+    for X, dataset_name in datasets:
+        perform_clustering_experiments(X, dataset_name)
