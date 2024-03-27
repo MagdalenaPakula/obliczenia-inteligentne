@@ -1,37 +1,43 @@
+import os.path
+
 import pandas as pd
+from typing import Tuple, List
+from numpy import ndarray
 
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 
 
 # Load generated datasets: 1_1.csv, 1_2.csv, 1_3.csv, 2_1.csv, 2_2.csv, 2_3.csv
-def load_generated_datasets():
+def load_generated_datasets() -> List[Tuple[ndarray, str]]:
     # Load files
-    data_files = ['../../data/1_1.csv', '../../data/1_2.csv', '../../data/1_3.csv', '../../data/2_1.csv',
-                  '../../data/2_2.csv', '../../data/2_3.csv']
+    data_files = ['1_1.csv', '1_2.csv', '1_3.csv', '2_1.csv',
+                  '2_2.csv', '2_3.csv']
     data_sets = []
-    for file in data_files:
-        df = pd.read_csv(file, header=None, delimiter=';')
-        data_sets.append((StandardScaler().fit_transform(df.values), file))
+    for file_name in data_files:
+        file_path = os.path.join('../../data/', file_name)
+        df = pd.read_csv(file_path, header=None, delimiter=';')
+        data_sets.append((StandardScaler().fit_transform(df.values), file_name))
 
     return data_sets
 
 
 def load_generated_datasets_with_labels():
-    data_files = ['../../data/1_1.csv', '../../data/1_2.csv', '../../data/1_3.csv', '../../data/2_1.csv',
-                  '../../data/2_2.csv', '../../data/2_3.csv']
+    data_files = ['1_1.csv', '1_2.csv', '1_3.csv', '2_1.csv',
+                  '2_2.csv', '2_3.csv']
     data_sets = []
-    for file in data_files:
-        df = pd.read_csv(file, header=None, delimiter=';')
+    for file_name in data_files:
+        file_path = os.path.join('../../data/', file_name)
+        df = pd.read_csv(file_path, header=None, delimiter=';')
         X = StandardScaler().fit_transform(df.iloc[:, :-1].values)
         y_true = df.iloc[:, -1].values
-        data_sets.append((X, y_true, file))
+        data_sets.append((X, y_true, file_name))
 
     return data_sets
 
 
 # Load datasets: Iris, Wine and Breast_cancer
-def load_other_datasets():
+def load_other_datasets() -> List[Tuple[ndarray, str]]:
     # Load other datasets
     iris_data = load_iris()
     wine_data = load_wine()
@@ -52,11 +58,3 @@ def load_other_datasets():
         (scaled_wine_data, 'Wine Dataset'),
         (scaled_breast_cancer_data, 'Breast Cancer Wisconsin Dataset')
     ]
-
-# def print_hi(name):
-#     # Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-#
-# # Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')

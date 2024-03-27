@@ -6,7 +6,7 @@ import matplotlib.colors
 from typing import Optional
 
 
-def plot_voronoi_diagram(X: ndarray, y_true: Optional[ndarray], y_pred: ndarray) -> None:
+def plot_voronoi_diagram(X: ndarray, y_true: Optional[ndarray], y_pred: ndarray, ax: plt.Axes = None) -> None:
     """
     Funkcja rysująca diagram Woronoja dla obiektów opisanych tablicą X rozmiaru Nx2 (N to liczba
     obiektów) pogrupowanych za pomocą etykiet y_pred (tablica liczby całkowitych o rozmiarze N).
@@ -14,6 +14,10 @@ def plot_voronoi_diagram(X: ndarray, y_true: Optional[ndarray], y_pred: ndarray)
     N elementową z prawdziwymi etykietami. Rysując diagram należy zadbać, aby wszystkie obiekty
     były widoczne. Wszystkie rozważane tablice są tablicami NumPy.
     """
+
+    if ax is None:
+        ax = plt
+
     vor = Voronoi(X)
     if vor.points.shape[1] != 2:
         raise ValueError("Requires 2D input")
@@ -80,14 +84,12 @@ def plot_voronoi_diagram(X: ndarray, y_true: Optional[ndarray], y_pred: ndarray)
     for i, region in enumerate(regions):
         polygon = vertices[region]
         color = cmap(norm(y_pred[i]))
-        plt.fill(*zip(*polygon), alpha=0.4, color=color)
+        ax.fill(*zip(*polygon), alpha=0.4, color=color)
 
     if y_true is not None:
-        plt.scatter(X[:, 0], X[:, 1], c=y_true, s=10, cmap=cmap)
+        ax.scatter(X[:, 0], X[:, 1], c=y_true, s=10, cmap=cmap)
     else:
-        plt.scatter(X[:, 0], X[:, 1], color='black', s=10)
+        ax.scatter(X[:, 0], X[:, 1], color='black', s=10)
 
-    plt.xlim(vor.min_bound[0] - 0.1, vor.max_bound[0] + 0.1)
-    plt.ylim(vor.min_bound[1] - 0.1, vor.max_bound[1] + 0.1)
-
-    plt.show()
+    ax.set_xlim(vor.min_bound[0] - 0.1, vor.max_bound[0] + 0.1)
+    ax.set_ylim(vor.min_bound[1] - 0.1, vor.max_bound[1] + 0.1)
