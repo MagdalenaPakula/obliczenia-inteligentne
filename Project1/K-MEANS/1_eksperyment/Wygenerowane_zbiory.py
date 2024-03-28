@@ -3,6 +3,8 @@ import numpy as np
 from scipy.spatial import Voronoi, voronoi_plot_2d
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+from numpy import ndarray
+import utilities as util
 
 from Project1.main import load_generated_datasets
 
@@ -43,35 +45,25 @@ def kmeans_experiment(X, dataset_name):
     worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
 
     # Visualizing for the best and worst using VORONOI
-    plot_voronoi_diagram(X[:, :2], None, cluster_range[best_cluster_index], dataset_name, 'Best case')
-    plot_voronoi_diagram(X[:, :2], None, cluster_range[worst_cluster_index], dataset_name, 'Worst case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1],  cluster_range[best_cluster_index], dataset_name, 'Best case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1],  cluster_range[worst_cluster_index], dataset_name, 'Worst case')
 
 
-def plot_voronoi_diagram(X, y_true, n_clusters, dataset_name, case):
+def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_name: str, case: str):
     kmeans = KMeans(n_clusters=n_clusters)
     kmeans.fit(X)
 
-    vor = Voronoi(X)
+    y_pred = kmeans.labels_
 
     fig, ax = plt.subplots()
-    voronoi_plot_2d(vor, ax=ax, show_vertices=False, line_colors='gray', line_width=2)
+    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
 
-    if y_true is not None:
-        for label in np.unique(y_true):
-            ax.plot(X[y_true == label, 0], X[y_true == label, 1], 'o', label=f'True Label {int(label)}')
-    else:
-        for label in range(n_clusters):
-            ax.plot(X[kmeans.labels_ == label, 0], X[kmeans.labels_ == label, 1],
-                    'o', label=f'Cluster {int(label)}')
-
-    ax.legend()
-    ax.grid(True)
-    plt.title(f'Voronoi Diagram ({dataset_name}) - {case}')
+    plt.title(f'K-means clustering ({dataset_name}) - {case}')
     plt.show()
 
 
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    for X, dataset_name in datasets:
+    for X, dataset_name in datasets[:1]:
         perform_clustering_experiments(X, dataset_name)

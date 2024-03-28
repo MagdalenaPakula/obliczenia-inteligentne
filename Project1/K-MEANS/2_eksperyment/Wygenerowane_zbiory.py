@@ -3,8 +3,10 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness_score, v_measure_score
 from scipy.spatial import Voronoi, voronoi_plot_2d
+from numpy import ndarray
+import utilities as util
 
-from Project1.main import load_generated_datasets_with_labels
+from Project1.main import load_generated_datasets_with_labels, load_generated_datasets
 
 """
 STRONA - 3 - RAPORTU
@@ -48,36 +50,26 @@ def kmeans_experiment(X, y_true, dataset_name):
     best_cluster_index = np.argmax(v_measure_scores)
     worst_cluster_index = np.argmin(v_measure_scores)
 
-    # Load true labels
-    plot_voronoi_diagram(X, y_true, cluster_range[best_cluster_index], dataset_name, 'Best Case')
-    plot_voronoi_diagram(X, y_true, cluster_range[worst_cluster_index], dataset_name, 'Worst Case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1], cluster_range[best_cluster_index], dataset_name, 'Best Case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1], cluster_range[worst_cluster_index], dataset_name, 'Worst Case')
 
 
-def plot_voronoi_diagram(X, y_true, n_clusters, dataset_name, case):
+def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_name: str, case: str):
     kmeans = KMeans(n_clusters=n_clusters)
     kmeans.fit(X)
     cluster_centers = kmeans.cluster_centers_
 
-    if len(cluster_centers) >= 3:  # Ensure there are enough points to construct the initial simplex
-        vor = Voronoi(cluster_centers)
+    y_pred = kmeans.labels_
 
-        fig, ax = plt.subplots()
-        voronoi_plot_2d(vor, ax=ax, show_vertices=False, line_colors='gray', line_width=2)
+    fig, ax = plt.subplots()
+    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
 
-        for label in np.unique(y_true):
-            ax.plot(X[y_true == label, 0], X[y_true == label, 1], 'o', label=f'True Label {int(label)}')
-
-        ax.legend()
-        ax.grid(True)
-        plt.title(f'Voronoi Diagram ({dataset_name}) - {case}')
-        plt.show()
-    else:
-        print("Not enough points to construct the diagram.")
+    plt.title(f'K-means clustering ({dataset_name}) - {case}')
+    plt.show()
 
 
-# Load generated datasets
-datasets = load_generated_datasets_with_labels()
+if __name__ == "__main__":
+    datasets = load_generated_datasets()
 
-# Performing experiments for each dataset
-for X, y_true, dataset_name in datasets:
-    kmeans_experiment(X, y_true, dataset_name)
+    for X, y_true, dataset_name in datasets[:1]:
+        kmeans_experiment(X, y_true, dataset_name)

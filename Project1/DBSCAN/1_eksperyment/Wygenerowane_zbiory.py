@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from scipy.spatial import Voronoi, voronoi_plot_2d
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score, silhouette_samples
+from numpy import ndarray
+import utilities as util
 
 import numpy as np
 
@@ -16,10 +18,6 @@ from Project1.main import load_generated_datasets
  (wskazując, który to był przypadek i dlaczego). W przypadku metody DBSCAN warto również wskazać na wykresie
  jaką liczbę klastrów  uzyskano dla różnych wartości parametru eps. Przykładowy wykres:
 """
-
-
-def perform_clustering_experiments(dataset, dataset_name):
-    dbscan_experiment(dataset, dataset_name)
 
 
 # Eksperyment z algorytmem DBSCAN
@@ -64,39 +62,26 @@ def dbscan_experiment(X, dataset_name):
     worst_eps_index = silhouette_scores.index(min(silhouette_scores))
 
     # Plot Voronoi diagram for best and worst cases
-    plot_voronoi_diagram(X[:, :2], None, eps_range[best_eps_index], dataset_name, 'Best Case')
-    plot_voronoi_diagram(X[:, :2], None, eps_range[worst_eps_index], dataset_name, 'Worst Case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1],  eps_range[best_eps_index], dataset_name, 'Best Case')
+    plot_voronoi_diagram(X[:, :2], X[:, -1],  eps_range[worst_eps_index], dataset_name, 'Worst Case')
 
 
-def plot_voronoi_diagram(X, y_true, eps, dataset_name, case):
-    dbscan = DBSCAN(eps=eps, min_samples=1)
+def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: str, case: str):
+    dbscan = DBSCAN(eps=eps)
     dbscan.fit(X)
-    vor = Voronoi(X)
+
+    y_pred = dbscan.labels_
+
     fig, ax = plt.subplots()
-    voronoi_plot_2d(vor, ax=ax, show_vertices=False, line_colors='gray', line_width=2)
+    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
 
-    if len(np.unique(dbscan.labels_)) > 1:
-        for label in np.unique(dbscan.labels_):
-            ax.plot(X[dbscan.labels_ == label, 0], X[dbscan.labels_ == label, 1],
-                    'o', label=f'Cluster {int(label)}')
+    plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
+    plt.show()
 
-        # Plot true labels if provided
-        if y_true is not None:
-            for label in np.unique(y_true):
-                ax.plot(X[y_true == label, 0], X[y_true == label, 1], 'o', markersize=5,
-                        label=f'True Label {int(label)}', markeredgecolor='black')
+if __name__ == "__main__":
+    # Load generated datasets
+    datasets = load_generated_datasets()
 
-        ax.legend()
-        ax.grid(True)
-        plt.title(f'Voronoi Diagram ({dataset_name}) - {case} (EPS={eps})')
-        plt.show()
-    else:
-        print(f"No clusters found for EPS={eps} in {dataset_name}")
-
-
-# Load generated datasets
-datasets = load_generated_datasets()
-
-# Performing experiments for each dataset
-for X, dataset_name in datasets:
-    perform_clustering_experiments(X, dataset_name)
+    # Performing experiments for each dataset
+    for X, dataset_name in datasets:
+        dbscan_experiment(X, dataset_name)
