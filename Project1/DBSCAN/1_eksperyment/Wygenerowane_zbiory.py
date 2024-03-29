@@ -41,20 +41,6 @@ def dbscan_experiment(X, dataset_name):
             mean_silhouette = np.mean(silhouette_vals)
             silhouette_scores.append(mean_silhouette)
 
-    # Plot silhouette scores for different eps values
-    # plt.plot(eps_range, silhouette_scores, marker='o')
-    # plt.xlabel('EPS Value')
-    # plt.ylabel('Silhouette score')
-    # plt.title(f'DBSCAN Experiment ({dataset_name}) - Silhouette Score vs EPS')
-    # plt.show()
-    #
-    # # Plot number of clusters obtained for different eps values
-    # plt.plot(eps_range, num_clusters, marker='o')
-    # plt.xlabel('EPS Value')
-    # plt.ylabel('Number of Clusters')
-    # plt.title(f'DBSCAN Experiment ({dataset_name}) - Number of Clusters vs EPS')
-    # plt.show()
-
     fig, ax1 = plt.subplots()
 
     color = 'tab:red'
