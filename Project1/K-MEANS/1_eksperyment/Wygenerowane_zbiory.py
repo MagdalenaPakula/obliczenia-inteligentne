@@ -40,8 +40,8 @@ def kmeans_experiment(X, dataset_name):
     worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
 
     # Visualizing for the best and worst using VORONOI
-    plot_voronoi_diagram(X[:, :2],   cluster_range[best_cluster_index], dataset_name, 'Best case')
-    plot_voronoi_diagram(X[:, :2],   cluster_range[worst_cluster_index], dataset_name, 'Worst case')
+    plot_voronoi_diagram(X[:, :2], cluster_range[best_cluster_index], dataset_name, 'Best case')
+    plot_voronoi_diagram(X[:, :2], cluster_range[worst_cluster_index], dataset_name, 'Worst case')
 
 
 def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: str):

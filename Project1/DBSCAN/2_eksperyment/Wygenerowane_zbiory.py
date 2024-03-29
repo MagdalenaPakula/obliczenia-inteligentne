@@ -1,10 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy.spatial import Voronoi, voronoi_plot_2d
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness_score, v_measure_score
 from numpy import ndarray
 import utilities as util
+from textwrap import wrap
 
 from Project1.main import load_generated_datasets
 
@@ -58,7 +58,6 @@ def dbscan_experiment(X, y_true, dataset_name):
     for beta in beta_values:
         ax1.plot(eps_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
     ax1.tick_params(axis='y', labelcolor=color)
-    ax1.legend(loc='upper left')
 
     plt.grid(True)
 
@@ -67,21 +66,42 @@ def dbscan_experiment(X, y_true, dataset_name):
     ax2.set_ylabel('Number of Clusters', color=color)
     ax2.plot(eps_range, num_clusters, marker='o', color=color, label='Number of Clusters')
     ax2.tick_params(axis='y', labelcolor=color)
-    ax2.legend(loc='upper right')
 
     ax1.legend(loc='center left', bbox_to_anchor=(1.1, 0.5))
 
-    plt.title(loc='center', label='DBSCAN Experiment ({dataset_name}) - clustering Evaluation Scores vs EPS')
+    plt.title(f'DBSCAN Experiment ({dataset_name}) - Clustering Evaluation Scores and Number of Clusters vs EPS',
+              loc='center')
     fig.tight_layout()
     plt.show()
 
-    # Find best and worst EPS values
-    best_eps_index = np.argmax(v_measure_scores)
-    worst_eps_index = np.argmin(v_measure_scores)
+    # Find best and worst EPS values for each metric
+    best_eps_indices = {}
+    worst_eps_indices = {}
+
+    metrics = {
+        "Adjusted Rand Score": rand_scores,
+        "Homogeneity Score": homogeneity_scores,
+        "Completeness Score": completeness_scores
+    }
+
+    for beta in beta_values:
+        metrics[f"V-Measure Score (beta={beta})"] = v_measure_scores[beta]
+
+    for metric, scores in metrics.items():
+        best_eps_indices[metric] = np.argmax(scores)
+        worst_eps_indices[metric] = np.argmin(scores)
 
     # Plot Voronoi diagram for best and worst cases
-    plot_voronoi_diagram(X[:, :2], X[:, -1], eps_range[best_eps_index], dataset_name, 'Best Case')
-    plot_voronoi_diagram(X[:, :2], X[:, -1], eps_range[worst_eps_index], dataset_name, 'Worst Case')
+    best_overall_metric = max(metrics, key=lambda k: np.mean(metrics[k]))  # calculates the mean of the scores
+    best_eps_index = best_eps_indices[best_overall_metric]
+
+    worst_overall_metric = min(metrics, key=lambda k: np.mean(metrics[k]))
+    worst_eps_index = worst_eps_indices[worst_overall_metric]
+
+    plot_voronoi_diagram(X[:, :2], X[:, -1], best_eps_index, dataset_name,
+                         f'Best Case Overall - {best_overall_metric}')
+    plot_voronoi_diagram(X[:, :2], X[:, -1], worst_eps_index, dataset_name,
+                         f'Worst Case Overall - {worst_overall_metric}')
 
 
 def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: str, case: str):
@@ -93,7 +113,7 @@ def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: 
     fig, ax = plt.subplots()
     util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
 
-    plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
+    plt.title(f'DBSCAN clustering ({dataset_name})\n- {case} (EPS={eps})')
     plt.show()
 
 

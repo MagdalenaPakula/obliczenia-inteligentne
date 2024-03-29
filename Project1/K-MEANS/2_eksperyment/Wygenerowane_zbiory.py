@@ -51,17 +51,39 @@ def kmeans_experiment(X, y_true, dataset_name):
     plt.legend()
     plt.show()
 
-    best_cluster_index = np.argmax(v_measure_scores)
-    worst_cluster_index = np.argmin(v_measure_scores)
+    # Find best and worst cluster numbers for each metric
+    best_cluster_indices = {}
+    worst_cluster_indices = {}
 
-    plot_voronoi_diagram(X[:, :2], X[:, -1], cluster_range[best_cluster_index], dataset_name, 'Best Case')
-    plot_voronoi_diagram(X[:, :2], X[:, -1], cluster_range[worst_cluster_index], dataset_name, 'Worst Case')
+    metrics = {
+        "Adjusted Rand Score": rand_scores,
+        "Homogeneity Score": homogeneity_scores,
+        "Completeness Score": completeness_scores
+    }
+
+    for beta in beta_values:
+        metrics[f"V-Measure Score (beta={beta})"] = v_measure_scores[beta]
+
+    for metric, scores in metrics.items():
+        best_cluster_indices[metric] = np.argmax(scores)
+        worst_cluster_indices[metric] = np.argmin(scores)
+
+    # Plot Voronoi diagram for best and worst cases based on the best overall metric
+    best_overall_metric = max(metrics, key=lambda k: np.mean(metrics[k]))
+    best_cluster_index = best_cluster_indices[best_overall_metric]
+
+    worst_overall_metric = min(metrics, key=lambda k: np.mean(metrics[k]))
+    worst_cluster_index = worst_cluster_indices[worst_overall_metric]
+
+    plot_voronoi_diagram(X[:, :2], y_true, best_cluster_index, dataset_name,
+                         f'Best Case Overall - {best_overall_metric}')
+    plot_voronoi_diagram(X[:, :2], y_true, worst_cluster_index, dataset_name,
+                         f'Worst Case Overall - {worst_overall_metric}')
 
 
 def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_name: str, case: str):
     kmeans = KMeans(n_clusters=n_clusters)
     kmeans.fit(X)
-    cluster_centers = kmeans.cluster_centers_
 
     y_pred = kmeans.labels_
 
