@@ -1,6 +1,4 @@
 import matplotlib.pyplot as plt
-import numpy as np
-from scipy.spatial import Voronoi, voronoi_plot_2d
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from numpy import ndarray
@@ -35,6 +33,7 @@ def kmeans_experiment(X, dataset_name):
         silhouette_scores.append(silhouette_avg)
 
     plt.plot(cluster_range, silhouette_scores, marker='o')
+    plt.grid(True)
     plt.xlabel('Number of clusters')
     plt.ylabel('Silhouette score')
     plt.title(f'K-means experiment ({dataset_name})')

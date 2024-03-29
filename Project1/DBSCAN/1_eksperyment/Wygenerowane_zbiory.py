@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from scipy.spatial import Voronoi, voronoi_plot_2d
 from sklearn.cluster import DBSCAN
 from sklearn.metrics import silhouette_score, silhouette_samples
 from numpy import ndarray
@@ -38,23 +37,44 @@ def dbscan_experiment(X, dataset_name):
             silhouette_scores.append(silhouette_avg)
         else:
             print(f"For EPS={eps}, only one cluster is formed in {dataset_name}")
-            # Compute silhouette scores for individual samples
             silhouette_vals = silhouette_samples(X, labels)
             mean_silhouette = np.mean(silhouette_vals)
             silhouette_scores.append(mean_silhouette)
 
     # Plot silhouette scores for different eps values
-    plt.plot(eps_range, silhouette_scores, marker='o')
-    plt.xlabel('EPS Value')
-    plt.ylabel('Silhouette score')
-    plt.title(f'DBSCAN Experiment ({dataset_name}) - Silhouette Score vs EPS')
-    plt.show()
+    # plt.plot(eps_range, silhouette_scores, marker='o')
+    # plt.xlabel('EPS Value')
+    # plt.ylabel('Silhouette score')
+    # plt.title(f'DBSCAN Experiment ({dataset_name}) - Silhouette Score vs EPS')
+    # plt.show()
+    #
+    # # Plot number of clusters obtained for different eps values
+    # plt.plot(eps_range, num_clusters, marker='o')
+    # plt.xlabel('EPS Value')
+    # plt.ylabel('Number of Clusters')
+    # plt.title(f'DBSCAN Experiment ({dataset_name}) - Number of Clusters vs EPS')
+    # plt.show()
 
-    # Plot number of clusters obtained for different eps values
-    plt.plot(eps_range, num_clusters, marker='o')
-    plt.xlabel('EPS Value')
-    plt.ylabel('Number of Clusters')
-    plt.title(f'DBSCAN Experiment ({dataset_name}) - Number of Clusters vs EPS')
+    fig, ax1 = plt.subplots()
+
+    color = 'tab:red'
+    ax1.set_xlabel('EPS Value')
+    ax1.set_ylabel('Silhouette Score', color=color)
+    ax1.plot(eps_range, silhouette_scores, marker='o', color=color)
+    ax1.tick_params(axis='y', labelcolor=color)
+
+    plt.grid(True)
+
+    ax2 = ax1.twinx()
+    color = 'tab:blue'
+    ax2.set_ylabel('Number of Clusters', color=color)
+    ax2.plot(eps_range, num_clusters, marker='o', color=color)
+    ax2.tick_params(axis='y', labelcolor=color)
+
+    # plt.grid(True)
+
+    plt.title(f'DBSCAN experiment silhouette scores ({dataset_name})')
+    fig.tight_layout()
     plt.show()
 
     # Find best and worst EPS values
@@ -85,3 +105,6 @@ if __name__ == "__main__":
     # Performing experiments for each dataset
     for X, dataset_name in datasets:
         dbscan_experiment(X, dataset_name)
+
+
+
