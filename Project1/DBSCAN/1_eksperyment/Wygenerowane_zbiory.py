@@ -68,18 +68,18 @@ def dbscan_experiment(X, dataset_name):
     worst_eps_index = silhouette_scores.index(min(silhouette_scores))
 
     # Plot Voronoi diagram for best and worst cases
-    plot_voronoi_diagram(X[:, :2], X[:, -1],  eps_range[best_eps_index], dataset_name, 'Best Case')
-    plot_voronoi_diagram(X[:, :2], X[:, -1],  eps_range[worst_eps_index], dataset_name, 'Worst Case')
+    plot_voronoi_diagram(X[:, :2], eps_range[best_eps_index], dataset_name, 'Best Case')
+    plot_voronoi_diagram(X[:, :2], eps_range[worst_eps_index], dataset_name, 'Worst Case')
 
 
-def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: str, case: str):
+def plot_voronoi_diagram(X: ndarray, eps: float, dataset_name: str, case: str):
     dbscan = DBSCAN(eps=eps)
     dbscan.fit(X)
 
     y_pred = dbscan.labels_
 
     fig, ax = plt.subplots()
-    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
+    util.plot_voronoi_diagram(X, None, y_pred, ax=ax)
 
     plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
     plt.show()

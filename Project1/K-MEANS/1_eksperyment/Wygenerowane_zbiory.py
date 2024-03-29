@@ -16,10 +16,6 @@ from Project1.main import load_generated_datasets
 """
 
 
-def perform_clustering_experiments(dataset, dataset_name):
-    kmeans_experiment(dataset, dataset_name)
-
-
 # Eksperyment z algorytmem K-MEANS
 def kmeans_experiment(X, dataset_name):
     silhouette_scores = []
@@ -44,18 +40,18 @@ def kmeans_experiment(X, dataset_name):
     worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
 
     # Visualizing for the best and worst using VORONOI
-    plot_voronoi_diagram(X[:, :2], X[:, -1],  cluster_range[best_cluster_index], dataset_name, 'Best case')
-    plot_voronoi_diagram(X[:, :2], X[:, -1],  cluster_range[worst_cluster_index], dataset_name, 'Worst case')
+    plot_voronoi_diagram(X[:, :2],   cluster_range[best_cluster_index], dataset_name, 'Best case')
+    plot_voronoi_diagram(X[:, :2],   cluster_range[worst_cluster_index], dataset_name, 'Worst case')
 
 
-def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_name: str, case: str):
+def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: str):
     kmeans = KMeans(n_clusters=n_clusters)
     kmeans.fit(X)
 
     y_pred = kmeans.labels_
 
     fig, ax = plt.subplots()
-    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
+    util.plot_voronoi_diagram(X, None, y_pred, ax=ax)  # Passing None for y_true
 
     plt.title(f'K-means clustering ({dataset_name}) - {case}')
     plt.show()
@@ -64,5 +60,10 @@ def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_n
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    for X, dataset_name in datasets[:1]:
-        perform_clustering_experiments(X, dataset_name)
+    # for X, dataset_name in datasets:
+    #     kmeans_experiment(X, dataset_name)
+
+    for index, (X, dataset_name) in enumerate(datasets):
+        if index == 5:  # Select the 6th file (index 5)
+            kmeans_experiment(X, dataset_name)
+            break  # Exit the loop after processing the 6th file
