@@ -17,19 +17,6 @@ def load_generated_datasets():
     return data_sets
 
 
-def load_generated_datasets_with_labels():
-    data_files = ['../../data/1_1.csv', '../../data/1_2.csv', '../../data/1_3.csv', '../../data/2_1.csv',
-                  '../../data/2_2.csv', '../../data/2_3.csv']
-    data_sets = []
-    for file in data_files:
-        df = pd.read_csv(file, header=None, delimiter=';')
-        X = StandardScaler().fit_transform(df.iloc[:, :-1].values)
-        y_true = df.iloc[:, -1].values
-        data_sets.append((X, y_true, file))
-
-    return data_sets
-
-
 # Load datasets: Iris, Wine and Breast_cancer
 def load_other_datasets():
     # Load other datasets

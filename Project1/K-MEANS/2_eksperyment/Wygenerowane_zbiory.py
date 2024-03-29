@@ -2,11 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness_score, v_measure_score
-from scipy.spatial import Voronoi, voronoi_plot_2d
 from numpy import ndarray
 import utilities as util
 
-from Project1.main import load_generated_datasets_with_labels, load_generated_datasets
+from Project1.main import load_generated_datasets
 
 """
 STRONA - 3 - RAPORTU
@@ -20,11 +19,13 @@ dla najlepszego i najgorszego przypadku (wskazując, który to był przypadek i 
 
 
 def kmeans_experiment(X, y_true, dataset_name):
+    cluster_range = range(2, 10)
+    beta_values = [0.5, 1.0, 2.0]
+
     rand_scores = []
     homogeneity_scores = []
     completeness_scores = []
-    v_measure_scores = []
-    cluster_range = range(2, 10)
+    v_measure_scores = {beta: [] for beta in beta_values}
 
     for n_clusters in cluster_range:
         kmeans = KMeans(n_clusters=n_clusters)
@@ -34,16 +35,19 @@ def kmeans_experiment(X, y_true, dataset_name):
         rand_scores.append(adjusted_rand_score(y_true, labels))
         homogeneity_scores.append(homogeneity_score(y_true, labels))
         completeness_scores.append(completeness_score(y_true, labels))
-        v_measure_scores.append(v_measure_score(y_true, labels))
 
-    plt.plot(cluster_range, rand_scores, marker='o', label='Adjusted rand Score')
+        for beta in beta_values:
+            v_measure_scores[beta].append(v_measure_score(y_true, labels, beta=beta))
+
+    plt.plot(cluster_range, rand_scores, marker='o', label='Adjusted Rand Score')
     plt.plot(cluster_range, homogeneity_scores, marker='o', label='Homogeneity score')
     plt.plot(cluster_range, completeness_scores, marker='o', label='Completeness score')
-    plt.plot(cluster_range, v_measure_scores, marker='o', label='V-Measure score')
+    for beta in beta_values:
+        plt.plot(cluster_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
 
     plt.xlabel('Number of clusters')
     plt.ylabel('Score')
-    plt.title(f'K-Means Experiment ({dataset_name}) - Clustering evaluation scores')
+    plt.title(f'K-Means Experiment ({dataset_name}) - clustering evaluation scores')
     plt.legend()
     plt.show()
 
@@ -71,5 +75,6 @@ def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_n
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    for X, y_true, dataset_name in datasets[:1]:
-        kmeans_experiment(X, y_true, dataset_name)
+    for X, dataset_name in datasets[:1]:
+        y_true = X[:, -1]
+        kmeans_experiment(X[:, :-1], y_true, dataset_name)

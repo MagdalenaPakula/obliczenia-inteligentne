@@ -60,10 +60,10 @@ def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: s
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    # for X, dataset_name in datasets:
-    #     kmeans_experiment(X, dataset_name)
+    for X, dataset_name in datasets:
+        kmeans_experiment(X, dataset_name)
 
-    for index, (X, dataset_name) in enumerate(datasets):
-        if index == 5:  # Select the 6th file (index 5)
-            kmeans_experiment(X, dataset_name)
-            break  # Exit the loop after processing the 6th file
+    # for index, (X, dataset_name) in enumerate(datasets):
+    #     if index == 5:  # Select the 6th file (index 5)
+    #         kmeans_experiment(X, dataset_name)
+    #         break  # Exit the loop after processing the 6th file

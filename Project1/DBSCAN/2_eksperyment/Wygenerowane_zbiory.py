@@ -6,7 +6,7 @@ from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness
 from numpy import ndarray
 import utilities as util
 
-from Project1.main import load_generated_datasets_with_labels, load_generated_datasets
+from Project1.main import load_generated_datasets
 
 """
 STRONA - 4 - RAPORTU
@@ -20,14 +20,18 @@ W przypadku metody DBSCAN warto również wskazać na wykresie jaką liczbę kla
 dla różnych wartości parametru eps.
 """
 
+
 # DBSCAN Experiment Function
 def dbscan_experiment(X, y_true, dataset_name):
+    cluster_range = range(2, 10)
+    beta_values = [0.5, 1.0, 2.0]
+    eps_range = [0.1, 0.5, 1.0, 1.5, 2.0]
+
+    num_clusters = []
     rand_scores = []
     homogeneity_scores = []
     completeness_scores = []
-    v_measure_scores = []
-    num_clusters = []
-    eps_range = [0.1, 0.5, 1.0, 1.5, 2.0]
+    v_measure_scores = {beta: [] for beta in beta_values}
 
     for eps in eps_range:
         dbscan = DBSCAN(eps=eps, min_samples=1)
@@ -39,24 +43,36 @@ def dbscan_experiment(X, y_true, dataset_name):
         rand_scores.append(adjusted_rand_score(y_true, labels))
         homogeneity_scores.append(homogeneity_score(y_true, labels))
         completeness_scores.append(completeness_score(y_true, labels))
-        v_measure_scores.append(v_measure_score(y_true, labels))
 
-    # Plot evaluation scores for different eps values
-    plt.plot(eps_range, rand_scores, marker='o', label='Adjusted rand Score')
-    plt.plot(eps_range, homogeneity_scores, marker='o', label='Homogeneity score')
-    plt.plot(eps_range, completeness_scores, marker='o', label='Completeness score')
-    plt.plot(eps_range, v_measure_scores, marker='o', label='V-Measure score')
-    plt.xlabel('EPS Value')
-    plt.ylabel('Score')
-    plt.title(f'DBSCAN Experiment ({dataset_name}) - Clustering Evaluation Scores vs EPS')
-    plt.legend()
-    plt.show()
+        for beta in beta_values:
+            v_measure_scores[beta].append(v_measure_score(y_true, labels, beta=beta))
 
-    # Plot number of clusters obtained for different eps values
-    plt.plot(eps_range, num_clusters, marker='o')
-    plt.xlabel('EPS Value')
-    plt.ylabel('Number of Clusters')
-    plt.title(f'DBSCAN Experiment ({dataset_name}) - Number of Clusters vs EPS')
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+    color = 'tab:red'
+    ax1.set_xlabel('EPS Value')
+    ax1.set_ylabel('Score', color=color)
+    ax1.plot(eps_range, rand_scores, marker='o', color=color, label='Adjusted rand Score')
+    ax1.plot(eps_range, homogeneity_scores, marker='o',  color='green', label='Homogeneity score')
+    ax1.plot(eps_range, completeness_scores, marker='o',  color='orange', label='Completeness score')
+    for beta in beta_values:
+        ax1.plot(eps_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
+    ax1.tick_params(axis='y', labelcolor=color)
+    ax1.legend(loc='upper left')
+
+    plt.grid(True)
+
+    ax2 = ax1.twinx()
+    color = 'tab:blue'
+    ax2.set_ylabel('Number of Clusters', color=color)
+    ax2.plot(eps_range, num_clusters, marker='o', color=color, label='Number of Clusters')
+    ax2.tick_params(axis='y', labelcolor=color)
+    ax2.legend(loc='upper right')
+
+    ax1.legend(loc='center left', bbox_to_anchor=(1.1, 0.5))
+
+    plt.title(loc='center', label='DBSCAN Experiment ({dataset_name}) - clustering Evaluation Scores vs EPS')
+    fig.tight_layout()
     plt.show()
 
     # Find best and worst EPS values
@@ -80,10 +96,11 @@ def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: 
     plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
     plt.show()
 
+
 if __name__ == "__main__":
     # Load generated datasets
     datasets = load_generated_datasets()
 
-    # Performing experiments for each dataset
-    for X, y_true, dataset_name in datasets:
-        dbscan_experiment(X, y_true, dataset_name)
+    for X, dataset_name in datasets[:1]:
+        y_true = X[:, -1]
+        dbscan_experiment(X[:, :-1], y_true, dataset_name)
