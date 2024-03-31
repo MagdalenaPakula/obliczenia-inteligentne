@@ -6,7 +6,7 @@ import utilities as util
 
 import numpy as np
 
-from project_1.main import load_generated_datasets
+from project_1.data import load_generated_datasets
 
 """
  STRONA - 2 - RAPORTU
@@ -84,6 +84,7 @@ def plot_voronoi_diagram(X: ndarray, eps: float, dataset_name: str, case: str):
     plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
     plt.show()
 
+
 if __name__ == "__main__":
     # Load generated datasets
     datasets = load_generated_datasets()
@@ -91,6 +92,3 @@ if __name__ == "__main__":
     # Performing experiments for each dataset
     for X, dataset_name in datasets:
         dbscan_experiment(X, dataset_name)
-
-
-

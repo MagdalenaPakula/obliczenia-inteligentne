@@ -6,7 +6,7 @@ from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness
 from numpy import ndarray
 import utilities as util
 
-from project_1.main import load_other_datasets
+from project_1.data import load_other_datasets
 
 # TODO:
 """
@@ -18,6 +18,8 @@ wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wy
 W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe
 przestrzenie wybranych kombinacji dwóch z nich.
 """
+
+
 def dbscan_experiment(X, y_true, dataset_name):
     cluster_range = range(2, 10)
     beta_values = [0.5, 1.0, 2.0]
@@ -49,8 +51,8 @@ def dbscan_experiment(X, y_true, dataset_name):
     ax1.set_xlabel('EPS Value')
     ax1.set_ylabel('Score', color=color)
     ax1.plot(eps_range, rand_scores, marker='o', color=color, label='Adjusted rand Score')
-    ax1.plot(eps_range, homogeneity_scores, marker='o',  color='green', label='Homogeneity score')
-    ax1.plot(eps_range, completeness_scores, marker='o',  color='orange', label='Completeness score')
+    ax1.plot(eps_range, homogeneity_scores, marker='o', color='green', label='Homogeneity score')
+    ax1.plot(eps_range, completeness_scores, marker='o', color='orange', label='Completeness score')
     for beta in beta_values:
         ax1.plot(eps_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
     ax1.tick_params(axis='y', labelcolor=color)

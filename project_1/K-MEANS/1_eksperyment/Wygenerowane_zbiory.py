@@ -4,7 +4,7 @@ from sklearn.metrics import silhouette_score
 from numpy import ndarray
 import utilities as util
 
-from project_1.main import load_generated_datasets
+from project_1.data import load_generated_datasets
 
 """
  STRONA - 1 - RAPORTU

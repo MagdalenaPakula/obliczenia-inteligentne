@@ -6,7 +6,7 @@ from numpy import ndarray
 import utilities as util
 from textwrap import wrap
 
-from project_1.main import load_generated_datasets
+from project_1.data import load_generated_datasets
 
 """
 STRONA - 4 - RAPORTU
@@ -53,8 +53,8 @@ def dbscan_experiment(X, y_true, dataset_name):
     ax1.set_xlabel('EPS Value')
     ax1.set_ylabel('Score', color=color)
     ax1.plot(eps_range, rand_scores, marker='o', color=color, label='Adjusted rand Score')
-    ax1.plot(eps_range, homogeneity_scores, marker='o',  color='green', label='Homogeneity score')
-    ax1.plot(eps_range, completeness_scores, marker='o',  color='orange', label='Completeness score')
+    ax1.plot(eps_range, homogeneity_scores, marker='o', color='green', label='Homogeneity score')
+    ax1.plot(eps_range, completeness_scores, marker='o', color='orange', label='Completeness score')
     for beta in beta_values:
         ax1.plot(eps_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
     ax1.tick_params(axis='y', labelcolor=color)

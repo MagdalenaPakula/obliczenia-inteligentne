@@ -5,7 +5,7 @@ from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness
 from numpy import ndarray
 import utilities as util
 
-from project_1.main import load_other_datasets
+from project_1.data import load_other_datasets
 
 # TODO:
 """
@@ -17,6 +17,8 @@ wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wy
 W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe
 przestrzenie wybranych kombinacji dwóch z nich.
 """
+
+
 def kmeans_experiment(X, y_true, dataset_name):
     cluster_range = range(2, 10)
     beta_values = [0.5, 1.0, 2.0]
@@ -91,6 +93,7 @@ def plot_voronoi_diagram(X: ndarray, y_true: ndarray, n_clusters: int, dataset_n
 
     plt.title(f'K-means clustering ({dataset_name}) - {case}')
     plt.show()
+
 
 if __name__ == "__main__":
     # Load generated datasets

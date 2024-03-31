@@ -5,7 +5,7 @@ from numpy import ndarray
 import utilities as util
 
 import numpy as np
-from project_1.main import load_other_datasets
+from project_1.data import load_other_datasets
 
 # TODO:
 """
@@ -17,6 +17,8 @@ wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wy
 W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe
 przestrzenie wybranych kombinacji dwóch z nich.
 """
+
+
 def dbscan_experiment(X, dataset_name):
     silhouette_scores = []
     num_clusters = []
@@ -81,6 +83,7 @@ def plot_voronoi_diagram(X: ndarray, eps: float, dataset_name: str, case: str):
     plt.title(f'DBSCAN clustering ({dataset_name}) - {case} (EPS={eps})')
     plt.show()
 
+
 if __name__ == "__main__":
     # Load other datasets
     datasets = load_other_datasets()
@@ -88,4 +91,3 @@ if __name__ == "__main__":
     # Performing experiments for each dataset
     for X, dataset_name in datasets:
         dbscan_experiment(X, dataset_name)
-

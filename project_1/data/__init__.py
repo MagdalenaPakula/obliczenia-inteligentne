@@ -1,17 +1,20 @@
-import pandas as pd
+import os
 
+import pandas as pd
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 
 
 # Load generated datasets: 1_1.csv, 1_2.csv, 1_3.csv, 2_1.csv, 2_2.csv, 2_3.csv
 def load_generated_datasets():
+    # get path to data directory as the directory of this file
+    data_dir = os.path.dirname(os.path.abspath(__file__))
     # Load files
-    data_files = ['../../data/1_1.csv', '../../data/1_2.csv', '../../data/1_3.csv', '../../data/2_1.csv',
-                  '../../data/2_2.csv', '../../data/2_3.csv']
+    data_files = ['1_1.csv', '1_2.csv', '1_3.csv', '2_1.csv',
+                  '2_2.csv', '2_3.csv']
     data_sets = []
     for file in data_files:
-        df = pd.read_csv(file, header=None, delimiter=';')
+        df = pd.read_csv(os.path.join(data_dir, file), header=None, delimiter=';')
         data_sets.append((StandardScaler().fit_transform(df.values), file))
 
     return data_sets
@@ -39,11 +42,3 @@ def load_other_datasets():
         (scaled_wine_data, 'Wine Dataset'),
         (scaled_breast_cancer_data, 'Breast Cancer Wisconsin Dataset')
     ]
-
-# def print_hi(name):
-#     # Use a breakpoint in the code line below to debug your script.
-#     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-#
-# # Press the green button in the gutter to run the script.
-# if __name__ == '__main__':
-#     print_hi('PyCharm')
