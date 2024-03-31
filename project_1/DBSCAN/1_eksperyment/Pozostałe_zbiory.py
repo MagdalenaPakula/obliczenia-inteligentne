@@ -5,21 +5,18 @@ from numpy import ndarray
 import utilities as util
 
 import numpy as np
+from project_1.main import load_other_datasets
 
-from Project1.main import load_generated_datasets
-
+# TODO:
 """
- STRONA - 2 - RAPORTU
- 
- Wyniki pierwszego eksperymentu dla sześciu sztucznie wygenerowanych zbiorów danych i metody DBSCAN.
- Dla każdego zbioru należy pokazać wykres obrazujący zmianę wartości miary silhouette score rzy zmieniającym
- się parametrze eps oraz wizualizację klastrów (diagram Woronoja) dla najlepszego i najgorszego przypadku
- (wskazując, który to był przypadek i dlaczego). W przypadku metody DBSCAN warto również wskazać na wykresie
- jaką liczbę klastrów  uzyskano dla różnych wartości parametru eps. Przykładowy wykres:
+STRONA - 6 - RAPORTU
+
+Opis analizy pozostałych, rzeczywistych zbiorów danych, w której to zastosowane zostaną wnioski
+z wcześniejszych eksperymentów. Wyniki tej analizy należy również uzasadnić poprzez odwołanie do
+wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wykresy i się do nich odwołać).
+W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe
+przestrzenie wybranych kombinacji dwóch z nich.
 """
-
-
-# Eksperyment z algorytmem DBSCAN
 def dbscan_experiment(X, dataset_name):
     silhouette_scores = []
     num_clusters = []
@@ -85,12 +82,10 @@ def plot_voronoi_diagram(X: ndarray, eps: float, dataset_name: str, case: str):
     plt.show()
 
 if __name__ == "__main__":
-    # Load generated datasets
-    datasets = load_generated_datasets()
+    # Load other datasets
+    datasets = load_other_datasets()
 
     # Performing experiments for each dataset
     for X, dataset_name in datasets:
         dbscan_experiment(X, dataset_name)
-
-
 

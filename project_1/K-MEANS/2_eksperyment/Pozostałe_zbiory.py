@@ -5,7 +5,7 @@ from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness
 from numpy import ndarray
 import utilities as util
 
-from Project1.main import load_other_datasets
+from project_1.main import load_other_datasets
 
 # TODO:
 """

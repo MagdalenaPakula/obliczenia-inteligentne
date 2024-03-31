@@ -6,7 +6,7 @@ from numpy import ndarray
 import utilities as util
 from textwrap import wrap
 
-from Project1.main import load_generated_datasets
+from project_1.main import load_generated_datasets
 
 """
 STRONA - 4 - RAPORTU

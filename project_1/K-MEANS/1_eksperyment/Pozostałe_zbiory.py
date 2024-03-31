@@ -3,20 +3,20 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from numpy import ndarray
 import utilities as util
+from project_1.main import load_other_datasets
 
-from Project1.main import load_generated_datasets
-
+# TODO:
 """
- STRONA - 1 - RAPORTU
- 
- Wyniki pierwszego eksperymentu dla sześciu sztucznie wygenerowanych zbiorów danych i metody K-Means.
- Dla każdego zbioru należy pokazać wykres obrazujący zmianę wartości miary silhouette score przy zmieniającym
- się parametrze n-clusters oraz wizualizację klastrów (diagram Woronoja) dla najlepszego i najgorszego przypadku
- (wskazując, który to był przypadek i dlaczego).
+STRONA - 6 - RAPORTU
+
+Opis analizy pozostałych, rzeczywistych zbiorów danych, w której to zastosowane zostaną wnioski
+z wcześniejszych eksperymentów. Wyniki tej analizy należy również uzasadnić poprzez odwołanie do
+wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wykresy i się do nich odwołać).
+W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe
+przestrzenie wybranych kombinacji dwóch z nich.
 """
 
 
-# Eksperyment z algorytmem K-MEANS
 def kmeans_experiment(X, dataset_name):
     silhouette_scores = []
     cluster_range = range(2, 10)
@@ -57,13 +57,9 @@ def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: s
     plt.show()
 
 
+# Load Iris, Wine and Breast_cancer datasets
 if __name__ == "__main__":
-    datasets = load_generated_datasets()
+    datasets = load_other_datasets()
 
     for X, dataset_name in datasets:
         kmeans_experiment(X, dataset_name)
-
-    # for index, (X, dataset_name) in enumerate(datasets):
-    #     if index == 5:  # Select the 6th file (index 5)
-    #         kmeans_experiment(X, dataset_name)
-    #         break  # Exit the loop after processing the 6th file
