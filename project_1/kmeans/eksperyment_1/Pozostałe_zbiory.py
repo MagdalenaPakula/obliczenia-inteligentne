@@ -4,6 +4,7 @@ from sklearn.metrics import silhouette_score
 from numpy import ndarray
 import utilities as util
 from project_1.data import load_other_datasets
+from project_1.kmeans.eksperyment_1 import perform_clustering
 
 # TODO:
 """
@@ -22,9 +23,7 @@ def kmeans_experiment(X, dataset_name):
     cluster_range = range(2, 10)
 
     for n_clusters in cluster_range:
-        kmeans = KMeans(n_clusters=n_clusters)
-        kmeans.fit(X)
-        labels = kmeans.labels_
+        labels = perform_clustering(X, n_clusters)
         silhouette_avg = silhouette_score(X, labels)
         silhouette_scores.append(silhouette_avg)
 

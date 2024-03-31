@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
+import numpy as np
+from numpy import ndarray
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
-from numpy import ndarray
-import utilities as util
 
+import utilities as util
 from project_1.data import load_generated_datasets
+from project_1.kmeans.eksperyment_1 import perform_clustering, plot_silhouette_scores
 
 """
  STRONA - 1 - RAPORTU
@@ -16,28 +18,21 @@ from project_1.data import load_generated_datasets
 """
 
 
-# Eksperyment z algorytmem K-MEANS
-def kmeans_experiment(X, dataset_name):
+# Eksperyment z algorytmem kmeans
+def kmeans_experiment(X: ndarray, dataset_name: str):
     silhouette_scores = []
     cluster_range = range(2, 10)
 
     for n_clusters in cluster_range:
-        kmeans = KMeans(n_clusters=n_clusters)
-        kmeans.fit(X)
-        labels = kmeans.labels_
+        labels = perform_clustering(X, n_clusters)
         silhouette_avg = silhouette_score(X, labels)
         silhouette_scores.append(silhouette_avg)
 
-    plt.plot(cluster_range, silhouette_scores, marker='o')
-    plt.grid(True)
-    plt.xlabel('Number of clusters')
-    plt.ylabel('Silhouette score')
-    plt.title(f'K-means experiment ({dataset_name})')
-    plt.show()
+    plot_silhouette_scores(cluster_range, silhouette_scores, dataset_name)
 
     # Best and worst cases of silhouette scores
-    best_cluster_index = silhouette_scores.index(max(silhouette_scores))
-    worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
+    best_cluster_index = np.argmax(silhouette_scores)
+    worst_cluster_index = np.argmin(silhouette_scores)
 
     # Visualizing for the best and worst using VORONOI
     plot_voronoi_diagram(X[:, :2], cluster_range[best_cluster_index], dataset_name, 'Best case')
@@ -45,7 +40,7 @@ def kmeans_experiment(X, dataset_name):
 
 
 def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: str):
-    kmeans = KMeans(n_clusters=n_clusters)
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
     kmeans.fit(X)
 
     y_pred = kmeans.labels_
