@@ -71,3 +71,27 @@ def plot_other_scores(clusters: __plottable, scores: Dict[str, __plottable], tit
 
     plt.legend()
     plt.show()
+
+
+def plot_silhouette_scores_vs_eps(eps: __plottable, silhouette_scores: __plottable, n_clusters: __plottable,
+                                  plot_title: Optional[str] = None) -> None:
+    fig, silhouette_axis = plt.subplots()
+    plt.grid(axis='x', linestyle='--')
+
+    color = 'tab:red'
+    silhouette_axis.set_xlabel('EPS Value')
+    silhouette_axis.set_ylabel('Silhouette Score', color=color)
+    silhouette_axis.plot(eps, silhouette_scores, marker='o', color=color)
+    silhouette_axis.tick_params(axis='y', labelcolor=color)
+
+    n_clusters_axis = silhouette_axis.twinx()
+
+    color = 'tab:blue'
+    n_clusters_axis.set_ylabel('Number of clusters', color=color)
+    n_clusters_axis.plot(eps, n_clusters, marker='o', color=color)
+    n_clusters_axis.tick_params(axis='y', labelcolor=color)
+
+    if plot_title is not None:
+        plt.title(plot_title)
+
+    fig.show()
