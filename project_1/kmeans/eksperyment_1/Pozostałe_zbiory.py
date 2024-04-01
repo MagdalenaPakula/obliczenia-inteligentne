@@ -1,10 +1,15 @@
-import matplotlib.pyplot as plt
-from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
+import itertools
+import threading
+import time
+from typing import List
+
+import numpy as np
 from numpy import ndarray
-import utilities as util
+from sklearn.metrics import silhouette_score
+
 from project_1.data import load_other_datasets
-from project_1.kmeans.eksperyment_1 import perform_clustering
+from project_1.kmeans.eksperyment_1 import perform_clustering, plot_silhouette_scores
+from project_1.visualization import plot_voronoi_diagram
 
 # TODO:
 """
@@ -18,47 +23,43 @@ przestrzenie wybranych kombinacji dwóch z nich.
 """
 
 
-def kmeans_experiment(X, dataset_name):
-    silhouette_scores = []
+def kmeans_experiment(features: ndarray, dataset_name: str):
     cluster_range = range(2, 10)
+    silhouette_scores: List[float] = []
+    assigned_labels: List[ndarray] = []
 
     for n_clusters in cluster_range:
-        labels = perform_clustering(X, n_clusters)
-        silhouette_avg = silhouette_score(X, labels)
+        labels = perform_clustering(features, n_clusters)
+        silhouette_avg = silhouette_score(features, labels)
         silhouette_scores.append(silhouette_avg)
+        assigned_labels.append(labels)
 
-    plt.plot(cluster_range, silhouette_scores, marker='o')
-    plt.grid(True)
-    plt.xlabel('Number of clusters')
-    plt.ylabel('Silhouette score')
-    plt.title(f'K-means experiment ({dataset_name})')
-    plt.show()
+    plot_silhouette_scores(cluster_range, silhouette_scores, dataset_name)
 
     # Best and worst cases of silhouette scores
-    best_cluster_index = silhouette_scores.index(max(silhouette_scores))
-    worst_cluster_index = silhouette_scores.index(min(silhouette_scores))
+    best_cluster_index = np.argmax(silhouette_scores)
+    worst_cluster_index = np.argmin(silhouette_scores)
 
-    # Visualizing for the best and worst using VORONOI
-    plot_voronoi_diagram(X[:, :2], cluster_range[best_cluster_index], dataset_name, 'Best case')
-    plot_voronoi_diagram(X[:, :2], cluster_range[worst_cluster_index], dataset_name, 'Worst case')
+    best_clustering = assigned_labels[best_cluster_index]
+    worst_clustering = assigned_labels[worst_cluster_index]
+
+    features_to_plot: List[int]
+    match dataset_name:
+        case 'Iris Dataset':
+            features_to_plot = [0, 2]
+        case 'Wine Dataset':
+            features_to_plot = [0, 1]
+        case 'Breast Cancer Wisconsin Dataset':
+            features_to_plot = [3, 24]
+        case _:
+            raise ValueError(f'Unknown dataset name {dataset_name}')
+
+    plot_voronoi_diagram(features[:, features_to_plot], best_clustering,
+                         diagram_title=f'K-means clustering ({dataset_name}) - Best case')
+    plot_voronoi_diagram(features[:, features_to_plot], worst_clustering,
+                         diagram_title=f'K-means clustering ({dataset_name}) - Worst case')
 
 
-def plot_voronoi_diagram(X: ndarray, n_clusters: int, dataset_name: str, case: str):
-    kmeans = KMeans(n_clusters=n_clusters)
-    kmeans.fit(X)
-
-    y_pred = kmeans.labels_
-
-    fig, ax = plt.subplots()
-    util.plot_voronoi_diagram(X, None, y_pred, ax=ax)  # Passing None for y_true
-
-    plt.title(f'K-means clustering ({dataset_name}) - {case}')
-    plt.show()
-
-
-# Load Iris, Wine and Breast_cancer datasets
 if __name__ == "__main__":
-    datasets = load_other_datasets()
-
-    for X, dataset_name in datasets:
-        kmeans_experiment(X, dataset_name)
+    for dataset, name in load_other_datasets():
+        kmeans_experiment(dataset[:, :-1], name)
