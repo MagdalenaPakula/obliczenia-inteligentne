@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional, Dict
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -45,4 +45,29 @@ def plot_voronoi_diagram(
     plt.xlim(min_x - 0.1, max_x + 0.1)
     plt.ylim(min_y - 0.1, max_y + 0.1)
 
+    plt.show()
+
+
+type __plottable = List[int | float] | ndarray | range
+
+
+def plot_silhouette_scores(clusters: __plottable, silhouette_scores: __plottable, dataset_name: str) -> None:
+    plt.plot(clusters, silhouette_scores, marker='o')
+    plt.grid(axis='x', linestyle='--')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Silhouette score')
+    plt.title(f'K-means experiment ({dataset_name})')
+    plt.show()
+
+
+def plot_other_scores(clusters: __plottable, scores: Dict[str, __plottable], title: Optional[str] = None) -> None:
+    plt.grid(axis='x', linestyle='--')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Score value')
+    if title is not None:
+        plt.title(title)
+    for (name, score_values) in scores.items():
+        plt.plot(clusters, score_values, marker='o', label=name)
+
+    plt.legend()
     plt.show()
