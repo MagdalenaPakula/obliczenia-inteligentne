@@ -1,6 +1,3 @@
-import itertools
-import threading
-import time
 from typing import List
 
 import numpy as np
@@ -8,8 +5,8 @@ from numpy import ndarray
 from sklearn.metrics import silhouette_score
 
 from project_1.data import load_other_datasets
-from project_1.kmeans.eksperyment_1 import perform_clustering, plot_silhouette_scores
-from project_1.visualization import plot_voronoi_diagram
+from project_1.kmeans import perform_clustering
+from project_1.visualization import plot_voronoi_diagram, plot_silhouette_scores
 
 # TODO:
 """

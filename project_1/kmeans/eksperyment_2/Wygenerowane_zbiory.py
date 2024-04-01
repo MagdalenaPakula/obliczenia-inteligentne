@@ -52,12 +52,8 @@ def kmeans_experiment(X, y_true, dataset_name):
     # Find best and worst cluster numbers for each metric
     metric_values = np.array(list(metrics.values()))
     mean_metrics = metric_values.mean(axis=0)
-    print(mean_metrics)
     best_cluster_index = mean_metrics.argmax()
     worst_cluster_index = mean_metrics.argmin()
-
-    print(f"{best_cluster_index=}")
-    print(f"{worst_cluster_index=}")
 
     plot_voronoi_diagram(X[:, :2], assigned_labels[best_cluster_index], y_true,
                          diagram_title=f'K-means clustering ({dataset_name}) - Best case')
