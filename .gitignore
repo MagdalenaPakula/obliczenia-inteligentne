@@ -1,5 +1,7 @@
 /.idea/
 /.venv/
 
+.___pycache__
+
 # warmup exercise
 warmup/
