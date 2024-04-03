@@ -411,39 +411,136 @@
 \newpage
 % PIĄTA STRONA
 \section{Wnioski}
-Opis wniosków z eksperymentów przeprowadzonych na sześciu sztucznie wygenerowanych zbiorach. W przypadku pierwszego eksperymentu należy stwierdzić, jak, obserwując silhouette score, można dobrrać właściwe parametry metod klasteryzacji, aby klastry dobrze odkrywały strukturę danych. Dla eksperymentu drugiego należy wskazać jakie informację o separowalności klas można wycią obserwując wartości miar: adjusted rand score, homogeneity score,  completeness score oraz V-measure score. Wnioski powinny mieć charakter ogólny, pozwalający przenieść je na przypadek, w którym nie ma możliwości zwizualizowania danych. Każdy wniosek powinien być poparty odniesieniami do wyników przedstawionych na pierwszych czterech stronach raportu.
+% Opis wniosków z eksperymentów przeprowadzonych na sześciu sztucznie wygenerowanych zbiorach. W przypadku pierwszego eksperymentu należy stwierdzić, jak, obserwując silhouette score, można dobrrać właściwe parametry metod klasteryzacji, aby klastry dobrze odkrywały strukturę danych. Dla eksperymentu drugiego należy wskazać jakie informację o separowalności klas można wycią obserwując wartości miar: adjusted rand score, homogeneity score,  completeness score oraz V-measure score. Wnioski powinny mieć charakter ogólny, pozwalający przenieść je na przypadek, w którym nie ma możliwości zwizualizowania danych. Każdy wniosek powinien być poparty odniesieniami do wyników przedstawionych na pierwszych czterech stronach raportu.
 
 \subsection*{Eksperyment 1}
 
+Z eksperymentów na wygenerowanych danych można wyciągnąć wnioski o częściowej użyteczności miary silhouette score przy dobieraniu parametrów klasyfikacji.
+Satysfakcjonujące rezultaty zaobserwowano dla wartości powyżej $0.5$.
+Przypadki w których dla wszystkich sprawdzonych wartości parametrów, nie udało się osiągnąć wartości powyżej tej wartości, 
+przy wizualnej inspekcji okazały się nie być łatwo separowalne z powodu przemieszania różnych klastrów.
 
+Niestety, pewne wady miary, jaką jest silhouette score zostały zauważone w eksperymencie z metodą K-means w przypadku zbioru 2\_1.
+Ponieważ silhouette score zależy od relacji pomiędzy odleglosciami wewnąrz klastra i dystansami do innych klastrów, najbardziej nadaje się do okrągłych skupisk, a mniej sprawdza się w przypadku innych kształtów.
+
+Podłużny kształt widoczny na rys.~2g znacznie zwiększa odległośći wewnątrz klastra, niekorzystnie wpływa na skuteczność silhouette score. 
+Dlatego też, jak widać na rys. 1d, wartość silhouette score jest najwyższa dla 4 klastrów, 
+choć w praktyce, co wskazano na rys. 5d oraz 6g, dla zbioru 2\_1 i metody K-means, najlepszy jest podział na 2 klastry.
+
+Metoda DBSCAN z racji bazowania na gęstośći, bardziej nadaje się do podłużnych klastrów, przez co w przypadku zbioru 2\_1 nie tworzy klastrów, które mogłyby dać wyższy wynik silhouette score.
 
 \subsection*{Eksperyment 2}
 
-.
+Drugi eksperyment ilustruje różne metryki porównujące przypisane etykiety do prawdziwych. 
+Adjusted rand score ogólnie mierzy jak podobne są 2 klasteryzacje, biorąc poprawkę na losowe przypisanie do klastrów. 
+Metryka ta sprawdza czy wybrane pary punktów należą do tego samego lub różnych klastrów, w obu klasteryzacjach. 
+Służy ona za tem jako ogólny pogląd na podobieństwo dwóch klasteryzacji. 
 
-\subsection*{Analiza}
+Homogenity score określa jak bardzo jednolite są stworzone klastry. Mniejsza wartość oznacza, że w przypisanych klastrach znajdują sie punkty z różnymi prawdziwymi etykietami.
+Wartość ta będzie miała generalną tendencję do wzrostu wraz ze wzrostem liczby klastrów. Maksymalna wartość 1 występuje gdy liczba klastrów jest równa ilosći punktów, gdyż wtedy każdy klaster zawiera tylko jeden punkt.
 
-Analiza pozostałych, rzeczywistych zbiorów danych powinna uwzględniać wnioski z poprzednich eksperymentów. Można je również uzasadnić poprzez odwołanie do wartości miar uzyskanych na tych zbiorach.
+Odwrotnośćią homegenity score jest completeness, określające do ilu różnych klastrów są przypisane punkty z tą samą prawdziwą etykietą. 
+Maksymalna wartośc występuje w przypadku 1 klastra, gdy dla każdej prawdziwej etykiety, wszystkie jej punkty przynależą do tego samego (jedynego klastra).
+Wraz ze wzrostem liczby klastrów, gdy prawdziwe grupy będą dzielone, wartość completeness score będzie miała tendencję malejącą.
+
+V-measure score to metryka będąca średnią harmoniczną z homogenity oraz completeness score, gdzie parametr beta kontroluje wagi tych metryk w średniej.
+Ponieważ wraz ze wzrostem klastrów homogenity score bedzie miał tendencję rosnącą, a completeness malejącą, może to utrudnić porównanie konkretnych przypadków.
+V-measure łączy homogenity oraz completeness w jedną wartość, ułatwiającą porównywanie jakości klasteryzacji.
 
 
 \newpage
 % SZÓSTA STRONA
 \section{Analiza pozostałych zbiorów danych}
-Opis analizy pozostałych, rzeczywistych zbiorów danych, w której to zastosowane zostaną wnioski z wcześniejszych eksperymentów. Wyniki tej analizy należy również uzasadnić poprzez odwołanie do wartości miar uzyskiwanych na tych zbiorach (warto wykorzystać tabele i/lub wykresy i się do nich odwołać). W przypadku zbioru Iris da się swoje wnioski podeprzeć wizualizacjami rzutów cech obiektów na dwuwymiarowe przestrzenie wybranych kombinacji dwóch z nich.
 
-\subsection*{Wnioski}
+Rysunki 9 i 10 przedstawiają wyniki eksperymentów z użyciem K-means oraz DBSCAN na zbiorze Iris wraz z wizualizacją dla 2 wybranych wymiarów.
+W przypadku wyboru parametrów w oparciu o silhouette score, obie metody doszły do identycznej klasteryzacji, która odpowiada klastrom dostrzegalnym przy wizualnej inspekcji.
 
-Na podstawie przeprowadzonych eksperymentów możemy wnioskować o strukturze rzeczywistych zbiorów danych i skuteczności wybranych metod klasteryzacji.
-
-\subsection*{Zbiór Iris}
-
-\subsection*{Zbiór Wine}
-
-\subsection*{Zbiór Breast Cancer Wisconsin}
+Po dołączeniu metryk biorących pod uwagę prawdziwe etykiety, najlepsza klasteryzacja uległa zmianie.
+Obie metody poprawnie zaklasyfikowały grupę w lewym dolnym rogu diagramu Voronoia (niebieskie punkty), 
+jednak przemieszanie dwóch pozostałych grup (zielone i czerwone punkty) sprawiło algorytmowi problem.
+Algorytm DBSCAN w miarę poprawnie wyodrębnił 3 klastry, jako najlepsze rozwiązanie.
+Zadziwiająco, algorytmowi K-means udało się uzyskać lepsze wartości metryk dla 4 klastrów, co jest większą liczbą niż ilośc faktycznych etykiet.
 
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_kmeans_silhouette.png}
+        \caption{Wartości silhouette score}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_kmeans_blind_best.png}
+        \caption{Maks. silhouette score}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_kmeans_scores.png}
+        \caption{Wartości metryk}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_kmeans_best.png}
+        \caption{Najlepsze metryki}
+    \end{subfigure}
+    \caption{Wyniki eksperymentu K-means na zbiorze Iris}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_dbscan_silhouette.png}
+        \caption{Wartości silhouette score}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_dbscan_blind_best.png}
+        \caption{Maks. silhouette score}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_dbscan_scores.png}
+        \caption{Wartości metryk}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/iris_dbscan_best.png}
+        \caption{Najlepsze metryki}
+    \end{subfigure}
+    \caption{Wyniki eksperymentu DBSCAN na zbiorze Iris}
+\end{figure}
 
+W przypadku pozostałych zbiorach, z uwagi na dużą ilość wymiarów, nie udało się skonstruować satysfakcjonującej wizualizacji.
+Obu metodom nie udało się uzystać satysfakcjonujących wartości silhouette score niezależnie od parametrów, dlatego owych wykresów nie przedstawiono.
 
+Na rys. 11 i 12 znajdują się wykresy pozostałych metryk dla zbiorów Wine oraz Breast Cancer Wisconsin z użyciem metod K-means oraz DBSCAN.
+Niestety, w żadnym przypadku nie udało się uzyskać satysfakcjonujących wyników, co widać po bliskiej zeru wartości adjuster rand score, świadczącej o bardzo niskim podobieństwie przypisanej klasteryzacji do właściwych etykiet.
+Zadziwiająca jest, zwłaszcza w przypadku metody DBSCAN, bardzo wyzsoka wartość completness score nawet przy dużej ilośći klastrów, co może sugerować bardzo dużą ilość prawdziwych etykiet.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/wine_kmeans_scores.png}
+        \caption{K-means}
+    \end{subfigure}
+    \hspace{3em}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/wine_dbscan_scores.png}
+        \caption{DBSCAN}
+    \end{subfigure}
+    \caption{Wyniki eksperymentów na zbiorze Wine}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/cancer_kmeans_best.png}
+        \caption{K-means}
+    \end{subfigure}
+    \hspace{3em}
+    \begin{subfigure}[t]{0.3\textwidth}
+        \includegraphics[width=\linewidth]{img/other_datasets/cancer_dbscan_scores.png}
+        \caption{DBSCAN}
+    \end{subfigure}
+    \caption{Wyniki eksperymentów na zbiorze Breast Cancer Wisconsin}
+\end{figure}
 
 \end{document}
