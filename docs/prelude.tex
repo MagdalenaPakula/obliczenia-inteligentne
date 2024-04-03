@@ -1,0 +1,71 @@
+\usepackage{tabularx}
+\usepackage[a4paper,margin=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{subcaption}
+% \usepackage{caption}
+% \captionsetup{font=footnotesize}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usepackage{pgfplotstable}
+\usepackage{multirow}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titling}
+\usepackage[T1]{fontenc} % To ensure correct hyphenation and character encoding
+\usepackage[polish]{babel} % Polish language support
+
+\setlength{\headheight}{40pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex}
+\renewcommand{\headrulewidth}{0pt}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|X|}
+        \hline
+        \bfseries Obliczenia inteligentne & \bfseries \thetitle \\
+        \hline
+    \end{tabularx}
+}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\maketitle}{
+    \thispagestyle{plain}
+    \renewcommand{\arraystretch}{2}
+    \vspace*{-8em}
+    \footnotesize
+    \begin{flushleft}
+        \begin{tabularx}{\textwidth}{|X|X|}
+            \hline
+            \bfseries Obliczenia Inteligentne  & \bfseries \thetitle                           \\ \hline
+            \multicolumn{2}{|l|}{
+                \begin{tabular}[t]{@{}ll@{}} 
+                    \textbf{Grupa:} Grupa 1
+                    \hspace{4.5em}
+                    \textbf{Dzień i czas:} Czwartek, 10:00
+                    \hspace{4.5em}
+                    \textbf{Rok akademicki:} 2023/24
+                \end{tabular}
+            } \\ \hline
+            \multicolumn{2}{|l|}{
+                \begin{tabular}[t]{@{}l@{\hspace{10em}}l@{}} 
+                    \textbf{Imię i nazwisko:} \textsc{Jakub Pawlak} & \textbf{Imię i nazwisko:} \textsc{Magdalena Paku\l a} 
+                \end{tabular}
+            } \\
+            \hline
+        \end{tabularx}
+    \end{flushleft}
+    \renewcommand{\arraystretch}{1}
+}
+
