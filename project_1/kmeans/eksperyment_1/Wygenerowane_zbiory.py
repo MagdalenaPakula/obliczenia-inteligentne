@@ -1,13 +1,12 @@
 from typing import List
 
-import matplotlib.pyplot as plt
 import numpy as np
 from numpy import ndarray
 from sklearn.metrics import silhouette_score
 
 from project_1.data import load_generated_datasets
-from project_1.kmeans import perform_clustering
-from project_1.visualization import plot_voronoi_diagram, plot_silhouette_scores
+from project_1.kmeans.eksperyment_1 import perform_clustering, plot_silhouette_scores
+from project_1.visualization import plot_voronoi_diagram
 
 """
  STRONA - 1 - RAPORTU
@@ -32,8 +31,6 @@ def kmeans_experiment(features: ndarray, dataset_name: str):
         assigned_labels.append(labels)
 
     plot_silhouette_scores(cluster_range, silhouette_scores, dataset_name)
-    plt.savefig(f'{dataset_name[:-4]}_scores.png')
-    plt.close()
 
     # Best and worst cases of silhouette scores
     best_cluster_index = np.argmax(silhouette_scores)
@@ -44,12 +41,8 @@ def kmeans_experiment(features: ndarray, dataset_name: str):
 
     plot_voronoi_diagram(features[:, :2], best_clustering,
                          diagram_title=f'K-means clustering ({dataset_name}) - Best case')
-    plt.savefig(f'{dataset_name[:-4]}_best.png')
-    plt.close()
     plot_voronoi_diagram(features[:, :2], worst_clustering,
                          diagram_title=f'K-means clustering ({dataset_name}) - Worst case')
-    plt.savefig(f'{dataset_name[:-4]}_worst.png')
-    plt.close()
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness_score, v_measure_score
 
@@ -49,8 +48,6 @@ def kmeans_experiment(X, y_true, dataset_name):
 
     plot_other_scores(cluster_range, metrics,
                       title=f'K-Means Experiment ({dataset_name}) - clustering evaluation scores')
-    plt.savefig(f'{dataset_name[:-4]}_scores.png')
-    plt.close()
 
     # Find best and worst cluster numbers for each metric
     metric_values = np.array(list(metrics.values()))
@@ -60,17 +57,13 @@ def kmeans_experiment(X, y_true, dataset_name):
 
     plot_voronoi_diagram(X[:, :2], assigned_labels[best_cluster_index], y_true,
                          diagram_title=f'K-means clustering ({dataset_name}) - Best case')
-    plt.savefig(f'{dataset_name[:-4]}_best.png')
-    plt.close()
     plot_voronoi_diagram(X[:, :2], assigned_labels[worst_cluster_index], y_true,
                          diagram_title=f'K-means clustering ({dataset_name}) - Worst case')
-    plt.savefig(f'{dataset_name[:-4]}_worst.png')
-    plt.close()
 
 
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    for X, dataset_name in datasets:
+    for X, dataset_name in datasets[:1]:
         y_true = X[:, -1]
         kmeans_experiment(X[:, :-1], y_true, dataset_name)

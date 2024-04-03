@@ -67,8 +67,7 @@ def dbscan_experiment(X, y_true, dataset_name):
 
     plt.title(f'DBSCAN Experiment ({dataset_name}) - Clustering Evaluation Scores and Number of Clusters vs EPS',
               loc='center')
-    plt.savefig(f'{dataset_name[:-4]}_scores.png')
-    plt.close()
+    plt.show()
 
     # Find best and worst eps values
     metric_values = np.array(list(metrics.values()))
@@ -78,12 +77,8 @@ def dbscan_experiment(X, y_true, dataset_name):
 
     plot_voronoi_diagram(X[:, :2], assigned_labels[best_cluster_index], y_true,
                          diagram_title=f'DBSCAN clustering ({dataset_name}) - Best case')
-    plt.savefig(f'{dataset_name[:-4]}_best.png')
-    plt.close()
     plot_voronoi_diagram(X[:, :2], assigned_labels[worst_cluster_index], y_true,
                          diagram_title=f'DBSCAN clustering ({dataset_name}) - Worst case')
-    plt.savefig(f'{dataset_name[:-4]}_worst.png')
-    plt.close()
 
 
 if __name__ == "__main__":

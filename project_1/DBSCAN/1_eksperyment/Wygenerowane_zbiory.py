@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import silhouette_score
 
@@ -33,8 +32,6 @@ def dbscan_experiment(X, dataset_name):
 
     plot_silhouette_scores_vs_eps(eps_range, silhouette_scores, num_clusters,
                                   plot_title=f'DBSCAN experiment silhouette scores ({dataset_name})')
-    plt.savefig(f'{dataset_name[:-4]}_scores.png')
-    plt.close()
 
     # Find best and worst EPS values
     best_case_index = np.argmax(silhouette_scores)
@@ -43,12 +40,8 @@ def dbscan_experiment(X, dataset_name):
     # Plot Voronoi diagram for best and worst cases
     plot_voronoi_diagram(X[:, :2], assigned_labels[best_case_index], None,
                          diagram_title=f'DBSCAN clustering ({dataset_name}) - Best case (EPS={eps_range[best_case_index]})')
-    plt.savefig(f'{dataset_name[:-4]}_best.png')
-    plt.close()
     plot_voronoi_diagram(X[:, :2], assigned_labels[worst_case_index], None,
                          diagram_title=f'DBSCAN clustering ({dataset_name}) - Worst case (EPS={eps_range[worst_case_index]})')
-    plt.savefig(f'{dataset_name[:-4]}_worst.png')
-    plt.close()
 
 
 if __name__ == "__main__":
