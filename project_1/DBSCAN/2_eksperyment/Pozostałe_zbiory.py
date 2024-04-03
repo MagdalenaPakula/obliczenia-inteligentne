@@ -1,12 +1,13 @@
+from typing import List
+
 import numpy as np
 from matplotlib import pyplot as plt
-from scipy.spatial import Voronoi, voronoi_plot_2d
-from sklearn.cluster import DBSCAN
 from sklearn.metrics import adjusted_rand_score, homogeneity_score, completeness_score, v_measure_score
-from numpy import ndarray
-import utilities as util
 
+from project_1.DBSCAN import perform_clustering
 from project_1.data import load_other_datasets
+from project_1.visualization import plot_voronoi_diagram
+
 
 # TODO:
 """
@@ -21,9 +22,9 @@ przestrzenie wybranych kombinacji dwóch z nich.
 
 
 def dbscan_experiment(X, y_true, dataset_name):
-    cluster_range = range(2, 10)
     beta_values = [0.5, 1.0, 2.0]
-    eps_range = [0.1, 0.5, 1.0, 1.5, 2.0]
+    eps_range = [0.1 * i + 0.05 for i in range(10)]
+    assigned_labels = []
 
     num_clusters = []
     rand_scores = []
@@ -32,9 +33,8 @@ def dbscan_experiment(X, y_true, dataset_name):
     v_measure_scores = {beta: [] for beta in beta_values}
 
     for eps in eps_range:
-        dbscan = DBSCAN(eps=eps, min_samples=1)
-        dbscan.fit(X)
-        labels = dbscan.labels_
+        labels = perform_clustering(X, eps, min_samples=1)
+        assigned_labels.append(labels)
         unique_labels = np.unique(labels)
         num_clusters.append(len(unique_labels))
 
@@ -45,80 +45,58 @@ def dbscan_experiment(X, y_true, dataset_name):
         for beta in beta_values:
             v_measure_scores[beta].append(v_measure_score(y_true, labels, beta=beta))
 
-    fig, ax1 = plt.subplots(figsize=(10, 6))
-
-    color = 'tab:red'
-    ax1.set_xlabel('EPS Value')
-    ax1.set_ylabel('Score', color=color)
-    ax1.plot(eps_range, rand_scores, marker='o', color=color, label='Adjusted rand Score')
-    ax1.plot(eps_range, homogeneity_scores, marker='o', color='green', label='Homogeneity score')
-    ax1.plot(eps_range, completeness_scores, marker='o', color='orange', label='Completeness score')
+    metrics = {
+        'Adjusted rand score': rand_scores,
+        'Homogeneity score': homogeneity_scores,
+        'Completeness score': completeness_scores
+    }
     for beta in beta_values:
-        ax1.plot(eps_range, v_measure_scores[beta], marker='o', label=f'V-Measure score (beta={beta})')
-    ax1.tick_params(axis='y', labelcolor=color)
+        metrics[f'V-measure score (beta={beta})'] = v_measure_scores[beta]
 
-    plt.grid(True)
+    plt.xlabel('EPS Value')
+    plt.ylabel('Score')
+    plt.xticks(eps_range, minor=True)
+    plt.grid(True, axis='x', which='minor', linestyle='--')
+    plt.grid(True, axis='y', which='major')
+    for i, eps in enumerate(eps_range):
+        plt.text(eps, np.array(list(metrics.values())).min(), str(num_clusters[i]))
 
-    ax2 = ax1.twinx()
-    color = 'tab:blue'
-    ax2.set_ylabel('Number of Clusters', color=color)
-    ax2.plot(eps_range, num_clusters, marker='o', color=color, label='Number of Clusters')
-    ax2.tick_params(axis='y', labelcolor=color)
+    for (name, score_values) in metrics.items():
+        plt.plot(eps_range, score_values, marker=None, label=name)
 
-    ax1.legend(loc='center left', bbox_to_anchor=(1.1, 0.5))
+    plt.legend(loc='center right')
 
     plt.title(f'DBSCAN Experiment ({dataset_name}) - Clustering Evaluation Scores and Number of Clusters vs EPS',
               loc='center')
-    fig.tight_layout()
     plt.show()
 
-    # Find best and worst EPS values for each metric
-    best_eps_indices = {}
-    worst_eps_indices = {}
+    # Find best and worst eps values
+    metric_values = np.array(list(metrics.values()))
+    mean_metrics = metric_values.mean(axis=0)
+    best_cluster_index = mean_metrics.argmax()
+    worst_cluster_index = mean_metrics.argmin()
 
-    metrics = {
-        "Adjusted Rand Score": rand_scores,
-        "Homogeneity Score": homogeneity_scores,
-        "Completeness Score": completeness_scores
-    }
+    features_to_plot: List[int]
+    match dataset_name:
+        case 'Iris Dataset':
+            features_to_plot = [0, 2]
+        case 'Wine Dataset':
+            features_to_plot = [0, 1]
+        case 'Breast Cancer Wisconsin Dataset':
+            features_to_plot = [3, 24]
+        case _:
+            raise ValueError(f'Unknown dataset name {dataset_name}')
 
-    for beta in beta_values:
-        metrics[f"V-Measure Score (beta={beta})"] = v_measure_scores[beta]
-
-    for metric, scores in metrics.items():
-        best_eps_indices[metric] = np.argmax(scores)
-        worst_eps_indices[metric] = np.argmin(scores)
-
-    # Plot Voronoi diagram for best and worst cases
-    best_overall_metric = max(metrics, key=lambda k: np.mean(metrics[k]))  # calculates the mean of the scores
-    best_eps_index = best_eps_indices[best_overall_metric]
-
-    worst_overall_metric = min(metrics, key=lambda k: np.mean(metrics[k]))
-    worst_eps_index = worst_eps_indices[worst_overall_metric]
-
-    plot_voronoi_diagram(X[:, :2], X[:, -1], best_eps_index, dataset_name,
-                         f'Best Case Overall - {best_overall_metric}')
-    plot_voronoi_diagram(X[:, :2], X[:, -1], worst_eps_index, dataset_name,
-                         f'Worst Case Overall - {worst_overall_metric}')
-
-
-def plot_voronoi_diagram(X: ndarray, y_true: ndarray, eps: float, dataset_name: str, case: str):
-    dbscan = DBSCAN(eps=eps)
-    dbscan.fit(X)
-
-    y_pred = dbscan.labels_
-
-    fig, ax = plt.subplots()
-    util.plot_voronoi_diagram(X, y_true, y_pred, ax=ax)
-
-    plt.title(f'DBSCAN clustering ({dataset_name})\n- {case} (EPS={eps})')
-    plt.show()
+    plot_voronoi_diagram(X[:, features_to_plot], assigned_labels[best_cluster_index], y_true,
+                         diagram_title=f'DBSCAN clustering ({dataset_name}) - Best case')
+    plot_voronoi_diagram(X[:, features_to_plot], assigned_labels[worst_cluster_index], y_true,
+                         diagram_title=f'DBSCAN clustering ({dataset_name}) - Worst case')
 
 
 if __name__ == "__main__":
     # Load other datasets
     datasets = load_other_datasets()
 
-    for X, dataset_name in datasets[:1]:
+    for X, dataset_name in datasets:
         y_true = X[:, -1]
         dbscan_experiment(X[:, :-1], y_true, dataset_name)
