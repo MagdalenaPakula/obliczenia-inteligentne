@@ -82,6 +82,5 @@ if __name__ == "__main__":
     # Load generated datasets
     datasets = load_other_datasets()
 
-    for X, dataset_name in datasets:
-        y_true = X[:, -1]
-        kmeans_experiment(X[:, :-1], y_true, dataset_name)
+    for X, y_true, dataset_name in datasets:
+        kmeans_experiment(X, y_true, dataset_name)
