@@ -38,7 +38,7 @@ def load_other_datasets():
     scaled_breast_cancer_data = scaler_breast_cancer.fit_transform(breast_cancer_data.data)
 
     return [
-        (scaled_iris_data, 'Iris Dataset'),
-        (scaled_wine_data, 'Wine Dataset'),
-        (scaled_breast_cancer_data, 'Breast Cancer Wisconsin Dataset')
+        (scaled_iris_data, iris_data.target, 'Iris Dataset'),
+        (scaled_wine_data, wine_data.target, 'Wine Dataset'),
+        (scaled_breast_cancer_data, breast_cancer_data.target, 'Breast Cancer Wisconsin Dataset')
     ]

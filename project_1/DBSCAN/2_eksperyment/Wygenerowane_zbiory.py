@@ -22,7 +22,7 @@ dla różnych wartości parametru eps.
 # DBSCAN Experiment Function
 def dbscan_experiment(X, y_true, dataset_name):
     beta_values = [0.5, 1.0, 2.0]
-    eps_range = [0.1 * i + 0.05 for i in range(10)]
+    eps_range = [0.05 * i + 0.05 for i in range(10)]
     assigned_labels = []
 
     num_clusters = []
