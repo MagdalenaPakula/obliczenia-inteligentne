@@ -1,8 +1,11 @@
+import numpy as np
+from matplotlib.colors import ListedColormap
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
 
 from project_1.data import load_generated_datasets
+from project_1.visualization import plot_voronoi_diagram
 
 
 def knn_experiment(dataset, name):
@@ -23,7 +26,8 @@ def knn_experiment(dataset, name):
         accuracy_train.append(knn.score(X_train, y_train))
         accuracy_test.append(knn.score(X_test, y_test))
 
-    # Wygenerowanie wykresu
+    # Wygenerowanie wykresu obrazujący zmianę wartości accuracy na zbiorach treningowym i
+    # testowym przy zmieniającym się parametrze n_neighbours (1ST PART)
     plt.plot(neighbor_range, accuracy_train, label="Zbiór treningowy")
     plt.plot(neighbor_range, accuracy_test, label="Zbiór testowy")
     plt.xlabel("Wartość parametru n_neighbours")
@@ -31,6 +35,34 @@ def knn_experiment(dataset, name):
     plt.legend()
     plt.title(f"Eksperyment dla zbioru danych: {name}")
     plt.show()
+
+    n_neighbors_min = 1
+    n_neighbors_best = _find_best_n_neighbors(accuracy_test)
+    n_neighbors_max = 20
+
+    # Utworzenie klasyfikatorów KNN dla wybranych wartości parametru
+    knn_min = KNeighborsClassifier(n_neighbors=n_neighbors_min)
+    knn_best = KNeighborsClassifier(n_neighbors=n_neighbors_best)
+    knn_max = KNeighborsClassifier(n_neighbors=n_neighbors_max)
+
+    # Trening klasyfikatorów
+    knn_min.fit(X_train, y_train)
+    knn_best.fit(X_train, y_train)
+    knn_max.fit(X_train, y_train)
+
+    # Wizualizacja granicy decyzyjnej
+    plot_voronoi_diagram(X_train, knn_min.predict(X_train), y_train, "Minimalny klasyfikator KNN - Zbiór treningowy")
+    plot_voronoi_diagram(X_test, knn_min.predict(X_test), y_test, "Minimalny klasyfikator KNN - Zbiór testowy")
+    plot_voronoi_diagram(X_train, knn_best.predict(X_train), y_train, "Najlepszy klasyfikator KNN - Zbiór treningowy")
+    plot_voronoi_diagram(X_test, knn_best.predict(X_test), y_test, "Najlepszy klasyfikator KNN- Zbiór testowy")
+    plot_voronoi_diagram(X_train, knn_max.predict(X_train), y_train, "Maksymalny klasyfikator KNN - Zbiór treningowy", )
+    plot_voronoi_diagram(X_test, knn_max.predict(X_test), y_test, "Maksymalny klasyfikator KNN - Zbiór testowy")
+
+
+def _find_best_n_neighbors(accuracy_test):
+    # Znajdowanie indeksu najlepszej wartości accuracy na zbiorze testowym
+    best_idx = np.argmax(accuracy_test)
+    return best_idx + 1
 
 
 if __name__ == "__main__":
