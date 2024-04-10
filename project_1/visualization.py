@@ -103,18 +103,6 @@ def plot_decision_boundary(classifier: KNeighborsClassifier,
                            labels: ndarray,
                            title: Optional[str] = None,
                            ) -> None:
-    """
-    Plots the decision boundary of a classifier for a 2D feature space.
-
-    Args:
-        classifier: The trained classifier object.
-        features: The feature data (2D array).
-        labels: The target labels.
-        title: Optional title for the plot.
-
-    Returns:
-        None (function creates a plot).
-    """
 
     if features.shape[1] != 2:
         raise ValueError("Plotting decision boundary requires 2D features")
