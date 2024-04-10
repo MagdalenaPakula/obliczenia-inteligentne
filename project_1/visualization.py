@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import ndarray
 from scipy.spatial import Voronoi
-from sklearn.neighbors import KNeighborsClassifier
 
 
 def plot_voronoi_diagram(
