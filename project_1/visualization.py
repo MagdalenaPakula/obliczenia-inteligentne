@@ -100,7 +100,7 @@ def plot_silhouette_scores_vs_eps(eps: __plottable, silhouette_scores: __plottab
 
 def plot_decision_boundary(classifier: KNeighborsClassifier,
                            features: ndarray,
-                           labels: ndarray,
+                           labels: KNeighborsClassifier,
                            title: Optional[str] = None,
                            ) -> None:
 
@@ -121,7 +121,7 @@ def plot_decision_boundary(classifier: KNeighborsClassifier,
     plt.scatter(features[:, 0], features[:, 1], c=labels)
 
     # Set labels and title
-    plt.xlabel("Feature 1")
+    plt.xlabel("Feature 1") # Zalezy co chcemy - we will see
     plt.ylabel("Feature 2")
     if title:
         plt.title(title)
