@@ -59,8 +59,8 @@ def knn_experiment(X, dataset_name):
                             ("Maksymalny klasyfikator KNN - Zbiór treningowy", knn_max, X_train, y_train),
                             ("Maksymalny klasyfikator KNN - Zbiór testowy", knn_max, X_test, y_test)]:
         # Wizualizacja granicy decyzyjnej
-        plot_voronoi_diagram(X[:, :2], knn.predict(X[:, :2]), X[:, -1], dataset_name)
-        # plot_voronoi_diagram(X, knn.predict(X), y, name)
+        # plot_voronoi_diagram(X[:, :2], knn.predict(X[:, :2]), X[:, -1], dataset_name)
+        plot_voronoi_diagram(X, knn.predict(X), y, dataset_name)
 
         # Dodatkowo stworz kod aby przy każdej wizualizacji należy pokazać jak wygląda macierz pomyłek.
         # Obliczenie i wyświetlenie macierzy pomyłek
