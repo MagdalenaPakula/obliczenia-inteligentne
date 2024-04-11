@@ -81,6 +81,6 @@ def _find_best_n_neighbors(accuracy_test):
 if __name__ == "__main__":
     datasets = load_generated_datasets()
 
-    # Przeprowadzenie eksperymentu dla 2_2 i 2_3
-    for dataset, name in datasets[4:6]:
+    # Przeprowadzenie eksperymentu 2_3 (2_1 i 2_2 trzeba poprawic)
+    for dataset, name in datasets[5:6]:
         knn_experiment(dataset, name)
