@@ -97,30 +97,3 @@ def plot_silhouette_scores_vs_eps(eps: __plottable, silhouette_scores: __plottab
 
     fig.show()
 
-
-def plot_decision_boundary(classifier: KNeighborsClassifier,
-                           features: ndarray,
-                           labels: KNeighborsClassifier,
-                           title: Optional[str] = None,
-                           ) -> None:
-
-    if features.shape[1] != 2:
-        raise ValueError("Plotting decision boundary requires 2D features")
-
-    # Create a mesh of points for visualization
-    x_min, x_max = features[:, 0].min() - 1, features[:, 0].max() + 1
-    y_min, y_max = features[:, 1].min() - 1, features[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
-
-    # Predict labels for each point in the mesh
-    Z = classifier.predict(np.c_[xx.ravel(), yy.ravel()])
-    Z = Z.reshape(xx.shape)
-
-    # Plot the decision boundary (using default colormap)
-    plt.contourf(xx, yy, Z)
-    plt.scatter(features[:, 0], features[:, 1], c=labels)
-
-    if title:
-        plt.title(title)
-
-    plt.show()

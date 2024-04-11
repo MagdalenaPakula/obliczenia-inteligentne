@@ -16,7 +16,8 @@ def knn_experiment(X, dataset_name):
                                                         train_size=0.8,
                                                         test_size=0.2,
                                                         random_state=42)
-    neighbor_range = range(1, 20)
+    neighbor_range = range(130, 230) #for 2_1 and 2_2
+    #neighbor_range = range(1, 20) for 2_3
     accuracy_train = []
     accuracy_test = []
 
@@ -38,7 +39,7 @@ def knn_experiment(X, dataset_name):
     plt.show()
 
     n_neighbors_min = 1
-    n_neighbors_best = _find_best_n_neighbors(accuracy_test)
+    n_neighbors_best = find_best_n_neighbors(accuracy_test)
     n_neighbors_max = 20
 
     # Utworzenie klasyfikatorów KNN dla wybranych wartości parametru
@@ -73,7 +74,7 @@ def knn_experiment(X, dataset_name):
         plt.show()
 
 
-def _find_best_n_neighbors(accuracy_test):
+def find_best_n_neighbors(accuracy_test):
     # Znajdowanie indeksu najlepszej wartości accuracy na zbiorze testowym
     best_idx = np.argmax(accuracy_test)
     return best_idx + 1
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     datasets = load_generated_datasets()
 
     # Przeprowadzenie eksperymentu 2_3 (2_1 i 2_2 trzeba poprawic)
-    for X, dataset_name in datasets[5:6]:
+    for X, dataset_name in datasets[4:5]:
         knn_experiment(X, dataset_name)
 
 
