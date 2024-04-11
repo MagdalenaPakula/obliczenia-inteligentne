@@ -120,9 +120,6 @@ def plot_decision_boundary(classifier: KNeighborsClassifier,
     plt.contourf(xx, yy, Z)
     plt.scatter(features[:, 0], features[:, 1], c=labels)
 
-    # Set labels and title
-    plt.xlabel("Feature 1") # Zalezy co chcemy - we will see
-    plt.ylabel("Feature 2")
     if title:
         plt.title(title)
 
