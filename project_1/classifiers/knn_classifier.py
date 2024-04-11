@@ -1,8 +1,9 @@
 import numpy as np
-from matplotlib.colors import ListedColormap
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from project_1.data import load_generated_datasets
 from project_1.visualization import plot_voronoi_diagram
@@ -51,12 +52,24 @@ def knn_experiment(dataset, name):
     knn_max.fit(X_train, y_train)
 
     # Wizualizacja granicy decyzyjnej
-    plot_voronoi_diagram(X_train, knn_min.predict(X_train), y_train, "Minimalny klasyfikator KNN - Zbiór treningowy")
-    plot_voronoi_diagram(X_test, knn_min.predict(X_test), y_test, "Minimalny klasyfikator KNN - Zbiór testowy")
-    plot_voronoi_diagram(X_train, knn_best.predict(X_train), y_train, "Najlepszy klasyfikator KNN - Zbiór treningowy")
-    plot_voronoi_diagram(X_test, knn_best.predict(X_test), y_test, "Najlepszy klasyfikator KNN- Zbiór testowy")
-    plot_voronoi_diagram(X_train, knn_max.predict(X_train), y_train, "Maksymalny klasyfikator KNN - Zbiór treningowy", )
-    plot_voronoi_diagram(X_test, knn_max.predict(X_test), y_test, "Maksymalny klasyfikator KNN - Zbiór testowy")
+    for name, knn, X, y in [("Minimalny klasyfikator KNN - Zbiór treningowy", knn_min, X_train, y_train),
+                            ("Minimalny klasyfikator KNN - Zbiór testowy", knn_min, X_test, y_test),
+                            ("Najlepszy klasyfikator KNN - Zbiór treningowy", knn_best, X_train, y_train),
+                            ("Najlepszy klasyfikator KNN - Zbiór testowy", knn_best, X_test, y_test),
+                            ("Maksymalny klasyfikator KNN - Zbiór treningowy", knn_max, X_train, y_train),
+                            ("Maksymalny klasyfikator KNN - Zbiór testowy", knn_max, X_test, y_test)]:
+        # Wizualizacja granicy decyzyjnej
+        plot_voronoi_diagram(X, knn.predict(X), y, name)
+
+        # Dodatkowo stworz kod aby przy każdej wizualizacji należy pokazać jak wygląda macierz pomyłek.
+        # Obliczenie i wyświetlenie macierzy pomyłek
+        cm = confusion_matrix(y, knn.predict(X))
+        plt.figure(figsize=(6, 4))
+        sns.heatmap(cm, annot=True, fmt="d")
+        plt.title(f"Macierz pomyłek dla {name}")
+        plt.xlabel("Przewidziane etykiety")
+        plt.ylabel("Rzeczywiste etykiety")
+        plt.show()
 
 
 def _find_best_n_neighbors(accuracy_test):
