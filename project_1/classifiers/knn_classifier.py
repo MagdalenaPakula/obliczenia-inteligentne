@@ -34,7 +34,7 @@ def knn_experiment(X, dataset_name):
     plt.xlabel("Wartość parametru n_neighbours")
     plt.ylabel("Dokładność")
     plt.legend()
-    plt.title(f"Eksperyment dla zbioru danych: {name}")
+    plt.title(f"Eksperyment dla zbioru danych: {dataset_name}")
     plt.show()
 
     n_neighbors_min = 1
