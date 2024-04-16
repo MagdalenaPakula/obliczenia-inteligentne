@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Callable
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -98,9 +98,9 @@ def plot_silhouette_scores_vs_eps(eps: __plottable, silhouette_scores: __plottab
     fig.show()
 
 
-def plot_decision_boundary(classifier: KNeighborsClassifier,
+def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
                            features: ndarray,
-                           labels: KNeighborsClassifier,
+                           labels: ndarray,
                            title: Optional[str] = None,
                            ) -> None:
 
@@ -113,11 +113,11 @@ def plot_decision_boundary(classifier: KNeighborsClassifier,
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
 
     # Predict labels for each point in the mesh
-    Z = classifier.predict(np.c_[xx.ravel(), yy.ravel()])
-    Z = Z.reshape(xx.shape)
+    y_pred = classifier(np.c_[xx.ravel(), yy.ravel()])
+    y_pred = y_pred.reshape(xx.shape)
 
     # Plot the decision boundary (using default colormap)
-    plt.contourf(xx, yy, Z)
+    plt.contourf(xx, yy, y_pred, alpha=0.5)
     plt.scatter(features[:, 0], features[:, 1], c=labels)
 
     if title:
