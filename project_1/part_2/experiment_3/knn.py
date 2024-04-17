@@ -17,10 +17,10 @@ type Classifier = KNeighborsClassifier
 warnings.filterwarnings("ignore")
 
 
-def experiment_2(dataset, dataset_name):
+def experiment_3(dataset, dataset_name):
     X_train, X_test, y_train, y_test = train_test_split(dataset[:, :-1],
                                                         dataset[:, -1],
-                                                        train_size=0.8,
+                                                        train_size=0.2,
                                                         test_size=0.2,
                                                         random_state=42)
 
@@ -74,4 +74,4 @@ def experiment_2(dataset, dataset_name):
 
 if __name__ == '__main__':
     for dataset, name in load_generated_datasets()[4:]:
-        experiment_2(dataset, name)
+        experiment_3(dataset, name)

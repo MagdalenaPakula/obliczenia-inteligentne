@@ -117,8 +117,8 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
     y_pred = y_pred.reshape(xx.shape)
 
     # Plot the decision boundary (using default colormap)
-    plt.contourf(xx, yy, y_pred, alpha=0.5)
-    plt.scatter(features[:, 0], features[:, 1], c=labels)
+    plt.contourf(xx, yy, y_pred, alpha=0.5, cmap=plt.cm.RdYlBu)
+    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=plt.cm.RdYlBu)
 
     if title:
         plt.title(title)
