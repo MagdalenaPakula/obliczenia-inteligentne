@@ -45,7 +45,7 @@ def experiment_3(dataset, dataset_name):
         classifiers.append(classifier)
 
     plt.plot(layer_sizes, train_scores, label='train set')
-    plt.plot(layer_sizes, train_scores, label='test set')
+    plt.plot(layer_sizes, test_scores, label='test set')
     plt.grid(linestyle='--', axis='x')
     plt.xlabel('Hidden layer size')
     plt.ylabel('score')
