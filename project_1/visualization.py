@@ -121,5 +121,3 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
 
     if title:
         plt.title(title)
-
-    plt.show()
