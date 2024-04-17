@@ -3,19 +3,140 @@
 \input{../../prelude.tex}
 \title{Projekt 1}
 
-\newcommand*{\subfigwidth}{0.15\textwidth}
+\newcommand*{\subfigwidth}{0.24\textwidth}
 
 \begin{document}
 \maketitle
 
-1 strona --- Wyniki pierwszego eksperymentu dla trzech sztucznie wygenerowanych zbiorów danych 2\_1, 2\_2 oraz 2\_3. 
-Dla każdego zbioru i metody (klasyfikator SVM z różnymi wartościami parametru kernel oraz sieć MLP z różnymi wartościami parametru activation) 
-należy przygotować wizualizacje przebiegu granicy decyzyjnej dla przypadku, gdy accuracy na zbiorze treningowym ma najlepszą wartość 
-(zmianie podlegają parametr $c$ dla klasyfikatora SVM i liczba neuronów w warstwie ukrytej dla sieci MLP).
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/identity/scores.png}
+        \caption{identity 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/identity/boundary.png}
+        \caption{identity 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/relu/scores.png}
+        \caption{ReLu 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/relu/boundary.png}
+        \caption{ReLu 2\_1}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/identity/scores.png}
+        \caption{identity 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/identity/boundary.png}
+        \caption{identity 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/relu/scores.png}
+        \caption{ReLu 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/relu/boundary.png}
+        \caption{ReLu 2\_2}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/identity/scores.png}
+        \caption{identity 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/identity/boundary.png}
+        \caption{identity 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/relu/scores.png}
+        \caption{ReLu 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/relu/boundary.png}
+        \caption{ReLu 2\_3}
+    \end{subfigure}
+    \caption{Perceptron MLP}
+\end{figure}
 
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/linear/scores.png}
+        \caption{linear 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/linear/boundary.png}
+        \caption{linear 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/rbf/scores.png}
+        \caption{rbf 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/rbf/boundary.png}
+        \caption{rbf 2\_1}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/linear/scores.png}
+        \caption{linear 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/linear/boundary.png}
+        \caption{linear 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/rbf/scores.png}
+        \caption{rbf 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/rbf/boundary.png}
+        \caption{rbf 2\_2}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/linear/scores.png}
+        \caption{linear 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/linear/boundary.png}
+        \caption{linear 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/rbf/scores.png}
+        \caption{rbf 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/rbf/boundary.png}
+        \caption{rbf 2\_3}
+    \end{subfigure}
+    \caption{SVM}
+\end{figure}
 
 \clearpage
 
+\renewcommand*{\subfigwidth}{0.16\textwidth}
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{\subfigwidth}
         \includegraphics[width=\linewidth]{img/exp_2/knn/2_2/accuracy.png}
