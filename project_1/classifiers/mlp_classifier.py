@@ -19,7 +19,7 @@ def mlp_experiment(X, dataset_name):
     best_mlp_accuracy = 0
 
     for activation in activations:
-        mlp = MLPClassifier(hidden_layer_sizes=(100,),
+        mlp = MLPClassifier(hidden_layer_sizes=(5,),
                             activation=activation,
                             max_iter=100000,
                             tol=0,
