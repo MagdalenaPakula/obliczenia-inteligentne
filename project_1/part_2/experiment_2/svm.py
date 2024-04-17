@@ -32,7 +32,7 @@ def experiment_3(dataset, dataset_name):
         classifiers.append(classifier)
 
     plt.plot(C_values, train_scores, label='train set')
-    plt.plot(C_values, train_scores, label='test set')
+    plt.plot(C_values, test_scores, label='test set')
     plt.grid(linestyle='--', axis='x')
     plt.xscale('log')
     plt.xlabel('C value')
