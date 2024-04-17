@@ -17,10 +17,10 @@ Classifier = MLPClassifier
 warnings.filterwarnings("ignore")
 
 
-def experiment_4(dataset, dataset_name):
+def experiment_4(dataset, dataset_name, train_size):
     X_train, X_test, y_train, y_test = train_test_split(dataset[:, :-1],
                                                         dataset[:, -1],
-                                                        train_size=0.8,
+                                                        train_size=train_size,
                                                         test_size=0.2,
                                                         random_state=42)
 
@@ -41,7 +41,7 @@ def experiment_4(dataset, dataset_name):
         train_acc = []
         test_acc = []
         print(f'Training network with {num_neurons} neurons on dataset {dataset_name}...')
-        for _ in range(1000):  # 100,000 epochs
+        for _ in range(1000):  # TO CHANGE LATER TO 100_000 (accroding to wikamp)
             classifier.partial_fit(X_train, y_train, classes=np.unique(y_train))
             train_acc.append(classifier.score(X_train, y_train))
             test_acc.append(classifier.score(X_test, y_test))
@@ -56,7 +56,7 @@ def experiment_4(dataset, dataset_name):
     plt.plot(range(1, 1001), test_scores[0], label='Test')
     plt.xlabel('Epoch')
     plt.ylabel('Accuracy')
-    plt.title(f'Accuracy Changes on Training and Test Sets for MLP on Dataset {dataset_name}')
+    plt.title(f'Accuracy Changes on Training and Test Sets for MLP on Dataset {dataset_name} for train size = {train_size}')
     plt.legend()
     plt.grid(True)
     plt.show()
@@ -79,4 +79,6 @@ def experiment_4(dataset, dataset_name):
 
 if __name__ == '__main__':
     for dataset, name in load_generated_datasets()[5:6]:
-        experiment_4(dataset, name)
+        # For both train sizes
+        for train_size in [0.2, 0.8]:
+            experiment_4(dataset, name, train_size)
