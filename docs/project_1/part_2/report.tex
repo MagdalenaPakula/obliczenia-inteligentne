@@ -3,19 +3,140 @@
 \input{../../prelude.tex}
 \title{Projekt 1}
 
-\newcommand*{\subfigwidth}{0.15\textwidth}
+\newcommand*{\subfigwidth}{0.24\textwidth}
 
 \begin{document}
 \maketitle
 
-1 strona --- Wyniki pierwszego eksperymentu dla trzech sztucznie wygenerowanych zbiorów danych 2\_1, 2\_2 oraz 2\_3. 
-Dla każdego zbioru i metody (klasyfikator SVM z różnymi wartościami parametru kernel oraz sieć MLP z różnymi wartościami parametru activation) 
-należy przygotować wizualizacje przebiegu granicy decyzyjnej dla przypadku, gdy accuracy na zbiorze treningowym ma najlepszą wartość 
-(zmianie podlegają parametr $c$ dla klasyfikatora SVM i liczba neuronów w warstwie ukrytej dla sieci MLP).
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/identity/scores.png}
+        \caption{identity 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/identity/boundary.png}
+        \caption{identity 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/relu/scores.png}
+        \caption{ReLu 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_1/relu/boundary.png}
+        \caption{ReLu 2\_1}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/identity/scores.png}
+        \caption{identity 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/identity/boundary.png}
+        \caption{identity 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/relu/scores.png}
+        \caption{ReLu 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_2/relu/boundary.png}
+        \caption{ReLu 2\_2}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/identity/scores.png}
+        \caption{identity 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/identity/boundary.png}
+        \caption{identity 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/relu/scores.png}
+        \caption{ReLu 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/relu/boundary.png}
+        \caption{ReLu 2\_3}
+    \end{subfigure}
+    \caption{Eksperyment 1 --- Perceptron MLP}
+\end{figure}
 
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/linear/scores.png}
+        \caption{linear 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/linear/boundary.png}
+        \caption{linear 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/rbf/scores.png}
+        \caption{rbf 2\_1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_1/rbf/boundary.png}
+        \caption{rbf 2\_1}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/linear/scores.png}
+        \caption{linear 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/linear/boundary.png}
+        \caption{linear 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/rbf/scores.png}
+        \caption{rbf 2\_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_2/rbf/boundary.png}
+        \caption{rbf 2\_2}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/linear/scores.png}
+        \caption{linear 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/linear/boundary.png}
+        \caption{linear 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/rbf/scores.png}
+        \caption{rbf 2\_3}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/rbf/boundary.png}
+        \caption{rbf 2\_3}
+    \end{subfigure}
+    \caption{Eksperyment 1 --- SVM}
+\end{figure}
 
 \clearpage
 
+\renewcommand*{\subfigwidth}{0.16\textwidth}
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{\subfigwidth}
         \includegraphics[width=\linewidth]{img/exp_2/knn/2_2/accuracy.png}
@@ -82,7 +203,7 @@ należy przygotować wizualizacje przebiegu granicy decyzyjnej dla przypadku, gd
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Wyniki dla zbioru 2\_2}
+    \caption{Eksperyment 2 --- KNN na zbiorze 2\_2}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -151,17 +272,288 @@ należy przygotować wizualizacje przebiegu granicy decyzyjnej dla przypadku, gd
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Wyniki dla zbioru 2\_3}
+    \caption{Eksperyment 2 --- KNN na zbiorze 2\_3}
 \end{figure}
 
+\clearpage
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/accuracy.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/min/train_boundary.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/min/train_matrix.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/min/test_boundary.png}
+        \caption{Min, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/min/test_matrix.png}
+        \caption{Min, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/best/train_boundary.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/best/train_matrix.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/best/test_boundary.png}
+        \caption{Best, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/best/test_matrix.png}
+        \caption{Best, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/max/train_boundary.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/max/train_matrix.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/max/test_boundary.png}
+        \caption{Max, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_2/max/test_matrix.png}
+        \caption{Max, test}
+    \end{subfigure} 
+    
+    \caption{Eksperyment 2 --- SVM na zbiorze 2\_2}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/accuracy.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/min/train_boundary.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/min/train_matrix.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/min/test_boundary.png}
+        \caption{Min, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/min/test_matrix.png}
+        \caption{Min, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/best/train_boundary.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/best/train_matrix.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/best/test_boundary.png}
+        \caption{Best, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/best/test_matrix.png}
+        \caption{Best, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/max/train_boundary.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/max/train_matrix.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/max/test_boundary.png}
+        \caption{Max, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/svm/2_3/max/test_matrix.png}
+        \caption{Max, test}
+    \end{subfigure} 
+    
+    \caption{Eksperyment 2 --- SVM na zbiorze 2\_3}
+\end{figure}
 
 \clearpage
 
-3 strona --- Wyniki drugiego eksperymentu dla dwóch sztucznie wygenerowanych zbiorów danych 2\_2 i 2\_3 oraz metody SVM. Dla każdego zbioru należy pokazać wykres obrazujący zmianę wartości accuracy na zbiorach treningowym i testowym przy zmieniającym się parametrze C oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla: najmniejszej, najlepszej (wartość accuracy na zbiorze testowym) i największej wartości tego parametru. Dodatkowo przy każdej wizualizacji należy pokazać jak wygląda macierz pomyłek. Wartości parametru C powinny się zmieniać wykładniczo, a na wykresie dobrze jest zastosować skalę logarytmiczną. 
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/accuracy.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/min/train_boundary.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/min/train_matrix.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/min/test_boundary.png}
+        \caption{Min, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/min/test_matrix.png}
+        \caption{Min, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/best/train_boundary.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/best/train_matrix.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/best/test_boundary.png}
+        \caption{Best, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/best/test_matrix.png}
+        \caption{Best, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/max/train_boundary.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/max/train_matrix.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/max/test_boundary.png}
+        \caption{Max, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_2/max/test_matrix.png}
+        \caption{Max, test}
+    \end{subfigure} 
+    
+    \caption{Eksperyment 2 --- MLP na zbiorze 2\_2}
+\end{figure}
 
-\clearpage
-
-4 strona --- Wyniki drugiego eksperymentu dla dwóch sztucznie wygenerowanych zbiorów danych 2\_2 i 2\_3 oraz sieci MLP. Dla każdego zbioru należy pokazać wykres obrazujący zmianę wartości accuracy na zbiorach treningowym i testowym przy zmieniającej się liczbie neuronów w warstwie ukrytej oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla: najmniejszej, najlepszej (wartość accuracy na zbiorze testowym) i największej watości tego parametru. Dodatkowo przy każdej wizualizacji należy pokazać jak wygląda macierz pomyłek.
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/accuracy.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/min/train_boundary.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/min/train_matrix.png}
+        \caption{Min, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/min/test_boundary.png}
+        \caption{Min, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/min/test_matrix.png}
+        \caption{Min, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/best/train_boundary.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/best/train_matrix.png}
+        \caption{Best, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/best/test_boundary.png}
+        \caption{Best, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/best/test_matrix.png}
+        \caption{Best, test}
+    \end{subfigure} 
+    \\
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/max/train_boundary.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/max/train_matrix.png}
+        \caption{Max, train}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/max/test_boundary.png}
+        \caption{Max, test}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_2/mlp/2_3/max/test_matrix.png}
+        \caption{Max, test}
+    \end{subfigure} 
+    
+    \caption{Eksperyment 2 --- MLP na zbiorze 2\_3}
+\end{figure}
 
 \clearpage
 
