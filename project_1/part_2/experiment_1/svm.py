@@ -15,7 +15,7 @@ def experiment_1(dataset: ndarray, dataset_name: str):
                                                         test_size=0.2,
                                                         random_state=42)
 
-    kernels = ['linear', 'rbf', 'sigmoid', 'poly']
+    kernels = ['linear', 'rbf']
 
     for kernel in kernels:
         train_scores = []
