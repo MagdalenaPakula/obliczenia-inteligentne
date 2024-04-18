@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 
 \input{../../prelude.tex}
+\usepackage{pgfplotstable}
 \title{Projekt 1 - Zadanie 2}
 
 \newcommand*{\subfigwidth}{0.24\textwidth}
@@ -977,8 +978,128 @@
 \end{figure}
 \clearpage
 
-8 strona --- Wyniki czwartego eksperymentu dla sztucznie wygenerowanego zbioru danych 2\_3 oraz sieci MLP. Dla rozważanego zbioru należy rozważyć przypadki z różną liczbą danych treningowych (parametr train\_size równy równy wartościom użytym odpowiednio w eksperymentach drugim i trzecim). Dla obu przypadków należy zaprezentować wykres zmian accuracy na zbiorach treningowym i testowym w kolejnych epokach oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla epoki: zerowej (przed rozpoczęciem nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki).
-Dodatkowo w każdym z przypadków należy uruchomić proces treningu 10 razy z różnymi wagami początkowymi i w tabeli zamieścić wartości accuracy na zbiorze testowym i treningowym dla epoki: pierwszej (początek nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki). W przypadku wartości najlepszej należy również podać numer epoki kiedy ją osiągnięto. Liczbę neuronów w warstwie ukrytej należy dobrać jako tą optymalną wynikającą odpowiednio z eksperymentów drugiego i trzeciego.
+% 8 strona --- Wyniki czwartego eksperymentu dla sztucznie wygenerowanego zbioru danych 2\_3 oraz sieci MLP. Dla rozważanego zbioru należy rozważyć przypadki z różną liczbą danych treningowych (parametr train\_size równy równy wartościom użytym odpowiednio w eksperymentach drugim i trzecim). Dla obu przypadków należy zaprezentować wykres zmian accuracy na zbiorach treningowym i testowym w kolejnych epokach oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla epoki: zerowej (przed rozpoczęciem nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki).
+% Dodatkowo w każdym z przypadków należy uruchomić proces treningu 10 razy z różnymi wagami początkowymi i w tabeli zamieścić wartości accuracy na zbiorze testowym i treningowym dla epoki: pierwszej (początek nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki). W przypadku wartości najlepszej należy również podać numer epoki kiedy ją osiągnięto. Liczbę neuronów w warstwie ukrytej należy dobrać jako tą optymalną wynikającą odpowiednio z eksperymentów drugiego i trzeciego.
+
+\renewcommand*{\subfigwidth}{0.24\textwidth}
+
+\vspace*{-6em}
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/accuracies.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/first/train_boundary.png}
+        \caption{Pierwszy, train set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/best/train_boundary.png}
+        \caption{Najlepszy, train set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/last/train_boundary.png}
+        \caption{Ostatni, train set}
+    \end{subfigure}
+    \\
+    \hspace{\subfigwidth}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/first/test_boundary.png}
+        \caption{Pierwszy, test set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/best/test_boundary.png}
+        \caption{Najlepszy, test set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/last/test_boundary.png}
+        \caption{Ostatni, test set}
+    \end{subfigure}
+    \caption{Trenowanie na 0.8 danych}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/accuracies.png}
+        \caption{Dokładność}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/first/train_boundary.png}
+        \caption{Pierwszy, train set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/best/train_boundary.png}
+        \caption{Najlepszy, train set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/last/train_boundary.png}
+        \caption{Ostatni, train set}
+    \end{subfigure}
+    \\
+    \hspace{\subfigwidth}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/first/test_boundary.png}
+        \caption{Pierwszy, test set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/best/test_boundary.png}
+        \caption{Najlepszy, test set}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{\subfigwidth}
+        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/last/test_boundary.png}
+        \caption{Ostatni, test set}
+    \end{subfigure}
+    \caption{Trenowanie na 0.2 danych}
+\end{figure}
+
+\begin{table}[H]
+    \tiny
+    \pgfplotstabletypesetfile[
+        columns/seed/.style                 = {precision=0},
+        columns/train_accuracy_first/.style = {column name = {pierwszy, train}},
+        columns/train_accuracy_best/.style   = {column name = {najlepszy, train}},
+        columns/train_best_epoch/.style      = {column name = {najlepsza epoka}, precision=0},
+        columns/train_accuracy_end/.style   = {column name = {ostatni, train}},
+        columns/test_accuracy_first/.style  = {column name = {pierwszy, test}},
+        columns/test_accuracy_best/.style   = {column name = {najlepszy, test}},
+        columns/test_best_epoch/.style      = {column name = {najlepsza epoka}, precision = 0},
+        columns/test_accuracy_end/.style    = {column name = {ostatni, test}},
+        dec sep align,
+        fixed, precision=3, zerofill
+    ]{img/exp_4/set_0.8/different_seed_stats.dat}
+    \caption{Trenowanie na 0.8 danych}
+\end{table}
+
+\begin{table}[H]
+    \tiny
+    \pgfplotstabletypesetfile[
+        columns/seed/.style                 = {precision=0},
+        columns/train_accuracy_first/.style = {column name = {pierwszy, train}},
+        columns/train_accuracy_best/.style   = {column name = {najlepszy, train}},
+        columns/train_best_epoch/.style      = {column name = {najlepsza epoka}, precision=0},
+        columns/train_accuracy_end/.style   = {column name = {ostatni, train}},
+        columns/test_accuracy_first/.style  = {column name = {pierwszy, test}},
+        columns/test_accuracy_best/.style   = {column name = {najlepszy, test}},
+        columns/test_best_epoch/.style      = {column name = {najlepsza epoka}, precision = 0},
+        columns/test_accuracy_end/.style    = {column name = {ostatni, test}},
+        dec sep align,
+        fixed, precision=3, zerofill
+    ]{img/exp_4/set_0.2/different_seed_stats.dat}
+    \caption{Trenowanie na 0.2 danych}
+\end{table}
+
 
 \clearpage
 
