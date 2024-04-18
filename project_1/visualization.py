@@ -114,10 +114,10 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
     # Predict labels for each point in the mesh
     y_pred = classifier(np.c_[xx.ravel(), yy.ravel()])
     y_pred = y_pred.reshape(xx.shape)
-
+    cmap_name = 'viridis'
     # Plot the decision boundary (using default colormap)
-    plt.contourf(xx, yy, y_pred, alpha=0.5, cmap=plt.cm.RdYlBu)
-    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=plt.cm.RdYlBu)
+    plt.contourf(xx, yy, y_pred, alpha=0.5, cmap=cmap_name)
+    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap_name)
 
     if title:
         plt.title(title)
