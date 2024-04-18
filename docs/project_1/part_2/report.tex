@@ -991,20 +991,39 @@ Wnioski powinny mieć charakter ogólny, pozwalający przenieść je na przypade
 zwizualizowania danych. Każdy wniosek powinien być poparty odniesieniami do wyników przedstawionych 
 na pierwszych czterech stronach raportu.
 \subsection*{Eksperyment 1}
-Z eksperymentów na wygenerowanych danych można wyciągnąć wnioski dotyczące elastyczności rozważanych klasyfikatorów oraz wpływu ich hiperparametrów na kształt granic decyzyjnych. W przypadku klasyfikatora SVM istotnym parametrem jest kernel, który definiuje kształt granicy decyzyjnej. Porównując różne kernele, takie jak linear i rbf, można zauważyć różnice w elastyczności modelu. Podobnie, dla klasyfikatora opartego o sieć MLP, parametr activation wpływa na kształt granicy decyzyjnej, dlatego porównanie różnych funkcji aktywacji, takich jak identity i relu, jest istotne dla oceny elastyczności modelu.
+Z eksperymentów na wygenerowanych danych można wyciągnąć wnioski dotyczące 
+elastyczności rozważanych klasyfikatorów oraz wpływu ich hiperparametrów na 
+kształt granic decyzyjnych. W przypadku klasyfikatora SVM istotnym parametrem 
+jest kernel, który definiuje kształt granicy decyzyjnej. Porównując różne kernele, 
+takie jak linear i rbf, można zauważyć różnice w elastyczności modelu. 
+Podobnie, dla klasyfikatora opartego o sieć MLP, parametr activation wpływa na 
+kształt granicy decyzyjnej, dlatego porównanie różnych funkcji aktywacji, 
+takich jak identity i relu, jest istotne dla oceny elastyczności modelu.
 \subsection*{Eksperyment 2}
-Drugi eksperyment koncentruje się na wpływie elastyczności modelu na jego zdolności generalizacyjne. Zmiana hiperparametrów, takich jak liczba sąsiadów dla klasyfikatora K-NN, parametr C dla klasyfikatora SVM oraz liczba neuronów w warstwie ukrytej dla sieci MLP, może mieć istotny wpływ na zdolności generalizacyjne modelu. Badanie tego wpływu na podziale danych na zbiór treningowy i testowy pozwala ocenić skuteczność klasyfikacji na nowych, nie widzianych wcześniej danych.
+Drugi eksperyment koncentruje się na wpływie elastyczności modelu na 
+jego zdolności generalizacyjne. Zmiana hiperparametrów, takich jak liczba 
+sąsiadów dla klasyfikatora K-NN, parametr C dla klasyfikatora SVM oraz liczba 
+neuronów w warstwie ukrytej dla sieci MLP, ma istotny wpływ na zdolności 
+generalizacyjne modelu. Badanie tego wpływu na podziale danych na zbiór treningowy 
+i testowy pozwala ocenić skuteczność klasyfikacji na nowych, 
+nie widzianych wcześniej danych, co można zaobserować na przeprowadzonych testach.
 \subsection*{Eksperyment 3}
 Trzeci eksperyment rozważa wpływ zmiany hiperparametrów modelu na jego zdolności 
 generalizacyjne w przypadku niewielkiej liczby danych treningowych równej 0.2.
 Przy ograniczonym zbiorze treningowym istotne staje się dobranie optymalnych hiperparametrów, 
-aby uniknąć przeuczenia, co można zaobserwować na zmianie wykresu accuracy, gdzie w przypadku zbioru 2-2 - przez pierwsze 30 hidden-layer-size nie ma to znaczenia, gdzie w przypadku 2-3 ma to ogromne znaczenie, co wynika ze specyfikacji danego zbioru.
+aby uniknąć przeuczenia, co można zaobserwować na zmianie wykresu accuracy, 
+gdzie w przypadku zbioru \texttt{2_2} przez pierwsze 30 ukrytych warstw 
+nie ma zmiany, a w przypadku \texttt{2_3} ma to ogromne znaczenie, dlatego przedstawiono tylko pierwsze warstwy.
+Wynika to ze specyfikacji danego zbioru.
 Porównanie różnych kombinacji hiperparametrów pozwala zidentyfikować te, które prowadzą do najlepszych wyników 
-przy ograniczonej liczbie danych, 
+przy ograniczonej liczbie danych.
 \subsection*{Eksperyment 4}
-Czwarty eksperyment skupia się na obserwacji procesu nauki sieci MLP. Dzięki wykorzystaniu metody partial-fit 
-można śledzić zmiany skuteczności modelu na zbiorze treningowym i testowym po kolejnych epokach nauki. 
-Dodatkowo, badając wpływ różnych inicjalizacji wag neuronów na finalne rezultaty klasyfikacji, można lepiej 
+Czwarty eksperyment skupia się na obserwacji procesu nauki sieci MLP. 
+Dzięki wykorzystaniu metody \texttt{partial\_fit} 
+można śledzić zmiany skuteczności modelu na zbiorze treningowym i 
+testowym po kolejnych epokach nauki. 
+Dodatkowo, badając wpływ różnych inicjalizacji wag neuronów na finalne 
+rezultaty klasyfikacji, można lepiej 
 zrozumieć proces uczenia się sieci i jego wpływ na zdolności generalizacyjne modelu.
 
 \clearpage
@@ -1014,8 +1033,8 @@ Podczas tworzenia klasyfikatorów warto skorzystać z wniosków wyciągniętych 
 Uzyskane wyniki należy zaprezentować w zwartej formie (warto wykorzystać tabele i/lub wykresy), 
 a wnioski należy poprzeć odwołaniami do tych wyników.
 
-Rysunki X - Y przedstawiają wyniki eksperymentów z użyciem KNN, SVM i MLP na zbiorach Iris, Wine oraz Breast Cancer Wisconsin
-W przypadku metody K-NN skoncentrowaliśmy się na optymalnej liczbie sąsiadów (n-neighbors). Dla metody SVM dobraliśmy optymalną 
+Rysunki 15 - 17 przedstawiają wyniki eksperymentów z użyciem KNN, SVM i MLP na zbiorach Iris, Wine oraz Breast Cancer Wisconsin
+W przypadku metody K-NN skoncentrowaliśmy się na optymalnej liczbie sąsiadów \(n_{\text{neighbours}}\). Dla metody SVM dobraliśmy optymalną 
 wartość parametru C, kontrolującego tolerancję naruszenia marginesu. Natomiast dla sieci MLP ustaliliśmy optymalną liczbę neuronów 
 w warstwie ukrytej.
 
