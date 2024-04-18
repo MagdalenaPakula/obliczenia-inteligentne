@@ -1,18 +1,13 @@
 import warnings
-from typing import Dict, Tuple, List
+from typing import List
 
 import numpy as np
-import seaborn as sns
 from matplotlib import pyplot as plt
-from numpy import ndarray
-from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
 from project_1.data import load_generated_datasets
 from project_1.visualization import plot_decision_boundary
-
-Classifier = MLPClassifier
 
 warnings.filterwarnings("ignore")
 
@@ -30,7 +25,7 @@ def experiment_4(dataset, dataset_name, train_size):
     test_scores = []
 
     for num_neurons in layer_sizes:
-        classifier = MLPClassifier(hidden_layer_sizes=(num_neurons,),
+        classifier = MLPClassifier(hidden_layer_sizes=(5,),  # changed to the most optimal num_neurons from exp 2 and 3
                                    activation='relu',
                                    max_iter=100000,
                                    tol=0,
@@ -41,7 +36,7 @@ def experiment_4(dataset, dataset_name, train_size):
         train_acc = []
         test_acc = []
         print(f'Training network with {num_neurons} neurons on dataset {dataset_name}...')
-        for _ in range(1000):  # TO CHANGE LATER TO 100_000 (accroding to wikamp)
+        for _ in range(1000):  # TO CHANGE LATER TO 100_000 (according to wikamp)
             classifier.partial_fit(X_train, y_train, classes=np.unique(y_train))
             train_acc.append(classifier.score(X_train, y_train))
             test_acc.append(classifier.score(X_test, y_test))
@@ -66,12 +61,21 @@ def experiment_4(dataset, dataset_name, train_size):
     best_classifier_idx = np.argmax([max(scores) for scores in test_scores])
     best_classifier = classifiers[best_classifier_idx]
 
-    # Plot decision boundaries
-    for epoch in [0, np.argmax(test_scores[best_classifier_idx]), 99999]:
+    # Plot decision boundaries for different epochs
+    epochs_to_visualize = [0, np.argmax(test_scores[best_classifier_idx]), 999]
+    for epoch in epochs_to_visualize:
         plt.figure(figsize=(12, 5))
         for idx, (name, X, y) in enumerate([('Training', X_train, y_train), ('Test', X_test, y_test)]):
             plt.subplot(1, 2, idx + 1)
-            plot_decision_boundary(lambda x: best_classifier.predict(x), X, y,
+            # Retrain the classifier for the specified number of epochs
+            classifier_at_epoch = MLPClassifier(hidden_layer_sizes=(5,),  # Set the same configuration
+                                                 activation='relu',
+                                                 max_iter=epoch+1,  # Train for epoch + 1 iterations
+                                                 tol=0,
+                                                 solver='sgd',
+                                                 random_state=42)
+            classifier_at_epoch.fit(X_train, y_train)
+            plot_decision_boundary(lambda x: classifier_at_epoch.predict(x), X, y,
                                    title=f'Decision Boundary on {name} Set - Epoch {epoch}')
         plt.tight_layout()
         plt.show()
