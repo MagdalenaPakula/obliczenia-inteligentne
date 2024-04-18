@@ -1002,7 +1002,11 @@ aby uniknąć przeuczenia, co można zaobserwować na zmianie wykresu accuracy, 
 Porównanie różnych kombinacji hiperparametrów pozwala zidentyfikować te, które prowadzą do najlepszych wyników 
 przy ograniczonej liczbie danych, 
 \subsection*{Eksperyment 4}
-Czwarty eksperyment skupia się na obserwacji procesu nauki sieci MLP. Dzięki wykorzystaniu metody partial_fit można śledzić zmiany skuteczności modelu na zbiorze treningowym i testowym po kolejnych epokach nauki. Dodatkowo, badając wpływ różnych inicjalizacji wag neuronów na finalne rezultaty klasyfikacji, można lepiej zrozumieć proces uczenia się sieci i jego wpływ na zdolności generalizacyjne modelu.
+Czwarty eksperyment skupia się na obserwacji procesu nauki sieci MLP. Dzięki wykorzystaniu metody partial-fit 
+można śledzić zmiany skuteczności modelu na zbiorze treningowym i testowym po kolejnych epokach nauki. 
+Dodatkowo, badając wpływ różnych inicjalizacji wag neuronów na finalne rezultaty klasyfikacji, można lepiej 
+zrozumieć proces uczenia się sieci i jego wpływ na zdolności generalizacyjne modelu.
+
 \clearpage
 
 10 strona --- Opis działania analizowanych metod klasyfikacji w przypadku rzeczywistych zbiorów dnaych. 
@@ -1039,7 +1043,7 @@ treningowych, jak i testowych
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/svm/iris_best_test.png}
+        \includegraphics[width=\linewidth]{img/other_datasets/mlp/iris_best_boundary_test.png}
         \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Iris}
@@ -1062,7 +1066,7 @@ treningowych, jak i testowych
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/}
+        \includegraphics[width=\linewidth]{img/other_datasets/mlp/wine_best_boundary_test.png}
         \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Wine}
@@ -1080,12 +1084,12 @@ treningowych, jak i testowych
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_accuracy.ong}
+        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_accuracy.png}
         \caption{MLP - accuracy}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/svm/breast_max_test_boundary.png}
+        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_best_boundary_test.png}
         \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Breast Cancer Wisconsin}
