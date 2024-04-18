@@ -101,7 +101,8 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
                            features: ndarray,
                            labels: ndarray,
                            title: Optional[str] = None,
-                           resolution: int = 100
+                           resolution: int = 100,
+                           cmap=plt.cm.RdYlBu,
                            ) -> None:
     if features.shape[1] != 2:
         raise ValueError("Plotting decision boundary requires 2D features")
@@ -114,10 +115,8 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
     # Predict labels for each point in the mesh
     y_pred = classifier(np.c_[xx.ravel(), yy.ravel()])
     y_pred = y_pred.reshape(xx.shape)
-    cmap_name = 'viridis'
-    # Plot the decision boundary (using default colormap)
-    plt.contourf(xx, yy, y_pred, alpha=0.5, cmap=cmap_name)
-    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap_name)
+    plt.contourf(xx, yy, y_pred, alpha=0.5, cmap=cmap)
+    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap)
 
     if title:
         plt.title(title)
