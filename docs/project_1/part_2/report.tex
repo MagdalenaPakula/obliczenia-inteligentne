@@ -1,7 +1,6 @@
 \documentclass[12pt]{article}
 
 \input{../../prelude.tex}
-\usepackage{pgfplotstable}
 \title{Projekt 1 - Zadanie 2}
 
 \newcommand*{\subfigwidth}{0.24\textwidth}
@@ -978,193 +977,49 @@
 \end{figure}
 \clearpage
 
-% 8 strona --- Wyniki czwartego eksperymentu dla sztucznie wygenerowanego zbioru danych 2\_3 oraz sieci MLP. Dla rozważanego zbioru należy rozważyć przypadki z różną liczbą danych treningowych (parametr train\_size równy równy wartościom użytym odpowiednio w eksperymentach drugim i trzecim). Dla obu przypadków należy zaprezentować wykres zmian accuracy na zbiorach treningowym i testowym w kolejnych epokach oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla epoki: zerowej (przed rozpoczęciem nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki).
-% Dodatkowo w każdym z przypadków należy uruchomić proces treningu 10 razy z różnymi wagami początkowymi i w tabeli zamieścić wartości accuracy na zbiorze testowym i treningowym dla epoki: pierwszej (początek nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki). W przypadku wartości najlepszej należy również podać numer epoki kiedy ją osiągnięto. Liczbę neuronów w warstwie ukrytej należy dobrać jako tą optymalną wynikającą odpowiednio z eksperymentów drugiego i trzeciego.
-
-\renewcommand*{\subfigwidth}{0.24\textwidth}
-
-\vspace*{-6em}
-\begin{figure}[H]\centering
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/accuracies.png}
-        \caption{Dokładność}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/first/train_boundary.png}
-        \caption{Pierwszy, train set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/best/train_boundary.png}
-        \caption{Najlepszy, train set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/last/train_boundary.png}
-        \caption{Ostatni, train set}
-    \end{subfigure}
-    \\
-    \hspace{\subfigwidth}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/first/test_boundary.png}
-        \caption{Pierwszy, test set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/best/test_boundary.png}
-        \caption{Najlepszy, test set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.8/last/test_boundary.png}
-        \caption{Ostatni, test set}
-    \end{subfigure}
-    \caption{Trenowanie na 0.8 danych}
-\end{figure}
-
-\begin{figure}[H]\centering
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/accuracies.png}
-        \caption{Dokładność}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/first/train_boundary.png}
-        \caption{Pierwszy, train set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/best/train_boundary.png}
-        \caption{Najlepszy, train set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/last/train_boundary.png}
-        \caption{Ostatni, train set}
-    \end{subfigure}
-    \\
-    \hspace{\subfigwidth}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/first/test_boundary.png}
-        \caption{Pierwszy, test set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/best/test_boundary.png}
-        \caption{Najlepszy, test set}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/exp_4/set_0.2/last/test_boundary.png}
-        \caption{Ostatni, test set}
-    \end{subfigure}
-    \caption{Trenowanie na 0.2 danych}
-\end{figure}
-
-\begin{table}[H]
-    \tiny
-    \pgfplotstabletypesetfile[
-        columns/seed/.style                 = {precision=0},
-        columns/train_accuracy_first/.style = {column name = {pierwszy, train}},
-        columns/train_accuracy_best/.style   = {column name = {najlepszy, train}},
-        columns/train_best_epoch/.style      = {column name = {najlepsza epoka}, precision=0},
-        columns/train_accuracy_end/.style   = {column name = {ostatni, train}},
-        columns/test_accuracy_first/.style  = {column name = {pierwszy, test}},
-        columns/test_accuracy_best/.style   = {column name = {najlepszy, test}},
-        columns/test_best_epoch/.style      = {column name = {najlepsza epoka}, precision = 0},
-        columns/test_accuracy_end/.style    = {column name = {ostatni, test}},
-        dec sep align,
-        fixed, precision=3, zerofill
-    ]{img/exp_4/set_0.8/different_seed_stats.dat}
-    \caption{Trenowanie na 0.8 danych}
-\end{table}
-
-\begin{table}[H]
-    \tiny
-    \pgfplotstabletypesetfile[
-        columns/seed/.style                 = {precision=0},
-        columns/train_accuracy_first/.style = {column name = {pierwszy, train}},
-        columns/train_accuracy_best/.style   = {column name = {najlepszy, train}},
-        columns/train_best_epoch/.style      = {column name = {najlepsza epoka}, precision=0},
-        columns/train_accuracy_end/.style   = {column name = {ostatni, train}},
-        columns/test_accuracy_first/.style  = {column name = {pierwszy, test}},
-        columns/test_accuracy_best/.style   = {column name = {najlepszy, test}},
-        columns/test_best_epoch/.style      = {column name = {najlepsza epoka}, precision = 0},
-        columns/test_accuracy_end/.style    = {column name = {ostatni, test}},
-        dec sep align,
-        fixed, precision=3, zerofill
-    ]{img/exp_4/set_0.2/different_seed_stats.dat}
-    \caption{Trenowanie na 0.2 danych}
-\end{table}
-
+8 strona --- Wyniki czwartego eksperymentu dla sztucznie wygenerowanego zbioru danych 2\_3 oraz sieci MLP. Dla rozważanego zbioru należy rozważyć przypadki z różną liczbą danych treningowych (parametr train\_size równy równy wartościom użytym odpowiednio w eksperymentach drugim i trzecim). Dla obu przypadków należy zaprezentować wykres zmian accuracy na zbiorach treningowym i testowym w kolejnych epokach oraz wizualizacje przebiegu granicy decyzyjnej na zbiorach treningowym i testowym dla epoki: zerowej (przed rozpoczęciem nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki).
+Dodatkowo w każdym z przypadków należy uruchomić proces treningu 10 razy z różnymi wagami początkowymi i w tabeli zamieścić wartości accuracy na zbiorze testowym i treningowym dla epoki: pierwszej (początek nauki), najlepszej (wartość accuracy na zbiorze testowym) i ostatniej (po zakończeniu nauki). W przypadku wartości najlepszej należy również podać numer epoki kiedy ją osiągnięto. Liczbę neuronów w warstwie ukrytej należy dobrać jako tą optymalną wynikającą odpowiednio z eksperymentów drugiego i trzeciego.
 
 \clearpage
 
+9 strona --- Opis wniosków z eksperymentów przeprowadzonych na sztucznie wygenerowanych zbiorach.
+W przypadku wszystkich ekseprymentów należy zwrócić uwagę na kształt uzyskiwanych granic decyzyjnych 
+i związane z nim zdolności uogólniajace poszczególnych rodzajów klasyfikatorów (wpływ hiperparametrów) 
+oraz wpływ liczby danych treningowych. W eksperymencie czwartym należy dodatkowo skupić się na zdolnościach 
+uogólniających w kolejnych epokach nauki oraz na wpływie sposobu zaincjalizowania sieci.
+Wnioski powinny mieć charakter ogólny, pozwalający przenieść je na przypadek, w którym nie ma możliwości
+zwizualizowania danych. Każdy wniosek powinien być poparty odniesieniami do wyników przedstawionych 
+na pierwszych czterech stronach raportu.
 \subsection*{Eksperyment 1}
-Badania elastyczności w przypadku MLP wykazały lepsze rezultaty w 
-przypadku funkcji ReLU. W przypadku funkcji identity możliwe było 
-uzyskanie jedynie liniowej separacji, co, z racji na specyfikę działania 
-MLP, było oczekiwane. W przypadku zbioru \texttt{2\_1} ograniczenie 
-elastyczności klasyfikatora nie miało znaczenia, ponieważ dane były 
-liniowo separowalne, natomiast przy pozostałych zbiorach danych, gdzie 
-dane nie były liniowo separowalne, niewystarczająca elastyczność 
-klasyfikatora poskutkowała uzyskaniem gorszych wyników, niż w przypadku 
-funkcji ReLU. Podobna sytuacja miała miejsce w przypadku klasyfikatora SVM, 
-gdzie przy uzyciu liniowego jądra, możliwe było uzyskanie jedynie 
-liniowej separacji, co, ponownie, sprawdziło się tylko w przypadku 
-zbioru \texttt{2\_1}. W toku eksperymentu ustalono, że w przypadku MLP, 
-funkcja ReLU skutkuje większą elastycznością niż identity, 
-a w przypadku SVM, jądro rbf jest bardziej elastyczne niż liniowe.
-
+Z eksperymentów na wygenerowanych danych można wyciągnąć wnioski dotyczące elastyczności rozważanych klasyfikatorów oraz wpływu ich hiperparametrów na kształt granic decyzyjnych. W przypadku klasyfikatora SVM istotnym parametrem jest kernel, który definiuje kształt granicy decyzyjnej. Porównując różne kernele, takie jak linear i rbf, można zauważyć różnice w elastyczności modelu. Podobnie, dla klasyfikatora opartego o sieć MLP, parametr activation wpływa na kształt granicy decyzyjnej, dlatego porównanie różnych funkcji aktywacji, takich jak identity i relu, jest istotne dla oceny elastyczności modelu.
 \subsection*{Eksperyment 2}
-Drugi eksperyment koncentruje się na wpływie elastyczności modelu na 
-jego zdolności generalizacyjne. Zmiana hiperparametrów, takich jak liczba 
-sąsiadów dla klasyfikatora K-NN, parametr C dla klasyfikatora SVM oraz liczba 
-neuronów w warstwie ukrytej dla sieci MLP, ma istotny wpływ na zdolności 
-generalizacyjne modelu. Badanie tego wpływu na podziale danych na zbiór treningowy 
-i testowy pozwala ocenić skuteczność klasyfikacji na nowych, 
-nie widzianych wcześniej danych, co można zaobserować na przeprowadzonych testach. W eksperymencie KNN można zaobserwować zmianę wartości accuracy w stosonku do ilości
-\texttt{n\_neighbours} na zbiorach \texttt{2\_2} oraz \texttt{2\_3}, z czego wynika, że
-mała wartość \texttt{n\_neighbours} daje szorstką granicę decyzyjną, gdzie duża wartość
-może wskazywać na bardziej gładką, ale może również prowadzić do utraty szczegółów w danych.
-Wybór optymalnej wartości \texttt{n\_neighbours} jest kluczowy dla osiągnięcia dobrych wyników z KNN. W eksperymencie SVM jądro RBF zapewnia lepsze uogólnienie niż jądro liniowe, zwłaszcza w przypadku złożonych danych.
-Zauważyliśmy też, że parametr C kontroluje margines, a wyższe wartości C 
-prowadzą do bardziej skomplikowanych granic decyzyjnych i 
-potencjalnie lepszego uogólnienia. W eksperymencie MLP można zauważyć, że liczba neuronów w warstwie ukrytej kontroluje złożoność modelu.
-Większa liczba neuronów może prowadzić do lepszego uogólnienia, ale może również powodować przeuczenie.
-
-
+Drugi eksperyment koncentruje się na wpływie elastyczności modelu na jego zdolności generalizacyjne. Zmiana hiperparametrów, takich jak liczba sąsiadów dla klasyfikatora K-NN, parametr C dla klasyfikatora SVM oraz liczba neuronów w warstwie ukrytej dla sieci MLP, może mieć istotny wpływ na zdolności generalizacyjne modelu. Badanie tego wpływu na podziale danych na zbiór treningowy i testowy pozwala ocenić skuteczność klasyfikacji na nowych, nie widzianych wcześniej danych.
 \subsection*{Eksperyment 3}
 Trzeci eksperyment rozważa wpływ zmiany hiperparametrów modelu na jego zdolności 
 generalizacyjne w przypadku niewielkiej liczby danych treningowych równej 0.2.
-Przy ograniczonym zbiorze treningowym istotne staje się dobranie optymalnych 
-hiperparametrów, aby uniknąć przeuczenia, co można zaobserwować na zmianie 
-wykresu accuracy, gdzie w przypadku zbioru \texttt{2\_2} przez pierwsze 
-ukryte warstwy nie ma znaczenia, a w przypadku \texttt{2\_3} ma to ogromny
-wpływ,co wynika to ze specyfikacji danego zbioru oraz jego wielkości do trenowania.
-W związku z tym, możemy zauważyć, że mniejsza liczba danych treningowych może prowadzić do większej zmienności wyników i gorszego uogólnienia.
-Dzięki czemu, wiemy że ważne jest, aby użyć wystarczającej ilości danych treningowych, 
-aby nauczyć model prawidłowo. 
+Przy ograniczonym zbiorze treningowym istotne staje się dobranie optymalnych hiperparametrów, 
+aby uniknąć przeuczenia, co można zaobserwować na zmianie wykresu accuracy, gdzie w przypadku zbioru 2-2 - przez pierwsze 30 hidden-layer-size nie ma to znaczenia, gdzie w przypadku 2-3 ma to ogromne znaczenie, co wynika ze specyfikacji danego zbioru.
+Porównanie różnych kombinacji hiperparametrów pozwala zidentyfikować te, które prowadzą do najlepszych wyników 
+przy ograniczonej liczbie danych, 
 \subsection*{Eksperyment 4}
-Czwarty eksperyment badał postępy nauki MLP w czasie, jak również wpływ początkowej inicjalizacji na efekty uczenia. Eksperyment pokazał, że mniejsza ilość danych treningowych skutkuje w dostrzegalnie wolniejszej nauce. Jednakże, nie wpływa aż w tak dużym stopniu na maksymalną skuteczność klasyfikatora. Nawet klasyfikator trenowany na mniejszym zbiorze danych, był w stanie uzyskać wynik porównywalny z klasyfikatorem trenowanym na większym zbiorze, potrzebował jednak więcej epok, żeby osiągnąć taką skuteczność. 
-Początkowa inicjalizacja klasyfikatora miała duży wpływ na skuteczność po 1 epoce, jak również na ilość epok potrzebną do osiągnięcia maksymalnej skuteczności. Nie miały jednak dużego wpływu na same wartości maksymalnej skuteczności. Można więc wyciągnąć wniosek, że, generalnie, dla większości stanów początkowych, klasyfikator prędzej czy później będzie w stanie osiągnąć maksymalną skuteczność.
-
+Czwarty eksperyment skupia się na obserwacji procesu nauki sieci MLP. Dzięki wykorzystaniu metody partial_fit można śledzić zmiany skuteczności modelu na zbiorze treningowym i testowym po kolejnych epokach nauki. Dodatkowo, badając wpływ różnych inicjalizacji wag neuronów na finalne rezultaty klasyfikacji, można lepiej zrozumieć proces uczenia się sieci i jego wpływ na zdolności generalizacyjne modelu.
 \clearpage
 
-Wyniki przeprowadzonych eksperymentów na sztucznie wygenerowanych zbiorach danych dostarczają cennych informacji na temat działania metod klasyfikacji KNN, SVM i MLP w kontekście uczenia maszynowego. Należy jednak pamiętać, że wnioski te opierają się na specyfice sztucznie wygenerowanych danych i mogą nie w pełni odzwierciedlać zachowanie tych metod w przypadku rzeczywistych zbiorów danych.
+10 strona --- Opis działania analizowanych metod klasyfikacji w przypadku rzeczywistych zbiorów dnaych. 
+Podczas tworzenia klasyfikatorów warto skorzystać z wniosków wyciągniętych podczas wcześniejszych eksperymentów. 
+Uzyskane wyniki należy zaprezentować w zwartej formie (warto wykorzystać tabele i/lub wykresy), 
+a wnioski należy poprzeć odwołaniami do tych wyników.
 
-Patrząc na wyniki, wiemy że w zbiorze Iris, w przypadku KNN, która jest prostą intuicyjną metodą, dobrze sprawdza się w przypadku małych zbiorów danych i prostych zależności między cechami a klasami.
-Należy jednak koniecznie zwrócić uwagę na wpływ wyboru parametru \texttt{n\_neighbours}. Wiemy też, że KNN może być wrażliwy na outliersy i skalę cech, dlatego przed zastosowaniem tej metody należy rozważyć zastosowanie odpowiednich technik preprocesowania danych.
-W stosunku do SVM - biorąc pod uwagę liniową separowalność danych, SVM z jądrem liniowym może zapewnić wysoką dokładność klasyfikacji.
-Co więcej, jądro RBF może również być użyteczne, jeśli dane nie są idealnie liniowo separowalne.
-W eksperymencie MLP, może on modelować złożone zależności między cechami, co może być pomocne w przypadku, gdy dane nie są liniowo separowalne, jednak trzeba uważać na przeuczenie.
+Rysunki X - Y przedstawiają wyniki eksperymentów z użyciem KNN, SVM i MLP na zbiorach Iris, Wine oraz Breast Cancer Wisconsin
+W przypadku metody K-NN skoncentrowaliśmy się na optymalnej liczbie sąsiadów (n-neighbors). Dla metody SVM dobraliśmy optymalną 
+wartość parametru C, kontrolującego tolerancję naruszenia marginesu. Natomiast dla sieci MLP ustaliliśmy optymalną liczbę neuronów 
+w warstwie ukrytej.
 
-W zbiorze Breast i Wine wnioski z eksperymentu KNN są identyczne. W eksperymencie SVM dla setu Wine i Breast - SVM z jądrem RBF może być dobrym wyborem do klasyfikacji wina, ponieważ może modelować nieliniowe zależności między cechami, natomiast parametr C i wybór jądra mogą mieć istotny wpływ na dokładność klasyfikacji.
-W eksperymencie MLP - może być potężną metodą klasyfikacji wina i klasyfikacji nowotworów piersi, ale wymaga starannego doboru hiperparametrów, aby uniknąć przeuczenia.
-Funkcja aktywacji ReLU może być korzystna w obu przypadkach.
+Wyniki działania klasyfikatorów na rzeczywistych danych zostały przedstawione w formie tabel oraz wykresów. 
+Dokładnie przeanalizowaliśmy 
+skuteczność klasyfikacji na zbiorze treningowym i testowym, a także zbadaliśmy macierz pomyłek dla każdej z metod. Nasza analiza wskazuje, 
+że wybrane metody klasyfikacji dobrze radzą sobie z rzeczywistymi danymi. Klasyfikatory osiągają zadowalające wyniki zarówno na zbiorach 
+treningowych, jak i testowych
 
 
 \begin{figure}[H]\centering
@@ -1184,8 +1039,8 @@ Funkcja aktywacji ReLU może być korzystna w obu przypadkach.
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/mlp/iris_best_boundary_test.png}
-        \caption{Best,MLP,test set}
+        \includegraphics[width=\linewidth]{img/other_datasets/svm/iris_best_test.png}
+        \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Iris}
 \end{figure}
@@ -1207,8 +1062,8 @@ Funkcja aktywacji ReLU może być korzystna w obu przypadkach.
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/mlp/wine_best_boundary_test.png}
-        \caption{Best,MLP,test set}
+        \includegraphics[width=\linewidth]{img/other_datasets/}
+        \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Wine}
 \end{figure}
@@ -1225,13 +1080,13 @@ Funkcja aktywacji ReLU może być korzystna w obu przypadkach.
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_accuracy.png}
+        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_accuracy.ong}
         \caption{MLP - accuracy}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{\subfigwidth}
-        \includegraphics[width=\linewidth]{img/other_datasets/mlp/breast_best_boundary_test.png}
-        \caption{Best,MLP,test set}
+        \includegraphics[width=\linewidth]{img/other_datasets/svm/breast_max_test_boundary.png}
+        \caption{Best case}
     \end{subfigure}
     \caption{Wyniki eksperymentów na zbiorze Breast Cancer Wisconsin}
 \end{figure}
