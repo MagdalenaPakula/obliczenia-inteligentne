@@ -1,7 +1,6 @@
 \documentclass[12pt]{article}
 
 \input{../../prelude.tex}
-\usepackage{pgfplotstable}
 \title{Projekt 1 - Zadanie 2}
 
 \newcommand*{\subfigwidth}{0.24\textwidth}
@@ -69,7 +68,7 @@
         \includegraphics[width=\linewidth]{img/exp_1/mlp/2_3/relu/boundary.png}
         \caption{ReLu 2\_3}
     \end{subfigure}
-    \caption{Eksperyment 1 --- Perceptron MLP}
+    \caption{Eksperyment 1 --- Perceptron MLP}\label{fig:figure}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -132,7 +131,7 @@
         \includegraphics[width=\linewidth]{img/exp_1/svm/2_3/rbf/boundary.png}
         \caption{rbf 2\_3}
     \end{subfigure}
-    \caption{Eksperyment 1 --- SVM}
+    \caption{Eksperyment 1 --- SVM}\label{fig:figure17}
 \end{figure}
 
 \clearpage
@@ -204,7 +203,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- KNN na zbiorze 2\_2}
+    \caption{Eksperyment 2 --- KNN na zbiorze 2\_2}\label{fig:figure16}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -273,7 +272,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- KNN na zbiorze 2\_3}
+    \caption{Eksperyment 2 --- KNN na zbiorze 2\_3}\label{fig:figure15}
 \end{figure}
 
 \clearpage
@@ -344,7 +343,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- SVM na zbiorze 2\_2}
+    \caption{Eksperyment 2 --- SVM na zbiorze 2\_2}\label{fig:figure14}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -413,7 +412,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- SVM na zbiorze 2\_3}
+    \caption{Eksperyment 2 --- SVM na zbiorze 2\_3}\label{fig:figure13}
 \end{figure}
 
 \clearpage
@@ -484,7 +483,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- MLP na zbiorze 2\_2}
+    \caption{Eksperyment 2 --- MLP na zbiorze 2\_2}\label{fig:figure12}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -553,7 +552,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 2 --- MLP na zbiorze 2\_3}
+    \caption{Eksperyment 2 --- MLP na zbiorze 2\_3}\label{fig:figure11}
 \end{figure}
 
 \clearpage
@@ -624,7 +623,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 3 --- KNN na zbiorze 2\_2}
+    \caption{Eksperyment 3 --- KNN na zbiorze 2\_2}\label{fig:figure10}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -693,7 +692,7 @@
         \caption{Max, test}
     \end{subfigure} 
     
-    \caption{Eksperyment 3 --- KNN na zbiorze 2\_3}
+    \caption{Eksperyment 3 --- KNN na zbiorze 2\_3}\label{fig:figure9}
 \end{figure}
 
 \clearpage
@@ -765,7 +764,7 @@
         \caption{Max, test}
     \end{subfigure}
 
-    \caption{Eksperyment 3 --- SVM na zbiorze 2\_2}
+    \caption{Eksperyment 3 --- SVM na zbiorze 2\_2}\label{fig:figure8}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -834,7 +833,7 @@
         \caption{Max, test}
     \end{subfigure}
 
-    \caption{Eksperyment 3 --- SVM na zbiorze 2\_3}
+    \caption{Eksperyment 3 --- SVM na zbiorze 2\_3}\label{fig:figure7}
 \end{figure}
 \clearpage
 
@@ -905,7 +904,7 @@
         \caption{Max, test}
     \end{subfigure}
 
-    \caption{Eksperyment 3 --- MLP na zbiorze 2\_2}
+    \caption{Eksperyment 3 --- MLP na zbiorze 2\_2}\label{fig:figure6}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -974,7 +973,7 @@
         \caption{Max, test}
     \end{subfigure}
 
-    \caption{Eksperyment 3 --- MLP na zbiorze 2\_3}
+    \caption{Eksperyment 3 --- MLP na zbiorze 2\_3}\label{fig:figure4}\label{fig:figure5}
 \end{figure}
 \clearpage
 
@@ -1021,7 +1020,7 @@
         \includegraphics[width=\linewidth]{img/exp_4/set_0.8/last/test_boundary.png}
         \caption{Ostatni, test set}
     \end{subfigure}
-    \caption{Trenowanie na 0.8 danych}
+    \caption{Trenowanie na 0.8 danych}\label{fig:figure3}
 \end{figure}
 
 \begin{figure}[H]\centering
@@ -1061,7 +1060,7 @@
         \includegraphics[width=\linewidth]{img/exp_4/set_0.2/last/test_boundary.png}
         \caption{Ostatni, test set}
     \end{subfigure}
-    \caption{Trenowanie na 0.2 danych}
+    \caption{Trenowanie na 0.2 danych}\label{fig:figure2}
 \end{figure}
 
 \begin{table}[H]
@@ -1079,7 +1078,7 @@
         dec sep align,
         fixed, precision=3, zerofill
     ]{img/exp_4/set_0.8/different_seed_stats.dat}
-    \caption{Trenowanie na 0.8 danych}
+    \caption{Trenowanie na 0.8 danych}\label{tab:table2}
 \end{table}
 
 \begin{table}[H]
@@ -1097,7 +1096,7 @@
         dec sep align,
         fixed, precision=3, zerofill
     ]{img/exp_4/set_0.2/different_seed_stats.dat}
-    \caption{Trenowanie na 0.2 danych}
+    \caption{Trenowanie na 0.2 danych}\label{tab:table}
 \end{table}
 
 
@@ -1107,7 +1106,8 @@
 Badania elastyczności w przypadku MLP wykazały lepsze rezultaty w 
 przypadku funkcji ReLU. W przypadku funkcji identity możliwe było 
 uzyskanie jedynie liniowej separacji, co, z racji na specyfikę działania 
-MLP, było oczekiwane. W przypadku zbioru \texttt{2\_1} ograniczenie 
+MLP, było oczekiwane.
+W przypadku zbioru \texttt{2\_1} ograniczenie
 elastyczności klasyfikatora nie miało znaczenia, ponieważ dane były 
 liniowo separowalne, natomiast przy pozostałych zbiorach danych, gdzie 
 dane nie były liniowo separowalne, niewystarczająca elastyczność 
@@ -1115,25 +1115,30 @@ klasyfikatora poskutkowała uzyskaniem gorszych wyników, niż w przypadku
 funkcji ReLU. Podobna sytuacja miała miejsce w przypadku klasyfikatora SVM, 
 gdzie przy uzyciu liniowego jądra, możliwe było uzyskanie jedynie 
 liniowej separacji, co, ponownie, sprawdziło się tylko w przypadku 
-zbioru \texttt{2\_1}. W toku eksperymentu ustalono, że w przypadku MLP, 
+zbioru \texttt{2\_1}.
+W toku eksperymentu ustalono, że w przypadku MLP,
 funkcja ReLU skutkuje większą elastycznością niż identity, 
 a w przypadku SVM, jądro rbf jest bardziej elastyczne niż liniowe.
 
 \subsection*{Eksperyment 2}
 Drugi eksperyment koncentruje się na wpływie elastyczności modelu na 
-jego zdolności generalizacyjne. Zmiana hiperparametrów, takich jak liczba 
+jego zdolności generalizacyjne.
+Zmiana hiperparametrów, takich jak liczba
 sąsiadów dla klasyfikatora K-NN, parametr C dla klasyfikatora SVM oraz liczba 
 neuronów w warstwie ukrytej dla sieci MLP, ma istotny wpływ na zdolności 
-generalizacyjne modelu. Badanie tego wpływu na podziale danych na zbiór treningowy 
+generalizacyjne modelu.
+Badanie tego wpływu na podziale danych na zbiór treningowy
 i testowy pozwala ocenić skuteczność klasyfikacji na nowych, 
-nie widzianych wcześniej danych, co można zaobserować na przeprowadzonych testach. W eksperymencie KNN można zaobserwować zmianę wartości accuracy w stosonku do ilości
+nie widzianych wcześniej danych, co można zaobserować na przeprowadzonych testach.
+W eksperymencie KNN można zaobserwować zmianę wartości accuracy w stosonku do ilości
 \texttt{n\_neighbours} na zbiorach \texttt{2\_2} oraz \texttt{2\_3}, z czego wynika, że
 mała wartość \texttt{n\_neighbours} daje szorstką granicę decyzyjną, gdzie duża wartość
 może wskazywać na bardziej gładką, ale może również prowadzić do utraty szczegółów w danych.
 Wybór optymalnej wartości \texttt{n\_neighbours} jest kluczowy dla osiągnięcia dobrych wyników z KNN. W eksperymencie SVM jądro RBF zapewnia lepsze uogólnienie niż jądro liniowe, zwłaszcza w przypadku złożonych danych.
 Zauważyliśmy też, że parametr C kontroluje margines, a wyższe wartości C 
 prowadzą do bardziej skomplikowanych granic decyzyjnych i 
-potencjalnie lepszego uogólnienia. W eksperymencie MLP można zauważyć, że liczba neuronów w warstwie ukrytej kontroluje złożoność modelu.
+potencjalnie lepszego uogólnienia.
+W eksperymencie MLP można zauważyć, że liczba neuronów w warstwie ukrytej kontroluje złożoność modelu.
 Większa liczba neuronów może prowadzić do lepszego uogólnienia, ale może również powodować przeuczenie.
 
 
@@ -1149,20 +1154,26 @@ W związku z tym, możemy zauważyć, że mniejsza liczba danych treningowych mo
 Dzięki czemu, wiemy że ważne jest, aby użyć wystarczającej ilości danych treningowych, 
 aby nauczyć model prawidłowo. 
 \subsection*{Eksperyment 4}
-Czwarty eksperyment badał postępy nauki MLP w czasie, jak również wpływ początkowej inicjalizacji na efekty uczenia. Eksperyment pokazał, że mniejsza ilość danych treningowych skutkuje w dostrzegalnie wolniejszej nauce. Jednakże, nie wpływa aż w tak dużym stopniu na maksymalną skuteczność klasyfikatora. Nawet klasyfikator trenowany na mniejszym zbiorze danych, był w stanie uzyskać wynik porównywalny z klasyfikatorem trenowanym na większym zbiorze, potrzebował jednak więcej epok, żeby osiągnąć taką skuteczność. 
-Początkowa inicjalizacja klasyfikatora miała duży wpływ na skuteczność po 1 epoce, jak również na ilość epok potrzebną do osiągnięcia maksymalnej skuteczności. Nie miały jednak dużego wpływu na same wartości maksymalnej skuteczności. Można więc wyciągnąć wniosek, że, generalnie, dla większości stanów początkowych, klasyfikator prędzej czy później będzie w stanie osiągnąć maksymalną skuteczność.
+Czwarty eksperyment badał postępy nauki MLP w czasie, jak również wpływ początkowej inicjalizacji na efekty uczenia.
+Eksperyment pokazał, że mniejsza ilość danych treningowych skutkuje w dostrzegalnie wolniejszej nauce.
+Jednakże, nie wpływa aż w tak dużym stopniu na maksymalną skuteczność klasyfikatora. Nawet klasyfikator trenowany na mniejszym zbiorze danych, był w stanie uzyskać wynik porównywalny z klasyfikatorem trenowanym na większym zbiorze, potrzebował jednak więcej epok, żeby osiągnąć taką skuteczność.
+Początkowa inicjalizacja klasyfikatora miała duży wpływ na skuteczność po 1 epoce, jak również na ilość epok potrzebną do osiągnięcia maksymalnej skuteczności.
+Nie miały jednak dużego wpływu na same wartości maksymalnej skuteczności.
+Można więc wyciągnąć wniosek, że, generalnie, dla większości stanów początkowych, klasyfikator prędzej czy później będzie w stanie osiągnąć maksymalną skuteczność.
 
 \clearpage
 
 Wyniki przeprowadzonych eksperymentów na sztucznie wygenerowanych zbiorach danych dostarczają cennych informacji na temat działania metod klasyfikacji KNN, SVM i MLP w kontekście uczenia maszynowego. Należy jednak pamiętać, że wnioski te opierają się na specyfice sztucznie wygenerowanych danych i mogą nie w pełni odzwierciedlać zachowanie tych metod w przypadku rzeczywistych zbiorów danych.
 
 Patrząc na wyniki, wiemy że w zbiorze Iris, w przypadku KNN, która jest prostą intuicyjną metodą, dobrze sprawdza się w przypadku małych zbiorów danych i prostych zależności między cechami a klasami.
-Należy jednak koniecznie zwrócić uwagę na wpływ wyboru parametru \texttt{n\_neighbours}. Wiemy też, że KNN może być wrażliwy na outliersy i skalę cech, dlatego przed zastosowaniem tej metody należy rozważyć zastosowanie odpowiednich technik preprocesowania danych.
+Należy jednak koniecznie zwrócić uwagę na wpływ wyboru parametru \texttt{n\_neighbours}.
+Wiemy też, że KNN może być wrażliwy na outliersy i skalę cech, dlatego przed zastosowaniem tej metody należy rozważyć zastosowanie odpowiednich technik preprocesowania danych.
 W stosunku do SVM - biorąc pod uwagę liniową separowalność danych, SVM z jądrem liniowym może zapewnić wysoką dokładność klasyfikacji.
 Co więcej, jądro RBF może również być użyteczne, jeśli dane nie są idealnie liniowo separowalne.
 W eksperymencie MLP, może on modelować złożone zależności między cechami, co może być pomocne w przypadku, gdy dane nie są liniowo separowalne, jednak trzeba uważać na przeuczenie.
 
-W zbiorze Breast i Wine wnioski z eksperymentu KNN są identyczne. W eksperymencie SVM dla setu Wine i Breast - SVM z jądrem RBF może być dobrym wyborem do klasyfikacji wina, ponieważ może modelować nieliniowe zależności między cechami, natomiast parametr C i wybór jądra mogą mieć istotny wpływ na dokładność klasyfikacji.
+W zbiorze Breast i Wine wnioski z eksperymentu KNN są identyczne.
+W eksperymencie SVM dla setu Wine i Breast - SVM z jądrem RBF może być dobrym wyborem do klasyfikacji wina, ponieważ może modelować nieliniowe zależności między cechami, natomiast parametr C i wybór jądra mogą mieć istotny wpływ na dokładność klasyfikacji.
 W eksperymencie MLP - może być potężną metodą klasyfikacji wina i klasyfikacji nowotworów piersi, ale wymaga starannego doboru hiperparametrów, aby uniknąć przeuczenia.
 Funkcja aktywacji ReLU może być korzystna w obu przypadkach.
 
