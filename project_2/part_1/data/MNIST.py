@@ -31,7 +31,7 @@ def transform_MNIST_flat(image):
 
 def load_dataset_MNIST():
     # Load MNIST dataset
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)), transforms.Lambda(transform_MNIST_flat)])
     mnist_train = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     mnist_test = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
