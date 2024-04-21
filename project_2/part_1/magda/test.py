@@ -1,12 +1,14 @@
-import numpy as np
+import os
+
+import matplotlib.pyplot as plt
 import torch
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
-from keras.datasets import mnist
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
+
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
 
 class CustomDataset(Dataset):
@@ -69,19 +71,32 @@ class CustomMNISTDataset(Dataset):
             image = self.transform(image)
         return image, target
 
+
 def transform_MNIST_flat(image):
     # Flatten the image to a 1D tensor with 784 elements
     return torch.flatten(image)
 
+
 def transform_MNIST_2d(image):
     # Reshape the image to a 2D tensor (28x28)
-    return torch.tensor(image.reshape(28, 28), dtype=torch.float32)
+    return image.reshape(28, 28).clone().detach()
+
 
 def transform_MNIST_small(image):
-    # Extract only the first 100 pixels
-    return torch.tensor(image[:100], dtype=torch.float32)
+    # Convert the image to numpy array
+    image_np = image.numpy()
 
-def load_dataset_MNIST(transform=transform_MNIST_flat):
+    # Apply PCA to reduce dimensions
+    pca = PCA(n_components=28)  # You can adjust the number of components as needed
+    image_pca = pca.fit_transform(image_np)
+
+    # Convert back to tensor
+    image_tensor = torch.tensor(image_pca, dtype=torch.float32)
+
+    return image_tensor
+
+
+def load_dataset_MNIST():
     # Load MNIST dataset
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
     mnist_train = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
@@ -91,6 +106,7 @@ def load_dataset_MNIST(transform=transform_MNIST_flat):
         (mnist_train.data, mnist_train.targets, 'MNIST Train Dataset'),
         (mnist_test.data, mnist_test.targets, 'MNIST Test Dataset')
     ]
+
 
 def visualize_MNIST(data):
     import matplotlib.pyplot as plt
