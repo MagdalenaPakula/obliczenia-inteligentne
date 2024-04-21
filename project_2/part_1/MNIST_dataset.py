@@ -29,11 +29,6 @@ def transform_MNIST_flat(image):
     return torch.flatten(image)
 
 
-def transform_MNIST_2d(image):
-    # Reshape the image to a 2D tensor (28x28) - 1 WAY
-    return image.reshape(28, 28).clone().detach()
-
-
 def load_dataset_MNIST():
     # Load MNIST dataset
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
@@ -59,20 +54,6 @@ def visualize_MNIST(data):
     plt.show()
 
 
-def visualize_feature_extraction(data, title):
-    features, targets = zip(*data)
-    plt.figure(figsize=(10, 10))
-    for i in range(25):
-        plt.subplot(5, 5, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(features[i], cmap=plt.cm.binary)
-        plt.xlabel(targets[i].item())
-    plt.suptitle(title)
-    plt.show()
-
-
 if __name__ == "__main__":
     # Load MNIST datasets
     datasets_mnist = load_dataset_MNIST()
@@ -80,17 +61,3 @@ if __name__ == "__main__":
     # Visualize MNIST dataset
     visualize_MNIST(datasets_mnist[0])
 
-    # Extract features from MNIST dataset 2D
-    mnist_features_flat_train = CustomMNISTDataset(datasets_mnist[0][0], datasets_mnist[0][1],
-                                                   transform=transform_MNIST_flat)
-    mnist_features_flat_test = CustomMNISTDataset(datasets_mnist[1][0], datasets_mnist[1][1],
-                                                  transform=transform_MNIST_flat)
-
-    mnist_features_2d_train = CustomMNISTDataset(datasets_mnist[0][0], datasets_mnist[0][1],
-                                                 transform=transform_MNIST_2d)
-    mnist_features_2d_test = CustomMNISTDataset(datasets_mnist[1][0], datasets_mnist[1][1],
-                                                transform=transform_MNIST_2d)
-
-    # Visualize feature extraction
-    visualize_feature_extraction(mnist_features_2d_train, "MNIST Features (2D) Train")
-    visualize_feature_extraction(mnist_features_2d_test, "MNIST Features (2D) Test")
