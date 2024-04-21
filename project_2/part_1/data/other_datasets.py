@@ -1,4 +1,5 @@
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
+from sklearn.model_selection import train_test_split
 
 from sklearn.preprocessing import StandardScaler
 from torch.utils.data import Dataset
@@ -33,9 +34,13 @@ def load_other_datasets():
     scaled_data = [scalers[i].fit_transform(dataset.data) for i, dataset in
                    enumerate([iris_data, wine_data, breast_cancer_data])]
 
-    # Create CustomDataset instances for each dataset
-    datasets = [CustomDataset(scaled_data[i], dataset.target) for i, dataset in
-                enumerate([iris_data, wine_data, breast_cancer_data])]
+    # Split data into train and test sets
+    train_data, test_data = [], []
+    for data, dataset in zip(scaled_data, [iris_data, wine_data, breast_cancer_data]):
+        X_train, X_test, y_train, y_test = train_test_split(data, dataset.target, test_size=0.2, random_state=42)
+        train_data.append(CustomDataset(X_train, y_train))
+        test_data.append(CustomDataset(X_test, y_test))
 
-    return [{'dataset': dataset, 'name': name} for dataset, name in
-            zip(datasets, ['Iris Dataset', 'Wine Dataset', 'Breast Cancer Wisconsin Dataset'])]
+    return [{'train_dataset': train_data[i], 'test_dataset': test_data[i], 'name': name} for i, name in
+            enumerate(['Iris Dataset', 'Wine Dataset', 'Breast Cancer Wisconsin Dataset'])]
+
