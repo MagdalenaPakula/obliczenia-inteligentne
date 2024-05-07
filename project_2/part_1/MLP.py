@@ -28,7 +28,7 @@ class MLP(nn.Module):
 # Funkcja trenująca model
 def train_model(model, train_loader, device, epochs):
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr=0.01)
+    optimizer = optim.SGD(model.parameters(), lr=0.01) # learning rate here
 
     model.to(device)
 
@@ -37,7 +37,7 @@ def train_model(model, train_loader, device, epochs):
         running_loss = 0.0
         for i, (data, labels) in enumerate(train_loader):
             data = data.to(device)
-            labels = labels.long().to(device)  # Convert labels to torch.long
+            labels = labels.long().to(device)
 
             optimizer.zero_grad()
             outputs = model(data.float())
@@ -73,8 +73,8 @@ def evaluate_model(model, test_loader, device):
 
 if __name__ == "__main__":
     input_dim = [4, 13, 30]  # Input dimensions for: Iris, Wine & Breast Cancer
-    hidden_dim = 16
-    epochs = 10
+    hidden_dim = 64
+    epochs = 50
 
     datasets = load_other_datasets()
 
@@ -85,15 +85,12 @@ if __name__ == "__main__":
         train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
         test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-        # Extract target labels from training dataset
         target_labels = []
         for _, label in train_dataset:
             target_labels.append(label.item())
 
-        # Convert to set and calculate number of classeschat
         num_classes = len(set(target_labels))
 
-        # Define the model
         model = MLP(input_dim[datasets.index(dataset)], hidden_dim, num_classes)
 
         train_model(model, train_loader, 'cpu', epochs)
