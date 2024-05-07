@@ -6,12 +6,36 @@
 \begin{document}
 \maketitle
     \section{Opis ekstrakcji cech - Osoba 1}
+    \textbf{Principal Component Analysis (PCA) feature extraction:}
+    is a dimensionality reduction technique commonly used for feature extraction. In the context of the MNIST dataset, PCA can be applied to reduce the dimensionality of the image data while preserving most of its variance.
+
+    The PCA feature extraction method transforms the high-dimensional image data into a lower-dimensional space by identifying the principal components of the data. These principal components are orthogonal directions in the feature space that capture the maximum variance in the data.
+
+    In this implementation, PCA is applied to flatten each 28x28 pixel image into a 784-dimensional vector. The resulting 784-dimensional vectors are then transformed into a lower-dimensional space, typically two dimensions for visualization purposes.
+
+
+
+    \textbf{Binary Patterns (LBP)} is a texture descriptor used for feature extraction in images. In the context of the MNIST dataset, LBP can be applied to extract texture features from the images.
+
+    The LBP feature extraction method works by dividing the image into small regions and comparing each pixel with its surrounding pixels. Based on these comparisons, a binary pattern is created for each pixel. By counting the occurrences of different binary patterns, a histogram is constructed to represent the texture features of the image.
+
     \pagebreak
 
     \section{Wyniki eksperymentu - Osoba 1}
     \pagebreak
 
     \section{Opis ekstrakcji cech - Osoba 2}
+    \textbf{-Distributed Stochastic Neighbor Embedding (t-SNE) feature extraction:}
+    is another dimensionality reduction technique commonly used for visualization. Similar to PCA, t-SNE aims to reduce the dimensionality of the data while preserving its local structure.
+
+    In the context of the MNIST dataset, t-SNE can be applied to reduce the dimensionality of the image data for visualization purposes.
+
+    The t-SNE feature extraction method transforms the high-dimensional image data into a lower-dimensional space, typically two dimensions, while trying to preserve the local structure of the data points.
+
+    \textbf{Histogram of Oriented Gradients (HOG)} is a feature descriptor used for object detection in images. In the context of the MNIST dataset, HOG can be applied to extract shape features from the images.
+
+    The HOG feature extraction method works by calculating the gradient orientation in localized portions of the image. These gradient orientations are then quantized into histogram bins, which are used as features to describe the shape of objects in the image.
+
     \pagebreak
 
     \section{Wyniki eksperymentu - Osoba 2}
