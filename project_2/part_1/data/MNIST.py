@@ -43,9 +43,9 @@ def load_dataset_MNIST():
 
 def visualize_MNIST(data):
     images, targets, _ = data
-    plt.figure(figsize=(10, 14))
-    for i in range(80):
-        plt.subplot(10, 8, i + 1)
+    plt.figure(figsize=(2, 2))
+    for i in range(1):
+        plt.subplot(1, 1, i + 1)
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)

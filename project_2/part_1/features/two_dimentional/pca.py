@@ -22,8 +22,12 @@ def pca_feature_extraction(image, n_components=2):
 
 if __name__ == "__main__":
     dataset_mnist = load_dataset_MNIST()
-    image, _ = dataset_mnist[0][0][0], dataset_mnist[0][1][0]
+    images, targets, _ = dataset_mnist[0]
+
     print("\nPrincipal Component Analysis (PCA) feature extraction results:")
-    pca_features = pca_feature_extraction(image)
-    print(pca_features)
+    for i in range(1):
+        image, target = images[i], targets[i]
+        print("Label:", target.item())
+        pca_features = pca_feature_extraction(image)
+        print("PCA Features:", pca_features)
 

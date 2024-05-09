@@ -6,18 +6,61 @@
 \begin{document}
 \maketitle
     \section{Opis ekstrakcji cech - Osoba 1}
-    \textbf{Principal Component Analysis (PCA) feature extraction:}
-    is a dimensionality reduction technique commonly used for feature extraction. In the context of the MNIST dataset, PCA can be applied to reduce the dimensionality of the image data while preserving most of its variance.
+    \textbf{Analiza głównych składowych (PCA - Principal Component Analysis)} to technika redukcji wymiarowości danych powszechnie stosowana do ekstrakcji cech. W kontekście zestawu danych MNIST, PCA może być stosowana do zmniejszenia wymiarowości danych obrazowych, zachowując przy tym większość ich wariancji.
 
-    The PCA feature extraction method transforms the high-dimensional image data into a lower-dimensional space by identifying the principal components of the data. These principal components are orthogonal directions in the feature space that capture the maximum variance in the data.
+    Metoda ekstrakcji cech PCA przekształca dane obrazowe o wysokiej wymiarowości do przestrzeni o niższej wymiarowości, identyfikując główne składowe danych. Te główne składowe to ortogonalne kierunki w przestrzeni cech, które przechwytują maksymalną wariancję danych.
 
-    In this implementation, PCA is applied to flatten each 28x28 pixel image into a 784-dimensional vector. The resulting 784-dimensional vectors are then transformed into a lower-dimensional space, typically two dimensions for visualization purposes.
+    W naszej implementacji PCA jest stosowana do spłaszczenia każdego obrazu o rozmiarze 28x28 pikseli do wektora o wymiarach 784. Następnie otrzymane wektory są przekształcane do przestrzeni o niższej wymiarowości, zwykle dwóch wymiarów w celu wizualizacji.
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.3\textwidth]{img/MNIST_1_cyfra}
+        \caption{Przykładowy obraz cyfry "5" z zestawu danych MNIST.}
+    \end{figure}
+
+    Poniżej znajdują się wygenerowane cechy dla powyższego obrazu "5" za pomocą PCA:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Piksel} & \textbf{PCA cecha 1} & \textbf{PCA cecha 2} \\
+\hline
+1 & -248.0374 & 36.2011 \\
+2 & -248.0374 & 36.2011 \\
+... & ... & ... \\
+28 & -248.0374 & 36.2011 \\
+\hline
+\end{tabular}
+\caption{Wartości wygenerowanych cech za pomocą PCA dla obrazu "5".}
+\end{table}
 
 
 
-    \textbf{Binary Patterns (LBP)} is a texture descriptor used for feature extraction in images. In the context of the MNIST dataset, LBP can be applied to extract texture features from the images.
+    \textbf{Binary Patterns (LBP)} to deskryptor tekstury używany do ekstrakcji cech w obrazach. W kontekście zestawu danych MNIST, LBP może być stosowany do wydobycia cech tekstury z obrazów.
 
-    The LBP feature extraction method works by dividing the image into small regions and comparing each pixel with its surrounding pixels. Based on these comparisons, a binary pattern is created for each pixel. By counting the occurrences of different binary patterns, a histogram is constructed to represent the texture features of the image.
+    Metoda ekstrakcji cech LBP działa przez podzielenie obrazu na małe obszary i porównanie każdego piksela z otaczającymi go pikselami. Na podstawie tych porównań dla każdego piksela tworzony jest wzorzec binarny. Poprzez zliczanie wystąpień różnych wzorców binarnych konstruowany jest histogram reprezentujący cechy tekstury obrazu.
+
+    Poniżej znajdują się wygenerowane cechy dla powyższego obrazu "5" za pomocą LBP:
+    \begin{table}[h]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{LBP cecha} & \textbf{Wartość} \\
+\hline
+1 & 3.0 \\
+2 & 11.0 \\
+3 & 6.0 \\
+4 & 32.0 \\
+5 & 48.0 \\
+6 & 34.0 \\
+7 & 2.0 \\
+8 & 4.0 \\
+9 & 618.0 \\
+10 & 26.0 \\
+\hline
+\end{tabular}
+\caption{Wartości wygenerowanych cech za pomocą LBP dla obrazu "5".}
+\end{table}
 
     \pagebreak
 

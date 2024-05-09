@@ -22,6 +22,12 @@ def lbp_feature_extraction(image, num_points=8, radius=1, method='uniform'):
 if __name__ == "__main__":
     dataset_mnist = load_dataset_MNIST()
 
-    image, _ = dataset_mnist[0][0][0], dataset_mnist[0][1][0]
+    images, targets, _ = dataset_mnist[0]
+
     print("\nLocal Binary Patterns (LBP) feature extraction results:")
-    print(lbp_feature_extraction(image))
+    for i, target in enumerate(targets):
+        if target.item() == 5:
+            image = images[i]
+            print("Label:", target.item())
+            print("LBP Features:", lbp_feature_extraction(image))
+            break
