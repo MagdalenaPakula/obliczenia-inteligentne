@@ -4,9 +4,7 @@ from project_2.part_1.data.MNIST import load_dataset_MNIST
 
 
 def tsne_feature_extraction(image, n_components=2, perplexity=20):
-    flattened_image = image.view(image.shape[0], -1)
-
-    data_np = flattened_image.detach().cpu().numpy()
+    data_np = image.flatten().detach().cpu().numpy()
 
     tsne = TSNE(n_components=n_components, perplexity=perplexity, random_state=42)
     tsne_features = tsne.fit_transform(data_np)

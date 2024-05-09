@@ -30,7 +30,7 @@ def train_model(model, train_loader, epochs, learning_rate=0.01):
 
             running_loss += loss.item()
 
-        # print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss}")
+        print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss}")
 
 
 def evaluate_model(model: nn.Module, test_loader: DataLoader, dataset_name: str):
@@ -65,7 +65,7 @@ def evaluate_model(model: nn.Module, test_loader: DataLoader, dataset_name: str)
     print(f'Dokładność na zbiorze testowym: {correct / total * 100:.2f}%')
 
 
-def perform_experiment(dataset: dict[str, str | Dataset], model: nn.Module, epochs=50):
+def perform_experiment(dataset: dict[str, str | Dataset], model: nn.Module, epochs=50, learning_rate=0.01):
     name = dataset['name']
     train_dataset = dataset['train_dataset']
     test_dataset = dataset['test_dataset']
@@ -73,5 +73,5 @@ def perform_experiment(dataset: dict[str, str | Dataset], model: nn.Module, epoc
     train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-    train_model(model, train_loader, epochs=epochs)
+    train_model(model, train_loader, epochs=epochs, learning_rate=learning_rate)
     evaluate_model(model, test_loader, name)
