@@ -30,7 +30,7 @@ def train_model(model, train_loader, epochs, learning_rate=0.01):
 
             running_loss += loss.item()
 
-        print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss}")
+        # print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss}")
 
 
 def evaluate_model(model: nn.Module, test_loader: DataLoader, dataset_name: str):
