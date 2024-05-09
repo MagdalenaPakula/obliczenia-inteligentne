@@ -1,11 +1,11 @@
 \documentclass[12pt]{article}
 
 \input{../../prelude.tex}
-\title{Projekt 2 - Zadanie 1}
+\title{Projekt 2 --- Zadanie 1}
 
 \begin{document}
 \maketitle
-    \section{Opis ekstrakcji cech - Osoba 1}
+    \section{Opis ekstrakcji cech --- Osoba 1}
     \textbf{Analiza głównych składowych (PCA - Principal Component Analysis)} to technika redukcji wymiarowości danych powszechnie stosowana do ekstrakcji cech. W kontekście zestawu danych MNIST, PCA może być stosowana do zmniejszenia wymiarowości danych obrazowych, zachowując przy tym większość ich wariancji.
 
     Metoda ekstrakcji cech PCA przekształca dane obrazowe o wysokiej wymiarowości do przestrzeni o niższej wymiarowości, identyfikując główne składowe danych. Te główne składowe to ortogonalne kierunki w przestrzeni cech, które przechwytują maksymalną wariancję danych.
@@ -64,10 +64,10 @@
 
     \pagebreak
 
-    \section{Wyniki eksperymentu - Osoba 1}
+    \section{Wyniki eksperymentu --- Osoba 1}
     \pagebreak
 
-    \section{Opis ekstrakcji cech - Osoba 2}
+    \section{Opis ekstrakcji cech --- Osoba 2}
     \textbf{-Distributed Stochastic Neighbor Embedding (t-SNE) feature extraction:}
     is another dimensionality reduction technique commonly used for visualization. Similar to PCA, t-SNE aims to reduce the dimensionality of the data while preserving its local structure.
 
@@ -81,25 +81,80 @@
 
     \pagebreak
 
-    \section{Wyniki eksperymentu - Osoba 2}
+    \section{Wyniki eksperymentu --- Osoba 2}
     \pagebreak
 
     \section{Wybór optymalnego modelu}
+
+    Podczas eksperymentów przeprowadzonych w ramach pierwszego projektu dało się zauważyć, że w miarę zwiększania
+    liczby neuronów w warstwie ukrytej, skuteczność ewentualnie ulegała wypłaszczeniu.
+    W takim przypadku, zwiększanie liczby neuronów skutkowałoby jedynie utrudnieniem obliczeń, bez pozytywnego efektu na skuteczności modelu.
+    Optymalnym modelem jest zatem taki, który maksymalizuje dokładność przy jednoczesnym minimalizowaniu ilości neuronów.
+
+    Przeprowadzone eksperymenty nie dostarczyły natomiast jednoznacznego sposobu, aby a priori określić najlepszą liczbę neuronów w warstwie ukrytej.
+    Wybór optymalnego modelu został dokonany poprzez coraz dokładnejsze przeszukiwanie przestrzeni liczb naturalnych, podobne w zasadzie działania do algorytmu \emph{binary search}.
+    Różne wartości liczby neuronów były poddawane przyśpieszonemu procesowi uczenia (na mniejszym zbiorze danych oraz mniejszą ilością epok), którego to wyniki pozwalały na oszacowanie, które wartości są najbardziej obiecujące.
+    Następnie wybierane zostały kolejne ilości neuronów do sprawdzenia --- tym razem z sąsiedztwa najlepiej spisujących się w poprzedniej iteracji.
+    Proces powtarzano, aż do znalezienia lokalnego maksimum skutecznośći.
+
+    Metoda ta pozwoliła uzyskać satysfakcjonujące wyniki, jendak wskazać należy, że jesteśmy świadomi iż nie daje ona gwarancji, że wybrany model jest globalnie optymalny.
+
     \pagebreak
 
     \section{Wyniki klasyfikacji dla pierwszego sposobu ekstrakcji cech}
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[t]{0.3\textwidth}
+            \includegraphics[width=\linewidth]{img/iris_cm.png}
+            \caption{Zbior Iris}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{0.3\textwidth}
+            \includegraphics[width=\linewidth]{img/wine_cm.png}
+            \caption{Zbior Wine}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{0.3\textwidth}
+            \includegraphics[width=\linewidth]{img/cancer_cm.png}
+            \caption{Zbior Breast Cancer Wisconsin}
+        \end{subfigure}
+        \begin{subfigure}[t]{0.5\textwidth}
+            \includegraphics[width=\linewidth]{img/mnist_flat_cm.png}
+            \caption{Zbior MNIST}
+        \end{subfigure}
+        \caption{Wyniki klasyfikacji dla 1 sposobu ekstrakcji cech}
+    \end{figure}
+
+    \begin{table}[H]\centering
+        \begin{tabular}{lc}
+            \toprule
+            Zbiór danych & Wartość Accuracy \\
+            \midrule
+            Iris                    & 93.33\% \\
+            Wine                    & 100\% \\
+            Breast Cancer Wisconsin & 99.12\% \\
+            MNIST                   & 97.16\% \\
+            \bottomrule
+        \end{tabular}
+        \caption{Wartości accuracy wytrenowanego modelu}
+    \end{table}
+
     \pagebreak
 
-    \section{Wyniki klasyfikacji - Osoba 1}
+    \section{Wyniki klasyfikacji --- Osoba 1}
     \pagebreak
 
-    \section{Wyniki klasyfikacji - Osoba 2}
-    \pagebreak
-
-    \section{}
-    \pagebreak
+    \section{Wyniki klasyfikacji --- Osoba 2}
 
 
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.7\linewidth]{img/mnist_hog_cm.png}
+        \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą HOG}
+    \end{figure}
+
+    Accuracy: 89.21\%.
 
 
 
