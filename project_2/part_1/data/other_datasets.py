@@ -24,12 +24,9 @@ def load_other_datasets():
     wine_data = load_wine()
     breast_cancer_data = load_breast_cancer()
 
-    # Create StandardScaler instances for each dataset
-    scalers = [StandardScaler() for _ in range(3)]
-
     # Fit scaler to each dataset and transform them
-    scaled_data = [scalers[i].fit_transform(dataset.data) for i, dataset in
-                   enumerate([iris_data, wine_data, breast_cancer_data])]
+    scaled_data = [StandardScaler().fit_transform(dataset.data) for dataset in
+                   [iris_data, wine_data, breast_cancer_data]]
 
     # Split data into train and test sets (assuming separate target variable exists)
     train_data, test_data = [], []
@@ -40,5 +37,3 @@ def load_other_datasets():
 
     return [{'train_dataset': train_data[i], 'test_dataset': test_data[i], 'name': name} for i, name in
             enumerate(['Iris Dataset', 'Wine Dataset', 'Breast Cancer Wisconsin Dataset'])]
-
-

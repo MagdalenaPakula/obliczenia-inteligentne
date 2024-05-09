@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from torcheval.metrics import BinaryConfusionMatrix
 from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 from torch.utils.data import DataLoader
@@ -10,11 +11,11 @@ import torch.optim as optim
 
 # Definicja klasy MLP
 class MLP(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim, use_relu=True):
+    def __init__(self, input_dim, hidden_dim, output_dim):
         super(MLP, self).__init__()
 
         self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.relu = nn.ReLU(inplace=True) if use_relu else None
+        self.relu = nn.ReLU(inplace=True)
         self.fc2 = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):
@@ -33,7 +34,7 @@ def train_model(model, train_loader, device, epochs):
     model.to(device)
 
     for epoch in range(epochs):
-        print(f"Epoka {epoch + 1}/{epochs}")
+
         running_loss = 0.0
         for i, (data, labels) in enumerate(train_loader):
             data = data.to(device)
@@ -48,9 +49,7 @@ def train_model(model, train_loader, device, epochs):
 
             running_loss += loss.item()
 
-            if i % 100 == 99:
-                print(f"[Step {i + 1}/{len(train_loader)}] Loss: {running_loss / 100}")
-                running_loss = 0.0
+        print(f"Epoka {epoch + 1}/{epochs}, Loss: {running_loss}")
 
 
 
@@ -68,7 +67,7 @@ def evaluate_model(model, test_loader, device):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    print(f'Dokładność na zbiorze testowym: {correct / total * 100}%')
+    print(f'Dokładność na zbiorze testowym: {correct / total * 100:.2f}%')
 
 
 if __name__ == "__main__":
@@ -79,6 +78,7 @@ if __name__ == "__main__":
     datasets = load_other_datasets()
 
     for dataset in datasets:
+        print(f"Trenowanie zbioru {dataset['name']}")
         train_dataset = dataset['train_dataset']
         test_dataset = dataset['test_dataset']
 

@@ -1,6 +1,6 @@
 import os
+
 import matplotlib.pyplot as plt
-import torch
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
 
@@ -24,21 +24,23 @@ class CustomMNISTDataset(Dataset):
         return image, target
 
 
-def transform_MNIST_flat(image):
-    # Flatten the image to a 1D tensor with 784 elements
-    return torch.flatten(image)
-
-
-def load_dataset_MNIST():
+def load_dataset_MNIST(transform=lambda x: x):
     # Load MNIST dataset
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)), transforms.Lambda(transform_MNIST_flat)])
+    transform = transforms.Compose(
+        [
+            transforms.ToTensor(),
+            transforms.Normalize((0.5,), (0.5,)),
+            transforms.Lambda(transform)
+        ]
+    )
     mnist_train = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     mnist_test = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
-    return [
-        (mnist_train.data, mnist_train.targets, 'MNIST Train Dataset'),
-        (mnist_test.data, mnist_test.targets, 'MNIST Test Dataset')
-    ]
+    return {
+        'train_dataset': mnist_train,
+        'test_dataset': mnist_test,
+        'name': 'MNIST'
+    }
 
 
 def visualize_MNIST(data):
