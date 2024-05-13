@@ -1,6 +1,7 @@
 import os
 
 import matplotlib.pyplot as plt
+import torch
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
 
@@ -43,8 +44,9 @@ def load_dataset_MNIST(transform=lambda x: x):
     }
 
 
-def visualize_MNIST(data):
-    images, targets, _ = data
+def visualize_MNIST(data: torch.utils.data.Dataset):
+    images = data.data
+    targets = data.targets
     plt.figure(figsize=(2, 2))
     for i in range(1):
         plt.subplot(1, 1, i + 1)
@@ -61,4 +63,4 @@ if __name__ == "__main__":
     datasets_mnist = load_dataset_MNIST()
 
     # Visualize MNIST dataset
-    visualize_MNIST(datasets_mnist[0])
+    visualize_MNIST(datasets_mnist['train_dataset'])
