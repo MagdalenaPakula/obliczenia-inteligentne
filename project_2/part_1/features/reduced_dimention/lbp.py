@@ -1,33 +1,51 @@
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
 from skimage.feature import local_binary_pattern
-
 from project_2.part_1.data.MNIST import load_dataset_MNIST
 
 
-def lbp_feature_extraction(image, num_points=8, radius=1, method='uniform'):
-    image_np = image.numpy()
+def lbp_image(image, radius=1, n_points=8):
+    image = image.numpy().squeeze()  # Convert from tensor to numpy array
+    lbp_img = local_binary_pattern(image, n_points, radius, method='uniform')
+    return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0)  # Convert back
 
-    # Calculate LBP features
-    lbp = local_binary_pattern(image_np, num_points, radius, method)
 
-    hist, _ = np.histogram(lbp.ravel(), bins=np.arange(0, num_points + 3), range=(0, num_points + 2))
+def lbp_histogram(lbp_image, n_bins=10):
+    lbp_image = lbp_image.squeeze().numpy()
+    hist, _ = np.histogram(lbp_image, bins=n_bins, range=(0, n_bins), density=True)
+    return hist
 
-    # Convert histogram to tensor
-    lbp_features_tensor = torch.tensor(hist, dtype=torch.float32)
 
-    return lbp_features_tensor
+def visualize_LBP(data: torch.utils.data.Dataset):
+    plt.figure(figsize=(10, 14))
+    for i in range(80):
+        image, target = data[i]
+        image = image.squeeze().numpy()  # Convert tensor to numpy array for visualization
+        plt.subplot(10, 8, i + 1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(image, cmap='gray')
+        plt.xlabel(target)
+    plt.show()
 
 
 if __name__ == "__main__":
-    dataset_mnist = load_dataset_MNIST()
+    # Load MNIST dataset
+    datasets_mnist = load_dataset_MNIST(transform=lambda x: lbp_image(x, radius=1, n_points=8))
 
-    images, targets, _ = dataset_mnist[0]
+    # Visualize LBP-transformed MNIST dataset
+    print("Visualizing LBP-transformed MNIST dataset:")
+    visualize_LBP(datasets_mnist['train_dataset'])
 
-    print("\nLocal Binary Patterns (LBP) feature extraction results:")
-    for i, target in enumerate(targets):
-        if target.item() == 5:
-            image = images[i]
-            print("Label:", target.item())
-            print("LBP Features:", lbp_feature_extraction(image))
-            break
+    # Example of computing and visualizing LBP histogram for a single image
+    example_image, _ = datasets_mnist['train_dataset'][0]
+    lbp_hist = lbp_histogram(example_image, n_bins=10)
+
+    plt.figure()
+    plt.bar(range(len(lbp_hist)), lbp_hist, width=0.5, edgecolor='black')
+    plt.title('Histogram of LBP codes')
+    plt.xlabel('LBP code')
+    plt.ylabel('Frequency')
+    plt.show()
