@@ -6,40 +6,8 @@ from torcheval.metrics import MulticlassConfusionMatrix
 import seaborn as sn
 from project_2.part_1.MLP import MLP
 from project_2.part_1.data.MNIST import load_dataset_MNIST
-from project_2.part_1.experiments import train_model
+from project_2.part_1.experiments import train_model, evaluate_model
 from project_2.part_1.features.two_dimentional.pca import pca_features
-
-
-def evaluate_model_pca(model: MLP, test_loader: DataLoader, dataset_name: str):
-    model.eval()
-
-    y_pred = []
-    y_true = []
-
-    with torch.no_grad():
-        for data, labels in test_loader:
-            pca_features_data = pca_features(data.numpy())
-            outputs = model(torch.tensor(pca_features_data, dtype=torch.float32))
-            _, predicted = torch.max(outputs.data, 1)
-            y_pred.extend(predicted.numpy())
-            y_true.extend(labels.numpy())
-
-    y_pred = torch.tensor(y_pred)
-    y_true = torch.tensor(y_true)
-
-    total = len(y_pred)
-    correct = torch.eq(y_pred, y_true).sum()
-
-    fig, ax = plt.subplots()
-    ax.set_title(f"{dataset_name} — confusion matrix")
-    cm = MulticlassConfusionMatrix(len(np.unique(y_true.numpy())))
-    cm.update(y_pred, y_true)
-    sn.heatmap(cm.normalized('true'), annot=True, ax=ax)
-    ax.set_xlabel("Predicted label")
-    ax.set_ylabel("True label")
-    plt.show()
-
-    print(f'Accuracy on the test set: {correct.item() / total * 100:.2f}%')
 
 
 def perform_experiment_pca(dataset: dict[str, str | Dataset], model: MLP, epochs=50, learning_rate=0.01):
@@ -61,7 +29,7 @@ def perform_experiment_pca(dataset: dict[str, str | Dataset], model: MLP, epochs
     test_targets = dataset['test_dataset'].targets
     pca_test_features = pca_features(test_images)
     test_loader = DataLoader(list(zip(pca_test_features, test_targets)), batch_size=64, shuffle=False)
-    evaluate_model_pca(model, test_loader, name)
+    evaluate_model(model, test_loader, name)
 
 
 if __name__ == "__main__":
@@ -75,4 +43,4 @@ if __name__ == "__main__":
     model = MLP(input_dim, hidden_dim, output_dim)
 
     # Perform experiment
-    perform_experiment_pca(datasets_mnist, model, epochs=50, learning_rate=0.001)
+    perform_experiment_pca(datasets_mnist, model, epochs=50, learning_rate=0.01)
