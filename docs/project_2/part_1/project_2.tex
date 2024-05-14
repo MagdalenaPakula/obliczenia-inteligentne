@@ -13,7 +13,7 @@
 
 Metoda ekstrakcji cech PCA przekształca dane obrazowe o wysokiej wymiarowości do przestrzeni o niższej wymiarowości, identyfikując główne składowe danych. Te główne składowe to ortogonalne kierunki w przestrzeni cech, które przechwytują maksymalną wariancję danych.
 
-W naszej implementacji PCA jest stosowana do spłaszczenia każdego obrazu o rozmiarze 28x28 pikseli do wektora o wymiarach 784. Następnie otrzymane wektory są przekształcane do przestrzeni o niższej wymiarowości, zwykle dwóch wymiarów w celu wizualizacji.
+W naszej implementacji PCA jest stosowana do spłaszczenia każdego obrazu o rozmiarze $28\times28$ pikseli do wektora o wymiarach 784. Następnie otrzymane wektory są przekształcane do przestrzeni o niższej wymiarowości, zwykle dwóch wymiarów w celu wizualizacji.
 
 \begin{figure}[h]
     \centering
@@ -21,8 +21,8 @@ W naszej implementacji PCA jest stosowana do spłaszczenia każdego obrazu o roz
     \caption{Przykładowy obraz cyfry ``5'' z zestawu danych MNIST.}
 \end{figure}
 
-Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą PCA:
-\begin{table}[h]
+Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą PCA\@:
+\begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|}
         \toprule
@@ -42,8 +42,9 @@ Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomoc
 
 Metoda ekstrakcji cech LBP działa przez podzielenie obrazu na małe obszary i porównanie każdego piksela z otaczającymi go pikselami. Na podstawie tych porównań dla każdego piksela tworzony jest wzorzec binarny. Poprzez zliczanie wystąpień różnych wzorców binarnych konstruowany jest histogram reprezentujący cechy tekstury obrazu.
 
-Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą LBP:
-\begin{table}[h]
+Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą LBP\@:
+
+\begin{table}[H]
     \centering
     \begin{tabular}{|c|c|}
         \toprule
@@ -74,39 +75,90 @@ Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomoc
 \paragraph{Histogram of Oriented Gradients (HOG)} to metoda ekstrakcji cech używana w przetwarzaniu obrazu.
 Opiera się ona na zliczaniu gradientów zorientowanych w tym samym kierunku, w określonych fragmentach obrazu.
 Deskryptor HOG opisuje kształt obiektu na obrazie, więc bardzo dobrze nadaje się do zadania rozpoznawania cyfr, ponieważ następuje ono właśnie na podstawie kształtu.
+
+Alorytm najpierw dzieli obraz na komórki o określonym rozmiarze. W przypadku zbioru MNIST użyto komórek $14\times14$, uzyskując podział całego obrazu na 4 komórki.
+W każdej komórce, oblicza się dla każdego piksela lokalny gradient.
+Następnie, wewnątrz każdej komórki zlicza się gradienty w określonych kierunkach i tworzy się z nich histogram.
+Aby umożliwić wykrycie linii zarówno ortogonalnych jak i ukośnych, liczba kierunków została ustawiona na 9.
 W celu poprawy jakości, wartości gradientów są dodatkowo normalizowane w większych grupach.
+W tym przypadku, użyto grup o rozmiarze $2\times2$ komórek, co odpowiada całemu obrazowi.
 
-W przypadku zbioru MNIST użyto ekstrakcji HOG rozpatrującej 9 kierunków zorientowania gradientu (w celu wykrycia linii zarówno ortogonalnych jak i ukośnych), 
-a cały obraz został podzielony na 4 komórki o rozmiarze $14\times14$px. Histogramy gradientów znormalizowano w odniesieniu do całości obrazu.
-
+Cały obraz zostaje zatem opisany za pomocą 4 komórek, każda zawierająca wartości dla 9 kierunków.
 W ten sposób obraz $28\times28$ zredukowano do 36-elementowego wektora.
 
 \begin{figure}[H]\centering
-    \includegraphics[width=.3\linewidth]{img/hog_vis/4.png}
-    \includegraphics[width=.3\linewidth]{img/hog_vis/5.png}
-    \includegraphics[width=.3\linewidth]{img/hog_vis/9.png}
+    \includegraphics[width=.32\linewidth]{img/hog_vis/4.png}
+    \hfill
+    \includegraphics[width=.32\linewidth]{img/hog_vis/5.png}
+    \hfill
+    \includegraphics[width=.32\linewidth]{img/hog_vis/9.png}
     \caption{Przykłady ekstrakcji cech metodą HOG}
 \end{figure}
 
 
 
 
-\paragraph{t-Distributed Stochastic Neighbor Embedding (t-SNE)} jest stochastyczną metodą redukcji wymiarów.
-Próbuje ona rozłożyć punkty w przestrzeni docelowej zachowując lokalnych sąsiadów z przestrzeni źródłowej. 
+\paragraph{t-Distributed Stochastic Neighbor Embedding (t-SNE)} jest stochastyczną metodą redukcji wymiarów, często wykorzystywaną przy tworzeniu wizualizacji.
+
+
+Próbuje ona rozłożyć punkty w przestrzeni docelowej zachowując lokalnych sąsiadów z przestrzeni źródłowej.
 Metoda ta bada odległości między punktami w przestrzeni źródłowej i przypisuje im rozkład prawdopodobieństwa w opraciu o rozkład standardowy.
 Następnie wybiera (losowo lub przez PCA) rozkład punktów w przestrzeni docelowej i analizuje ich odległości, przypisując im prawdopodobieństwa oparte o rozkład Cauchy'ego.
 Następnie za pomocą metody minimalizacji gradientu stara się zminimalizować różnicę pomiędzy rozkładami w przestrzeni źródłowej i docelowej.
 
 \begin{figure}[H]\centering
     \includegraphics[width=.6\linewidth]{img/tsne_embedding.png}
-    \caption{Wizualicacja docelowej przestrzeni t-SNE}
+    \caption{Wizualicacja docelowej przestrzeni t-SNE}\label{fig:tsne-embed}
 \end{figure}
 
 \pagebreak
 
 \section{Wyniki eksperymentu --- Osoba 2}
-\pagebreak
 
+Dla ekstrakcji cech w celu oceny separowalności wytrenowano sieć z małą ilością epok i oceniono macierz pomyłek, która znajduje się na rys~\ref{fig:hog-bad-cm}.
+
+\begin{figure}[H]\centering
+    \includegraphics[width=.3\linewidth]{img/mnist_hog_bad_cm.png}
+    \caption{Macierz pomyłek na słabo wytrenowanej sieci (ekstakcja HOG)}\label{fig:hog-bad-cm}
+\end{figure}
+
+Zauważyć można, że najgorzej model radzi sobie z rozpoznawaniem cyfr 8,3,4, 9 i 0.
+Cyfra 8 bardzo często uznawana jest za 0,2,3,4 lub 6.
+Często mylone są również 3 i 5.
+Wynika to z faktu, że algorytm HOG wewnątrz komórek uzwględnia tylko ilość gradientów, a nie ich położenie względem siebie.
+Dla przykładu, na rys.~\ref{fig:hig-similar} przedstawiono różne cyfry, które po ekstrakcji cech wyglądają podobnie.
+Tak oto przedstawione cyfry 3 oraz 5 obie posiadają w prawej górnej ćwiartce linię ukośną i poziomą.
+W cyfrze 3 linia pozioma idzie w prawo, a w cyfrze 5 --- w lewo, natomiast dla algorytmu HOG nie ma to znaczenia, ponieważ obie linie znajdują się w tej samej komórce.
+Podobnie z cyframi 7 i 9, różniącymi się jedynie poziomym domknięciem, co jednak nie znajduje odzwierciedlenia w deskryprorze HOG, ponieważ pozioma linia już występuje gdzie indziej w tej samej ćwiartce.
+
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.2\textwidth}
+        \includegraphics[width=\linewidth]{img/hog_similar/7.png}
+        \includegraphics[width=\linewidth]{img/hog_similar/9.png}
+        \caption{Podobne cechy dla różnych cyfr: 7 i 9}
+    \end{subfigure}
+    \hspace{.1\textwidth}
+    \begin{subfigure}[t]{.2\textwidth}
+        \includegraphics[width=\linewidth]{img/hog_similar/3.png}
+        \includegraphics[width=\linewidth]{img/hog_similar/5.png}
+        \caption{Podobne cechy dla różnych cyfr: 3 i 5}
+    \end{subfigure}
+    \caption{Różne cyfry, które posiadają podobne cechy}\label{fig:hig-similar}
+\end{figure}
+
+W metodzie t-SNE można ocenić separowalność wizualnie, na podstawie rys.~\ref{fig:tsne-embed},
+jak również diagramu Woronoja na rys.~\ref{fig:tsne-voronoi}.
+Od razu widać, że poszczególne klasy są separowalne, choć zdarzają się pola do pomyłek, zwłascze przy cyfrach 3,5 i 8, oraz 7,9 i 4.
+
+
+\begin{figure}[H]\centering
+    \includegraphics[width=.4\linewidth]{img/mnist_tsne_voronoi.png}
+    \caption{Diagram Woronoja dla zbioru po przekształceniu t-SNE}\label{fig:tsne-voronoi}
+\end{figure}
+
+
+\pagebreak
 \section{Wybór optymalnego modelu}
 
 Podczas eksperymentów przeprowadzonych w ramach pierwszego projektu dało się zauważyć, że w miarę zwiększania
@@ -172,23 +224,41 @@ Metoda ta pozwoliła uzyskać satysfakcjonujące wyniki, jendak wskazać należy
 
 \subsection{HOG}
 
+Wyniki klasyfikacji z metodą HOG przedstawiono na rys.~\ref{fig:hog-cm}.
+Widać znaczą poprawę w stosunku do wstępnych oczekiwań, choć tak jak przewidziano, z cyframi 2,3,7,8,9 model radzi sobie słabiej niż z resztą.
+Tak jak przewidywano, często mylone są cyfry pary (2,3), (3,5), (7,9), (8,6), (8,9).
+Ogólna wartość accuracy osiągnęła 89.21\%.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\linewidth]{img/mnist_hog_cm.png}
-    \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą HOG}
+    \includegraphics[width=.6\linewidth]{img/mnist_hog_cm.png}
+    \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą HOG (Accuracy: 89.21\%.)}\label{fig:hog-cm}
 \end{figure}
-
-Accuracy: 89.21\%.
 
 \subsection{t-SNE}
 
+Na rys.~\ref{fig:tsne-cm} przestawiono macierz pomyłek oraz przebieg granicy decyzyjnej.
+Model poradził sobie bardzo dobrze, jednak można zauważyć drobne pomyłki.
+Zgodnie z przewidywaniami, 4 i 7 były często uznawane za 9, jak również mylone były cyfry z grupy 3,5,8.
+Pomimo mniejszej liczby cech, model osiągnął lepszą niż w poprzedniej metodzie wartość accuracy wynoszącą 95.67\%.
+Wskazać jednak należy istotną wadę tej metody, mianowicie t-SNE operuje na całym zbiorze danych, więc użycie tej metody 
+ekstrakcji cech nie będzie można zastosować w przypadku pojawnienia się nowych danych.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.7\linewidth]{img/mnist_tsne_cm.png}
-    \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą HOG}
+    \begin{subfigure}[t]{.5\textwidth}\centering
+        \includegraphics[width=\linewidth]{img/mnist_tsne_cm.png}
+        \caption{Macierz pomyłek}\label{fig:tsne-cm}
+    \end{subfigure}
+    \hspace{-3em}
+    \begin{subfigure}[t]{.5\textwidth}\centering
+        \includegraphics[width=\linewidth]{img/mnist_tsne_db.png}
+        \caption{Granice decyzyjne}\label{fig:tsne-db}
+    \end{subfigure}
+    \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą t-SNE (Accuracy: 95.67\%)}
 \end{figure}
 
-Accuracy: todo
+
 
 
 

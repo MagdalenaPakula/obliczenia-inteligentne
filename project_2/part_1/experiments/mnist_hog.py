@@ -16,4 +16,4 @@ if __name__ == '__main__':
 
         model = MLP(input_size, hidden_layer_size, output_size)
 
-        perform_experiment(dataset, model, epochs=100, learning_rate=0.1)
+        perform_experiment(dataset, model, epochs=5, learning_rate=0.1)

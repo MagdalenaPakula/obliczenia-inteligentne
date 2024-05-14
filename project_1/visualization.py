@@ -45,7 +45,7 @@ def plot_voronoi_diagram(
     plt.xlim(min_x - 0.1, max_x + 0.1)
     plt.ylim(min_y - 0.1, max_y + 0.1)
 
-    plt.show()
+    # plt.show()
 
 
 type __plottable = List[int | float] | ndarray | range
@@ -103,7 +103,8 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
                            title: Optional[str] = None,
                            resolution: int = 100,
                            cmap=plt.cm.RdYlBu,
-                           size=50
+                           size=50,
+                           try_this_if_does_not_work=False
                            ) -> None:
     if features.shape[1] != 2:
         raise ValueError("Plotting decision boundary requires 2D features")
@@ -118,7 +119,14 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
     # Predict labels for each point in the mesh
     y_pred = classifier(np.c_[xx.ravel(), yy.ravel()])
     y_pred = y_pred.reshape(xx.shape)
-    plt.contourf(xx, yy, y_pred, alpha=0.2, cmap=cmap)
+
+    # draw background from mesh
+    if try_this_if_does_not_work:
+        plt.scatter(xx, yy, c=y_pred, cmap=cmap, s=1, alpha=0.05)  # ugly but no bug
+    else:
+        plt.contourf(xx, yy, y_pred, alpha=0.2, cmap=cmap)
+
+    # draw points
     plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap, s=size)
 
     if title:

@@ -3,7 +3,7 @@ import torch
 from matplotlib import pyplot as plt
 from torch.utils.data import DataLoader
 
-from project_1.visualization import plot_decision_boundary
+from project_1.visualization import plot_decision_boundary, plot_voronoi_diagram
 from project_2.part_1.MLP import MLP
 from project_2.part_1.experiments import train_model, evaluate_model
 from project_2.part_1.features.two_dimentional.tsne import get_mnist_tsne
@@ -67,11 +67,12 @@ def main():
     def classifier(x: np.ndarray) -> np.ndarray:
         return get_prediction(model, x)
 
-    plot_decision_boundary(classifier, x_test, y_fact, cmap='tab10', resolution=500, size=10,
-                           title='MNIST decision boundary with real labels')
+    plot_voronoi_diagram(x_test, y_pred, y_fact, colormap=plt.get_cmap('tab10'),
+                         diagram_title='MNIST t-SNE voronoi diagram')
     plt.show()
-    plot_decision_boundary(classifier, x_test, y_pred, cmap='tab10', resolution=500, size=10,
-                           title='MNIST decision boundary with predicted labels')
+
+    plot_decision_boundary(classifier, x_test, y_fact, cmap='tab10', resolution=500, size=10,
+                           title='MNIST decision boundary with real labels', try_this_if_does_not_work=True)
     plt.show()
 
 
