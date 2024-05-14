@@ -2,24 +2,31 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.decomposition import PCA
 import seaborn as sns
+from sklearn.preprocessing import StandardScaler
 
 from project_2.part_1.data.MNIST import load_dataset_MNIST
 
 
 def pca_features(data, n_components=2):
-    flattened_data = data.reshape(-1, data.shape[1] * data.shape[2])
+    if len(data.shape) > 2:
+        flattened_data = data.reshape(-1, data.shape[1] * data.shape[2])
+    else:
+        flattened_data = data
+
+    # Scale the data
+    scaler = StandardScaler()
+    scaled_data = scaler.fit_transform(flattened_data)
 
     # Create a PCA object
     pca = PCA(n_components=n_components)
 
     # Fit the PCA to the data
-    pca.fit(flattened_data)
+    pca.fit(scaled_data)
 
     # Transform the data using the fitted PCA
-    transformed_data = pca.transform(flattened_data)
+    transformed_data = pca.transform(scaled_data)
 
     return transformed_data
-
 
 if __name__ == "__main__":
     datasets_mnist = load_dataset_MNIST()
