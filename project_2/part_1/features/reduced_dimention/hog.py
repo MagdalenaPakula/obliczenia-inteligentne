@@ -30,8 +30,8 @@ if __name__ == "__main__":
     i = 0
     visited = set()
     while len(visited) < 10:
-        image = dataset_mnist[0][0][i]
-        label = dataset_mnist[0][1][i].item()
+        image = dataset_mnist['train_dataset'].data[i]
+        label = dataset_mnist['train_dataset'].targets[i].item()
         i += 1
         if label in visited:
             continue
