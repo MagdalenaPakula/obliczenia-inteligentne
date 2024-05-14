@@ -4,7 +4,6 @@ from matplotlib import pyplot as plt
 from skimage.feature import local_binary_pattern
 from project_2.part_1.data.MNIST import load_dataset_MNIST
 
-
 def lbp_image(image, radius=1, n_points=8):
     image = image.numpy().squeeze()  # Convert from tensor to numpy array
     lbp_img = local_binary_pattern(image, n_points, radius, method='uniform')
@@ -39,13 +38,23 @@ if __name__ == "__main__":
     print("Visualizing LBP-transformed MNIST dataset:")
     visualize_LBP(datasets_mnist['train_dataset'])
 
-    # Example of computing and visualizing LBP histogram for a single image
-    example_image, _ = datasets_mnist['train_dataset'][0]
-    lbp_hist = lbp_histogram(example_image, n_bins=10)
+    # Extract and visualize the first 3 LBP images and their histograms
+    print("Visualizing the first 3 LBP-transformed images and their histograms:")
+    for i in range(3):
+        example_image, label = datasets_mnist['train_dataset'][i]
 
-    plt.figure()
-    plt.bar(range(len(lbp_hist)), lbp_hist, width=0.5, edgecolor='black')
-    plt.title('Histogram of LBP codes')
-    plt.xlabel('LBP code')
-    plt.ylabel('Frequency')
-    plt.show()
+        # Visualize the LBP-transformed image
+        plt.figure()
+        plt.imshow(example_image.numpy().squeeze(), cmap='gray')
+        plt.title(f"Digit: {label}")
+        plt.axis('off')
+        plt.show()
+
+        # Compute and visualize the LBP histogram
+        lbp_hist = lbp_histogram(example_image, n_bins=10)
+        plt.figure()
+        plt.bar(range(len(lbp_hist)), lbp_hist, width=0.5, edgecolor='black')
+        plt.title(f'Histogram of LBP codes for Digit {label}')
+        plt.xlabel('LBP code')
+        plt.ylabel('Frequency')
+        plt.show()
