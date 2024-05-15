@@ -6,7 +6,7 @@
 \begin{document}
 \maketitle
 \normalsize
-\section{Opis ekstrakcji cech --- Osoba 1}
+\section{Opis ekstrakcji cech --- Osoba 1 (Magdalena Pakuła)}
 
 \paragraph*{Principal Component Analysis (PCA)} - Analiza głównych składowych technika redukcji wymiarowości, która pomaga w przekształcaniu danych wielowymiarowych w postać niskowymiarową, przy jednoczesnym zachowaniu jak największej oryginalnej zmienności.
 Metoda PCA standaryzuje dane, oblicza macierz kowariancji rejestrującą relacje między cechami, a następnie dekomponuje ją na wartości własne i wektory własne. Wektory własne reprezentują kierunki największej wariancji, a wartości własne jej wielkość. Po posortowaniu wartości własnych malejąco, wybierane są największe z nich i odpowiadające im wektory własne do utworzenia nowej przestrzeni cech. Dane są rzutowane na tę przestrzeń, co skutkuje zbiorem danych o zredukowanej liczbie wymiarów, zachowującym najważniejsze informacje.
@@ -30,12 +30,12 @@ W kontekście danych MNIST, PCA może być stosowana do redukcji liczby wymiaró
     \hfill
     \begin{subfigure}{0.24\textwidth}
         \includegraphics[width=\linewidth]{img/PCA/PCA_distribution}
-        \caption{Rozkład cech PCA dla zbioru danych MNIST dwóch głównych składowych}
+        \caption{Rozkład cech PCA dla zbioru danych MNIST dwóch głównych składowych}\label{fig:pca-embed}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.24\textwidth}
         \includegraphics[width=\linewidth]{img/PCA/PCA_cumulative_variance}
-        \caption{Skumulowana suma wyjaśnionej wariancji w funkcji liczby składowych}
+        \caption{Skumulowana suma wyjaśnionej wariancji w funkcji liczby składowych}\label{fig:pierwsza-strona}
     \end{subfigure}
     \caption{Przykłady ekstrakcji cech metodą PCA}
 \end{figure}
@@ -71,13 +71,13 @@ Metoda LBP jest odporna na zmiany jasności i kontrastu, co czyni ją użyteczn�
     \includegraphics[width=.19\linewidth]{img/LBP/LBP_histogram_4}
     \hfill
     \includegraphics[width=.19\linewidth]{img/LBP/LBP_histogram_0}
-    \caption{Histogramy LBP dla cyfry 0}
+    \caption{Histogramy LBP dla 3 cyfr}
 \end{figure}
 
 
 \pagebreak
 
-\section{Wyniki eksperymentu --- Osoba 1}
+\section{Wyniki eksperymentu --- Osoba 1 (Magdalena Pakuła)}
 Dla ekstrakcji cech w celu oceny separowalności wytrenowano sieć z małą ilością epok i oceniono macierz pomyłek, która znajduje się na rys~\ref{fig:lbp-bad-cm}.
 
 \begin{figure}[H]\centering
@@ -98,18 +98,21 @@ Cyfry 5, jak i 8 mają pojedynczą strukturę zamkniętej pętli. Kluczowa róż
 Nieco grubsza górna krzywa w 8 w porównaniu z 5 lub mniej wyraźna dolna krzywa w 5 może prowadzić do bardzo podobnych wzorców LBP.
 
 \begin{figure}[H]\centering
-    \begin{subfigure}[t]{.2\textwidth}
-        \includegraphics[width=\linewidth]{img/LBP/LBP_4}
-        \includegraphics[width=\linewidth]{img/LBP/LBP_9}
-        \caption{Podobne cechy dla różnych cyfr: 4 i 9}
-    \end{subfigure}
-    \hspace{.1\textwidth}
-    \begin{subfigure}[t]{.2\textwidth}
-        \includegraphics[width=\linewidth]{img/LBP/LBP_5}
-        \includegraphics[width=\linewidth]{img/LBP/LBP_8}
-        \caption{Podobne cechy dla różnych cyfr: 5 i 8}
-    \end{subfigure}
+    \includegraphics[width=0.2\linewidth]{img/LBP/LBP_4}
+    \includegraphics[width=0.2\linewidth]{img/LBP/LBP_9}
+    \includegraphics[width=0.2\linewidth]{img/LBP/LBP_5}
+    \includegraphics[width=0.2\linewidth]{img/LBP/LBP_8}
     \caption{Różne cyfry, które posiadają podobne cechy}\label{fig:lbp-similar}
+\end{figure}
+
+W metodzie PCA można ocenić separowalność wizualnie, na podstawie rys.~\ref{fig:pca-embed},
+jak również diagramu Woronoja na rys.~\ref{fig:pca-voronoi}.
+Od razu widać, klasy są trudno-separowalne, choć zdarzają się cyfr łatwiej rozróznialne, np. 0 i 1 (kolor pomarańczowy i niebieski).
+
+
+\begin{figure}[H]\centering
+    \includegraphics[width=.4\linewidth]{img/PCA/NEW_PCA_voronoi}
+    \caption{Diagram Woronoja dla zbioru po przekształceniu PCA}\label{fig:pca-voronoi}
 \end{figure}
 
 \pagebreak
@@ -313,6 +316,31 @@ Ogólna wartość accuracy osiągnęła 85.49\%.
 \end{figure}
 
 \subsection*{PCA}
+Na rys.~\ref{fig:pca-cm-yo} i rys.~\ref{fig:pca-db-yo}  przestawiono macierz pomyłek oraz przebieg granicy decyzyjnej dla 2 komponentów.
+Można zauważyć, że dla 2 komponentów, zmieniając tylko parmetry modelu - klasyfikacja nie radzi sobie zbyt dobrze. Co innego dzieje się w momencie,
+gdy komponentów jest o wiele więcej, np. 200. Widać to na rys.~\ref{fig:pierwsza-strona}, gdy ilość wariancji się zwiększa przez kolejne komponenty PCA.
+Poniżej, w celu porównania wynków, również dodatkowo pokazany jest na rys.~\ref{fig:best-pca} jak świetne wyniki uzyskujemy na macierzy pomyłek
+przy zwiększonej liczbie komponentów - w tym wypadku accuracy jest równe 87.39\%.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{.32\textwidth}\centering
+        \includegraphics[width=\linewidth]{img/PCA/PCA_after}
+        \caption{Macierz pomyłek}\label{fig:pca-cm-yo}
+    \end{subfigure}
+    \hspace{-3em}
+    \begin{subfigure}[t]{.32\textwidth}\centering
+        \includegraphics[width=\linewidth]{img/PCA/PCA_after_decision}
+        \caption{Granice decyzyjne}\label{fig:pca-db-yo}
+    \end{subfigure}
+    \hspace{-3em}
+    \begin{subfigure}[t]{.32\textwidth}\centering
+        \includegraphics[width=\linewidth]{img/PCA/PCA_best_error_matrix}
+        \caption{Macierz pomyłek przy zmianie danych metody redukcji wymiarowości}\label{fig:best-pca}
+    \end{subfigure}
+
+    \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą PCA (Accuracy: 47.94\%)}
+\end{figure}
 
 \pagebreak
 
