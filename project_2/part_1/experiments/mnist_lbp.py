@@ -18,7 +18,7 @@ from project_2.part_1.features.two_dimentional.tsne import get_mnist_tsne
 if __name__ == "__main__":
     dataset = load_dataset_MNIST(transform=lambda x: lbp_image(x, radius=1, n_points=8))
 
-    for hidden in [24]: # use 12-32
+    for hidden in [32]: # use 12-32
         torch.manual_seed(42)
         input_size = dataset['train_dataset'][0][0].size(0)
         hidden_layer_size = hidden

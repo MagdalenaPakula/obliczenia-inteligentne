@@ -9,12 +9,12 @@ from project_2.part_1.data.MNIST import load_dataset_MNIST
 def lbp_image(image, radius=1, n_points=8):
     image = image.numpy().squeeze()  # Convert from tensor to numpy array
     lbp_img = local_binary_pattern(image, n_points, radius, method='uniform')
-    return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  # Ensure correct shape
+    # return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  # Ensure correct shape
 
     # Flatten and normalize LBP image
-    # lbp_img = lbp_img.flatten()
-    # lbp_img = (lbp_img - np.min(lbp_img)) / (np.max(lbp_img) - np.min(lbp_img))
-    # return torch.tensor(lbp_img, dtype=torch.float32)    # Ensure correct shape
+    lbp_img = lbp_img.flatten()
+    lbp_img = (lbp_img - np.min(lbp_img)) / (np.max(lbp_img) - np.min(lbp_img))
+    return torch.tensor(lbp_img, dtype=torch.float32)    # Ensure correct shape
 
 
 def lbp_histogram(lbp_image, n_bins=10):
