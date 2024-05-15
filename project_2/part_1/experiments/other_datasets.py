@@ -9,9 +9,9 @@ if __name__ == '__main__':
 
     # found by trial and error
     hidden_layer_sizes = {
-        "Iris Dataset": 16,
-        "Wine Dataset": 6,
-        "Breast Cancer Wisconsin Dataset": 5
+        "Iris Dataset": 7,
+        "Wine Dataset": 2,
+        "Breast Cancer Wisconsin Dataset": 3
     }
 
     torch.manual_seed(42)
@@ -24,4 +24,4 @@ if __name__ == '__main__':
 
         model = MLP(input_size, hidden_size, output_size)
 
-        perform_experiment(dataset, model, epochs=200)
+        perform_experiment(dataset, model, epochs=200, learning_rate=0.1)
