@@ -6,7 +6,7 @@
 \begin{document}
 \maketitle
 \normalsize
-\section{Opis ekstrakcji cech --- Osoba 1}
+\section{Opis ekstrakcji cech --- Osoba 1 (Magdalena Pakuła)}
 
 \paragraph*{Principal Component Analysis (PCA)} - Analiza głównych składowych technika redukcji wymiarowości, która pomaga w przekształcaniu danych wielowymiarowych w postać niskowymiarową, przy jednoczesnym zachowaniu jak największej oryginalnej zmienności.
 Metoda PCA standaryzuje dane, oblicza macierz kowariancji rejestrującą relacje między cechami, a następnie dekomponuje ją na wartości własne i wektory własne. Wektory własne reprezentują kierunki największej wariancji, a wartości własne jej wielkość. Po posortowaniu wartości własnych malejąco, wybierane są największe z nich i odpowiadające im wektory własne do utworzenia nowej przestrzeni cech. Dane są rzutowane na tę przestrzeń, co skutkuje zbiorem danych o zredukowanej liczbie wymiarów, zachowującym najważniejsze informacje.
@@ -77,10 +77,10 @@ Metoda LBP jest odporna na zmiany jasności i kontrastu, co czyni ją użyteczn�
 
 \pagebreak
 
-\section{Wyniki eksperymentu --- Osoba 1}
+\section{Wyniki eksperymentu --- Osoba 1 (Magdalena Pakuła)}
 \pagebreak
 
-\section{Opis ekstrakcji cech --- Osoba 2}
+\section{Opis ekstrakcji cech --- Osoba 2 (Jakub Pawlak)}
 
 \paragraph{Histogram of Oriented Gradients (HOG)} to metoda ekstrakcji cech używana w przetwarzaniu obrazu.
 Opiera się ona na zliczaniu gradientów zorientowanych w tym samym kierunku, w określonych fragmentach obrazu.
@@ -123,7 +123,7 @@ Następnie za pomocą metody minimalizacji gradientu stara się zminimalizować 
 
 \pagebreak
 
-\section{Wyniki eksperymentu --- Osoba 2}
+\section{Wyniki eksperymentu --- Osoba 2 (Jakub Pawlak)}
 
 Dla ekstrakcji cech w celu oceny separowalności wytrenowano sieć z małą ilością epok i oceniono macierz pomyłek, która znajduje się na rys~\ref{fig:hog-bad-cm}.
 
@@ -178,15 +178,47 @@ Optymalnym modelem jest zatem taki, który maksymalizuje dokładność przy jedn
 
 Przeprowadzone eksperymenty nie dostarczyły natomiast jednoznacznego sposobu, aby a priori określić najlepszą liczbę neuronów w warstwie ukrytej.
 Wybór optymalnego modelu został dokonany poprzez coraz dokładnejsze przeszukiwanie przestrzeni liczb naturalnych, podobne w zasadzie działania do algorytmu \emph{binary search}.
-Różne wartości liczby neuronów były poddawane przyśpieszonemu procesowi uczenia (na mniejszym zbiorze danych oraz mniejszą ilością epok), którego to wyniki pozwalały na oszacowanie, które wartości są najbardziej obiecujące.
+Różne wartości liczby neuronów były poddawane procesowi uczenia, którego to wyniki pozwalały na oszacowanie, które wartości są najbardziej obiecujące.
 Następnie wybierane zostały kolejne ilości neuronów do sprawdzenia --- tym razem z sąsiedztwa najlepiej spisujących się w poprzedniej iteracji.
 Proces powtarzano, aż do znalezienia lokalnego maksimum skutecznośći.
 
+Przykładowy przebieg pokazano na rys.~\ref{fig:hidden-size-choice}. Na wykresie pokazano zmianę wartości accuracy w zależności od rozmiaru warstwy ukrytej.
+Najwyższe wartości udało się osiągnąć warstw ukrytych liczących 7 lub więcej neuronów. W takim przypadku zwiększenie liczby neuronów nie skutkuje poprawą skuteczności, więc preferowana jest wartość najmniejsza, t.j 7.
+
 Metoda ta pozwoliła uzyskać satysfakcjonujące wyniki, jendak wskazać należy, że jesteśmy świadomi iż nie daje ona gwarancji, że wybrany model jest globalnie optymalny.
+
+\begin{figure}[H]\centering
+    \begin{tikzpicture}
+        \begin{axis}[
+                xlabel={rozmiar warstwy ukrytej},
+                ylabel={accuracy [\%]}
+            ]
+            \addplot coordinates {
+                    (2,93.33)
+                    (3,96.67)
+                    (4,96.67)
+                    (5,96.67)
+                    (6,90.00)
+                    (7,100.00)
+                    (8,100.00)
+                    (9,100.00)
+                    (10,100.00)
+                };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Przykładowe wartości accuracy dla różnych rozmiarów warstwy ukrytej na zbiorze Iris}\label{fig:hidden-size-choice}
+\end{figure}
 
 \pagebreak
 
 \section{Wyniki klasyfikacji dla pierwszego sposobu ekstrakcji cech}
+
+Poniżej przedtsawiono macierze pomyłek i wartości accuracy dla pozostałych zbiorów danych, oraz dla pierwzsej metody ekstrakcji cech ze zbioru MNIST.
+Wszystkie sieci wykorzystują podobną architekturę, składającej się z warstwy wejściowej, jednej warstwy ukrytej i warstwy wyjściowej.
+Rozmiar wartstw wejściowej i wyjściowej determinowany jest charakterystyką zbioru danych --- odpowiednio: ilością cech i ilością klas.
+Rozmiar warstwy ukrytej został ustalony metodą opisaną na str.~5.
+Wybrano możliwie małą wartość tak, aby jej zwiększenie nie powodowało poprawy skuteczności modelu.
+Dodatkowo, w warstwie ukrytej aplikowana jest funkcja ReLU\@.
 
 \begin{figure}[H]
     \centering
@@ -212,27 +244,33 @@ Metoda ta pozwoliła uzyskać satysfakcjonujące wyniki, jendak wskazać należy
 \end{figure}
 
 \begin{table}[H]\centering
-    \begin{tabular}{lc}
+    \begin{tabular}{lcc}
         \toprule
-        Zbiór danych            & Wartość Accuracy \\
+        Zbiór danych            & Wartość Accuracy & Rozmiar warstwy ukrytej \\
         \midrule
-        Iris                    & 93.33\%          \\
-        Wine                    & 100\%            \\
-        Breast Cancer Wisconsin & 99.12\%          \\
-        MNIST                   & 97.16\%          \\
+        Iris                    & 100\%            & 7                       \\
+        Wine                    & 100\%            & 2                       \\
+        Breast Cancer Wisconsin & 99.12\%          & 3                       \\
+        MNIST                   & 97.16\%          & 64                      \\
         \bottomrule
     \end{tabular}
     \caption{Wartości accuracy wytrenowanego modelu}
 \end{table}
 
+Z wyników widać, że dla zbiorów Iris i Wine udało się uzyskać stuprocentową skuteczność.
+Dziwne wydaje się, że dla zbioru Iris konieczne było użycie warstwy ukrytej większej od zarówno warstwy wejśćiowej jak i wyjściowej.
+Dla zbioru Breast Cancer Wisconsin uzskano bardzo satysfakcjonujące 99.12\% accuracy.
+Wynik 97\% dla zbioru mnist nie jest zadziwiający, biorąc pod uwagę, że niektóre cyfry są trudne do rozróżnienia nawet dla człowieka.
+Nie jest zadziwiająca również najlepsza ilość neuronów w warstwie ukrytej, biorąc pod uwagę fakt, że warstwa wejściowa liczy ich 784.
+
 \pagebreak
 
-\section{Wyniki klasyfikacji --- Osoba 1}
+\section{Wyniki klasyfikacji --- Osoba 1 (Magdalena Pakuła)}
 \pagebreak
 
-\section{Wyniki klasyfikacji --- Osoba 2}
+\section{Wyniki klasyfikacji --- Osoba 2 (Jakub Pawlak)}
 
-\subsection{HOG}
+\subsection*{HOG}
 
 Wyniki klasyfikacji z metodą HOG przedstawiono na rys.~\ref{fig:hog-cm}.
 Widać znaczą poprawę w stosunku do wstępnych oczekiwań, choć tak jak przewidziano, z cyframi 2,3,7,8,9 model radzi sobie słabiej niż z resztą.
@@ -241,17 +279,17 @@ Ogólna wartość accuracy osiągnęła 89.21\%.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.6\linewidth]{img/mnist_hog_cm.png}
+    \includegraphics[width=.5\linewidth]{img/mnist_hog_cm.png}
     \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą HOG (Accuracy: 89.21\%.)}\label{fig:hog-cm}
 \end{figure}
 
-\subsection{t-SNE}
+\subsection*{t-SNE}
 
 Na rys.~\ref{fig:tsne-cm} przestawiono macierz pomyłek oraz przebieg granicy decyzyjnej.
 Model poradził sobie bardzo dobrze, jednak można zauważyć drobne pomyłki.
 Zgodnie z przewidywaniami, 4 i 7 były często uznawane za 9, jak również mylone były cyfry z grupy 3,5,8.
 Pomimo mniejszej liczby cech, model osiągnął lepszą niż w poprzedniej metodzie wartość accuracy wynoszącą 95.67\%.
-Wskazać jednak należy istotną wadę tej metody, mianowicie t-SNE operuje na całym zbiorze danych, więc użycie tej metody 
+Wskazać jednak należy istotną wadę tej metody, mianowicie t-SNE operuje na całym zbiorze danych, więc użycie tej metody
 ekstrakcji cech nie będzie można zastosować w przypadku pojawnienia się nowych danych.
 
 \begin{figure}[H]
@@ -268,6 +306,9 @@ ekstrakcji cech nie będzie można zastosować w przypadku pojawnienia się nowy
     \caption{Wyniki klasyfikacji dla ekstrakcji cech metodą t-SNE (Accuracy: 95.67\%)}
 \end{figure}
 
+Z obydwu eksperymentów dojść można do wniosku, 
+że ręczna ekstrakcja cech nie jest zadaniem łatwym, 
+ponieważ w obu przypadkach poskutkowała ona pogorszeniem skuteczności modelu.
 
 
 
