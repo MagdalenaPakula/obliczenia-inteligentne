@@ -13,3 +13,6 @@ raw/
 
 # saved pytorch objects
 *.pt
+
+# pytorch lightning dirs
+lightning_logs/
