@@ -88,8 +88,29 @@ Dla ekstrakcji cech w celu oceny separowalności wytrenowano sieć z małą ilo�
 Zauważyć można, że najgorzej model radzi sobie z rozpoznawaniem cyfr: 3,4,5.
 Cyfra 4 bardzo często uznawana jest za 9.
 Często mylone są również 5 i 8 oraz 5 i 3.
-Wynika to z faktu, że (LBP) (>>>>>>>>>>)
-nie uwzględnia istotnych informacji dotyczących położenia gradientów w obrazie. LBP opiera się głównie na analizie lokalnych tekstur i nie uwzględnia informacji o kierunku gradientów. W rezultacie cechy ekstrahowane za pomocą LBP mogą być mniej skuteczne w rozpoznawaniu obiektów o podobnych teksturach, ale różniących się kierunkami gradientów, takich jak cyfry 3 i 5, 4 i 9, czy 7 i 9.
+Wynika to z faktu, że (LBP) opiera się na lokalnych różnicach jasności pikseli w obrazie. W przypadku cyfr o podobnych kształtach, takich jak 4 i 9 lub 5 i 8, te lokalne różnice mogą być niewystarczające do ich jednoznacznego rozróżnienia.
+Dla przykładu, na rys.~\ref{fig:lbp-similar} przedstawiono różne cyfry, które po
+ekstrakcji cech wyglądają podobnie.
+Tak oto przedstawione cyfry 4 oraz 9 mają pionową kreskę pośrodku i podobne zaokrąglenia u góry iu dołu.
+To podobieństwo może prowadzić do tego, że cechy LBP są dość zbliżone dla tych cyfr, co utrudnia ich rozróżnienie dla klasyfikatora.
+obie posiadają w prawej górnej ćwiartce linię ukośną i poziomą.
+Cyfry 5, jak i 8 mają pojedynczą strukturę zamkniętej pętli. Kluczowa różnica polega na orientacji i krzywiźnie linii.
+Nieco grubsza górna krzywa w 8 w porównaniu z 5 lub mniej wyraźna dolna krzywa w 5 może prowadzić do bardzo podobnych wzorców LBP.
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.2\textwidth}
+        \includegraphics[width=\linewidth]{img/LBP/LBP_4}
+        \includegraphics[width=\linewidth]{img/LBP/LBP_9}
+        \caption{Podobne cechy dla różnych cyfr: 4 i 9}
+    \end{subfigure}
+    \hspace{.1\textwidth}
+    \begin{subfigure}[t]{.2\textwidth}
+        \includegraphics[width=\linewidth]{img/LBP/LBP_5}
+        \includegraphics[width=\linewidth]{img/LBP/LBP_8}
+        \caption{Podobne cechy dla różnych cyfr: 5 i 8}
+    \end{subfigure}
+    \caption{Różne cyfry, które posiadają podobne cechy}\label{fig:lbp-similar}
+\end{figure}
 
 
 \pagebreak

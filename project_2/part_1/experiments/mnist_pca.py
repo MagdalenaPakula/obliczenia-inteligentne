@@ -15,55 +15,32 @@ from project_2.part_1.experiments import train_model, evaluate_model
 from project_2.part_1.features.two_dimentional.pca import pca_features
 
 
-def perform_experiment(dataset: dict[str, str | Dataset], model: nn.Module, epochs=50, learning_rate=0.01):
+def perform_experiment(dataset, model, epochs=100, learning_rate=0.001):
     name = dataset['name']
     train_dataset = dataset['train_dataset']
     test_dataset = dataset['test_dataset']
 
-    # PCA transformation
-    pca_train_data = pca_features(train_dataset.data)
-    pca_test_data = pca_features(test_dataset.data)
+    pca = PCA(n_components=2)
+    pca.fit(train_dataset.data.numpy().reshape(len(train_dataset), -1))
+    train_data_pca = pca.transform(train_dataset.data.numpy().reshape(len(train_dataset), -1))
+    test_data_pca = pca.transform(test_dataset.data.numpy().reshape(len(test_dataset), -1))
 
-    # Create loaders for PCA-transformed data
-    pca_train_loader = DataLoader(CustomMNISTDataset(pca_train_data, train_dataset.targets),
-                                  batch_size=64, shuffle=True)
-    pca_test_loader = DataLoader(CustomMNISTDataset(pca_test_data, test_dataset.targets),
-                                 batch_size=64, shuffle=False)
+    train_dataset_pca = CustomMNISTDataset(data=train_data_pca, target=train_dataset.targets)
+    test_dataset_pca = CustomMNISTDataset(data=test_data_pca, target=test_dataset.targets)
 
-    # Train model
-    train_model(model, pca_train_loader, epochs=epochs, learning_rate=learning_rate)
+    train_loader_pca = DataLoader(train_dataset_pca, batch_size=64, shuffle=True)
+    test_loader_pca = DataLoader(test_dataset_pca, batch_size=64, shuffle=False)
 
-    # Evaluate model
-    evaluate_model(model, pca_test_loader, name)
-
-    # Generate Voronoi diagram
-    voronoi_diagram(pca_train_data, model)
-
-    # Generate Decision boundary
-    decision_boundary(pca_train_data, train_dataset.targets, model)
-
-
-# Voronoi diagram function
-def voronoi_diagram(data, model):
-    predicted_labels = model(torch.tensor(data).float()).argmax(dim=1).detach().numpy()
-    plot_voronoi_diagram(data, predicted_labels)
-
-
-# Decision boundary function
-def decision_boundary(data, labels, model):
-    def classifier(x):
-        with torch.no_grad():
-            return model(torch.tensor(x).float()).argmax(dim=1).detach().numpy()
-
-    plot_decision_boundary(classifier, data, labels, title="Decision Boundary")
+    train_model(model, train_loader_pca, epochs=epochs, learning_rate=learning_rate)
+    evaluate_model(model, test_loader_pca, name)
 
 
 if __name__ == "__main__":
-    # Load MNIST dataset
+    input_dim = 2  # 2 for PCA-transformed data
+    hidden_dim = 128
+    output_dim = 10  # Number of classes
+    model = MLP(input_dim, hidden_dim, output_dim)
+
     mnist_dataset = load_dataset_MNIST()
 
-    # Define MLP model
-    model = MLP(input_dim=2, hidden_dim=256, output_dim=10)
-
-    # Perform experiment
     perform_experiment(mnist_dataset, model)
