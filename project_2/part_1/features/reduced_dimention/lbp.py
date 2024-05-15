@@ -45,9 +45,13 @@ if __name__ == "__main__":
 
         # Visualize the LBP-transformed image
         plt.figure()
+        plt.xticks(np.arange(0, 28, step=4))  # Add ticks along the bottom
+        plt.yticks(np.arange(0, 28, step=4))  # Add ticks along the left
+        plt.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Add grid lines
         plt.imshow(example_image.numpy().squeeze(), cmap='gray')
         plt.title(f"Digit: {label}")
-        plt.axis('off')
+        plt.xlabel("Pixels")
+        plt.ylabel("Pixels")
         plt.show()
 
         # Compute and visualize the LBP histogram

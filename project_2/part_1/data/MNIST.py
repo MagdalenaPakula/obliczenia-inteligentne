@@ -1,6 +1,7 @@
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 import torch
 from torch.utils.data import Dataset
 from torchvision import datasets, transforms
@@ -63,6 +64,21 @@ if __name__ == "__main__":
     datasets_mnist = load_dataset_MNIST()
 
     # Visualize MNIST dataset
+    print("Visualizing MNIST dataset:")
     visualize_MNIST(datasets_mnist['train_dataset'])
+
+    # Print the first 3 digits separately
+    print("Printing the first 3 digits separately:")
+    for i in range(3):
+        image, label = datasets_mnist['train_dataset'][i]
+
+        plt.figure()
+        plt.imshow(image.numpy().squeeze(), cmap='gray')
+        plt.xticks(np.arange(0, 28, step=4))  # Add ticks along the bottom
+        plt.yticks(np.arange(0, 28, step=4))  # Add ticks along the left
+        plt.grid(True, color='gray', linestyle='--', linewidth=0.5)
+        plt.title(f"Digit: {label}")
+
+        plt.show()
 
 

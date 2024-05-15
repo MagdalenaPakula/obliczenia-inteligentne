@@ -2,68 +2,78 @@
 
 \input{../../prelude.tex}
 \title{Projekt 2 --- Zadanie 1}
-
+\captionsetup{font=small}
 \begin{document}
 \maketitle
 \normalsize
 \section{Opis ekstrakcji cech --- Osoba 1}
 
+\paragraph*{Principal Component Analysis (PCA)} - Analiza głównych składowych technika redukcji wymiarowości, która pomaga w przekształcaniu danych wielowymiarowych w postać niskowymiarową, przy jednoczesnym zachowaniu jak największej oryginalnej zmienności.
+Metoda PCA standaryzuje dane, oblicza macierz kowariancji rejestrującą relacje między cechami, a następnie dekomponuje ją na wartości własne i wektory własne. Wektory własne reprezentują kierunki największej wariancji, a wartości własne jej wielkość. Po posortowaniu wartości własnych malejąco, wybierane są największe z nich i odpowiadające im wektory własne do utworzenia nowej przestrzeni cech. Dane są rzutowane na tę przestrzeń, co skutkuje zbiorem danych o zredukowanej liczbie wymiarów, zachowującym najważniejsze informacje.
+W kontekście danych MNIST, PCA może być stosowana do redukcji liczby wymiarów obrazów cyfr, co ułatwia ich analizę i wizualizację, a także przyspiesza trening modeli uczenia maszynowego poprzez zmniejszenie ilości przetwarzanych danych przy jednoczesnym zachowaniu istotnych informacji.
 
-\paragraph*{Analiza głównych składowych (PCA --- Principal Component Analysis)} to technika redukcji wymiarowości danych powszechnie stosowana do ekstrakcji cech. W kontekście zestawu danych MNIST, PCA może być stosowana do zmniejszenia wymiarowości danych obrazowych, zachowując przy tym większość ich wariancji.
-
-Metoda ekstrakcji cech PCA przekształca dane obrazowe o wysokiej wymiarowości do przestrzeni o niższej wymiarowości, identyfikując główne składowe danych. Te główne składowe to ortogonalne kierunki w przestrzeni cech, które przechwytują maksymalną wariancję danych.
-
-W naszej implementacji PCA jest stosowana do spłaszczenia każdego obrazu o rozmiarze $28\times28$ pikseli do wektora o wymiarach 784. Następnie otrzymane wektory są przekształcane do przestrzeni o niższej wymiarowości, zwykle dwóch wymiarów w celu wizualizacji.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/MNIST_1_cyfra}
-    \caption{Przykładowy obraz cyfry ``5'' z zestawu danych MNIST.}
+\begin{figure}[H]\centering
+    \begin{subfigure}{0.16\textwidth}
+        \includegraphics[width=\linewidth]{img/PCA/PCA_5}
+        \caption{Wektor 2 cech dla liczby "5"}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.16\textwidth}
+        \includegraphics[width=\linewidth]{img/PCA/PCA_4}
+        \caption{Wektor 2 cech dla liczby "4"}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.16\textwidth}
+        \includegraphics[width=\linewidth]{img/PCA/PCA_0}
+        \caption{Wektor 2 cech dla liczby "0"}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/PCA/PCA_distribution}
+        \caption{Rozkład cech PCA dla zbioru danych MNIST dwóch głównych składowych}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.24\textwidth}
+        \includegraphics[width=\linewidth]{img/PCA/PCA_cumulative_variance}
+        \caption{Skumulowana suma wyjaśnionej wariancji w funkcji liczby składowych}
+    \end{subfigure}
+    \caption{Przykłady ekstrakcji cech metodą PCA}
 \end{figure}
 
-Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą PCA\@:
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|c|c|c|}
-        \toprule
-        \textbf{Piksel} & \textbf{PCA cecha 1} & \textbf{PCA cecha 2} \\
-        \midrule
-        1               & -248.0374            & 36.2011              \\
-        2               & -248.0374            & 36.2011              \\
-        \ldots          & \ldots               & \ldots               \\
-        28              & -248.0374            & 36.2011              \\
-        \bottomrule
-    \end{tabular}
-    \caption{Wartości wygenerowanych cech za pomocą PCA dla obrazu ``5''.}
-\end{table}
+%Na poniższym wykresie (rys.2) można zauważyć,jak poszczególne klasy cyfr (oznaczone różnymi kolorami) są rozmieszczone w przestrzeni dwuwymiarowej.
+%Na wykresie obok (rys.3) pokazano skumulowaną sumę wyjaśnionej wariancji w funkcji liczby głównych składowych. Wykres ten pomaga zrozumieć, ile składowych jest potrzebnych do zachowania określonego poziomu całkowitej wariancji w danych.
 
 
-\paragraph*{Binary Patterns (LBP)} to deskryptor tekstury używany do ekstrakcji cech w obrazach. W kontekście zestawu danych MNIST, LBP może być stosowany do wydobycia cech tekstury z obrazów.
+\paragraph*{Binary Patterns (LBP)} - Lokalne wzorce binarne to technika ekstrakcji cech używana głównie w analizie obrazów, która przekształca obraz w zestaw wartości binarnych opisujących teksturę.
+Proces ten polega na porównywaniu każdego piksela z jego sąsiadami.
+Piksel centralny jest traktowany jako próg, a każdy sąsiedni piksel jest porównywany do tego progu.
+Jeśli wartość sąsiada jest większa lub równa wartości centralnego piksela, przypisywana jest wartość 1, w przeciwnym razie 0. Wynikowe wartości binarne są następnie łączone w jednolitą wartość, która reprezentuje wzorzec tekstury w danym obszarze obrazu.
+Metoda LBP jest odporna na zmiany jasności i kontrastu, co czyni ją użyteczną w różnych zastosowaniach, takich jak rozpoznawanie twarzy czy klasyfikacja tekstur. W przypadku danych MNIST, LBP może być używane do ekstrakcji cech, które są następnie wykorzystywane do klasyfikacji obrazów cyfr.
 
-Metoda ekstrakcji cech LBP działa przez podzielenie obrazu na małe obszary i porównanie każdego piksela z otaczającymi go pikselami. Na podstawie tych porównań dla każdego piksela tworzony jest wzorzec binarny. Poprzez zliczanie wystąpień różnych wzorców binarnych konstruowany jest histogram reprezentujący cechy tekstury obrazu.
+\begin{figure}[H]\centering
+    \includegraphics[width=.16\linewidth]{img/MNIST_5}
+    \hfill
+    \includegraphics[width=.16\linewidth]{img/LBP/LBP_5}
+    \hfill
+    \includegraphics[width=.16\linewidth]{img/MNIST_4}
+    \hfill
+    \includegraphics[width=.16\linewidth]{img/LBP/LBP_4}
+    \hfill
+    \includegraphics[width=.16\linewidth]{img/MNIST_0}
+    \hfill
+    \includegraphics[width=.16\linewidth]{img/LBP/LBP_0}
+    \caption{Przykłady ekstrakcji cech metodą LBP}
+\end{figure}
 
-Poniżej znajdują się wygenerowane cechy dla powyższego obrazu ``5'' za pomocą LBP\@:
+\begin{figure}[H]\centering
+    \includegraphics[width=.19\linewidth]{img/LBP/LBP_histogram_5}
+    \hfill
+    \includegraphics[width=.19\linewidth]{img/LBP/LBP_histogram_4}
+    \hfill
+    \includegraphics[width=.19\linewidth]{img/LBP/LBP_histogram_0}
+    \caption{Histogramy LBP dla cyfry 0}
+\end{figure}
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|c|c|}
-        \toprule
-        \textbf{LBP cecha} & \textbf{Wartość} \\
-        \midrule
-        1                  & 3.0              \\
-        2                  & 11.0             \\
-        3                  & 6.0              \\
-        4                  & 32.0             \\
-        5                  & 48.0             \\
-        6                  & 34.0             \\
-        7                  & 2.0              \\
-        8                  & 4.0              \\
-        9                  & 618.0            \\
-        10                 & 26.0             \\
-        \bottomrule
-    \end{tabular}
-    \caption{Wartości wygenerowanych cech za pomocą LBP dla obrazu ``5''.}
-\end{table}
 
 \pagebreak
 
