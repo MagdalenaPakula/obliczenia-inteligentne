@@ -78,6 +78,20 @@ Metoda LBP jest odporna na zmiany jasności i kontrastu, co czyni ją użyteczn�
 \pagebreak
 
 \section{Wyniki eksperymentu --- Osoba 1}
+Dla ekstrakcji cech w celu oceny separowalności wytrenowano sieć z małą ilością epok i oceniono macierz pomyłek, która znajduje się na rys~\ref{fig:lbp-bad-cm}.
+
+\begin{figure}[H]\centering
+    \includegraphics[width=.3\linewidth]{img/LBP/LBP_MLP}
+    \caption{Macierz pomyłek na słabo wytrenowanej sieci (ekstakcja LBP)}\label{fig:lbp-bad-cm}
+\end{figure}
+
+Zauważyć można, że najgorzej model radzi sobie z rozpoznawaniem cyfr: 3,4,5.
+Cyfra 4 bardzo często uznawana jest za 9.
+Często mylone są również 5 i 8 oraz 5 i 3.
+Wynika to z faktu, że (LBP) (>>>>>>>>>>)
+nie uwzględnia istotnych informacji dotyczących położenia gradientów w obrazie. LBP opiera się głównie na analizie lokalnych tekstur i nie uwzględnia informacji o kierunku gradientów. W rezultacie cechy ekstrahowane za pomocą LBP mogą być mniej skuteczne w rozpoznawaniu obiektów o podobnych teksturach, ale różniących się kierunkami gradientów, takich jak cyfry 3 i 5, 4 i 9, czy 7 i 9.
+
+
 \pagebreak
 
 \section{Opis ekstrakcji cech --- Osoba 2}

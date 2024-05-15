@@ -22,7 +22,7 @@ class CustomMNISTDataset(Dataset):
         image = self.data[idx]
         target = self.target[idx]
         if self.transform:
-            image = self.transform(image)
+            image = self.transform(image.float())  # Convert to float for normalization
         return image, target
 
 
