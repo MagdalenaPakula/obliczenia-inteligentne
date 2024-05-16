@@ -91,11 +91,10 @@ Często mylone są również 5 i 8 oraz 5 i 3.
 Wynika to z faktu, że (LBP) opiera się na lokalnych różnicach jasności pikseli w obrazie. W przypadku cyfr o podobnych kształtach, takich jak 4 i 9 lub 5 i 8, te lokalne różnice mogą być niewystarczające do ich jednoznacznego rozróżnienia.
 Dla przykładu, na rys.~\ref{fig:lbp-similar} przedstawiono różne cyfry, które po
 ekstrakcji cech wyglądają podobnie.
-Tak oto przedstawione cyfry 4 oraz 9 mają pionową kreskę pośrodku i podobne zaokrąglenia u góry iu dołu.
+Tak oto przedstawione cyfry 4 oraz 9 mają poziomą kreskę pośrodku i podobne zaokrąglenia u dołu.
 To podobieństwo może prowadzić do tego, że cechy LBP są dość zbliżone dla tych cyfr, co utrudnia ich rozróżnienie dla klasyfikatora.
-obie posiadają w prawej górnej ćwiartce linię ukośną i poziomą.
-Cyfry 5, jak i 8 mają pojedynczą strukturę zamkniętej pętli. Kluczowa różnica polega na orientacji i krzywiźnie linii.
-Nieco grubsza górna krzywa w 8 w porównaniu z 5 lub mniej wyraźna dolna krzywa w 5 może prowadzić do bardzo podobnych wzorców LBP.
+Cyfry 5 i 8 mają struktury podobne, tam gdzie ósemka się zaokrągla, niektóre liczby piątek też mogą być zaokrąglone . Kluczowa różnica polega na orientacji i krzywiźnie linii.
+Nieco mniej wyraźna górna krzywa prawa i dolna krzywa linia lewa w 8 może prowadzić do bardzo podobnych wzorców co w 5 LBP. Można dojść do wniosku
 
 \begin{figure}[H]\centering
     \includegraphics[width=0.2\linewidth]{img/LBP/LBP_4}
@@ -306,7 +305,8 @@ Nie jest zadziwiająca również najlepsza ilość neuronów w warstwie ukrytej,
 \subsection*{LBP}
 Wyniki klasyfikacji z metodą LBP przedstawiono na rys.~\ref{fig:lbp-cm}.
 Widać znaczą poprawę w stosunku do wstępnych oczekiwań, choć tak jak przewidziano, z cyframi 5 i 7 model radzi sobie słabiej niż z resztą.
-Tak jak przewidywano, często mylone są cyfry pary (4,9), (5,3), (5,8), (7,9).
+Tak jak przewidywano, często mylone są cyfry pary (4,9), (5,3), (5,8), (7,9). Można wywnioskować, że ręczna klasyfikacja cyfr, które są napisane w sposób niezbyt schludny są trudno odczytywne przez ludzkie oko.
+Podsumowując, można stwierdzić, że dobrze wytrenowany model może rozpoznawać cyfry lepiej niż ludzkie oko.
 Ogólna wartość accuracy osiągnęła 85.49\%.
 
 \begin{figure}[H]

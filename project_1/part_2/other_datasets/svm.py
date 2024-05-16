@@ -31,7 +31,7 @@ def experiment_2(dataset, dataset_name):
                                                         test_size=0.2,
                                                         random_state=42)
 
-    C_values = [10 ** i for i in range(-4, 2)]
+    C_values = [10 ** i for i in range(-4, 10)]
     classifiers: List[SVC] = []
     train_scores = []
     test_scores = []
