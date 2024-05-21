@@ -18,12 +18,16 @@ class MNISTDataModule(pl.LightningDataModule):
     def setup(self, stage: str) -> None:
         self.train_dataset: Dataset = MNIST(self.data_dir, train=True, transform=self.transform, download=True)
         self.test_dataset: Dataset = MNIST(self.data_dir, train=False, transform=self.transform, download=True)
+        self.val_dataset: Dataset = MNIST(self.data_dir, train=False, transform=self.transform, download=True)
 
     def train_dataloader(self) -> DataLoader:
         return DataLoader(self.train_dataset, batch_size=self.batch_size, num_workers=4, shuffle=True)
 
+    def val_dataloader(self) -> DataLoader:
+        return DataLoader(self.val_dataset, batch_size=self.batch_size, num_workers=4)
+
     def test_dataloader(self) -> DataLoader:
-        return DataLoader(self.test_dataset, batch_size=self.batch_size)
+        return DataLoader(self.test_dataset, batch_size=self.batch_size, num_workers=4)
 
 
 class CIFAR10DataModule(pl.LightningDataModule):
