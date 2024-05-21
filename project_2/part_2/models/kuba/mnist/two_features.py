@@ -8,7 +8,7 @@ from torchmetrics.classification import MulticlassConfusionMatrix, MulticlassAcc
 from project_2.part_2.data import MNISTDataModule
 
 
-class Kuba1(pl.LightningModule):
+class Mnist2FeatureModel(pl.LightningModule):
     def __init__(self, num_classes):
         super().__init__()
         self.extract_features = nn.Sequential(
@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
     dm = MNISTDataModule()
 
-    model = Kuba1(num_classes=10)
+    model = Mnist2FeatureModel(num_classes=10)
     trainer = pl.Trainer(max_epochs=100, fast_dev_run=True)
     trainer.fit(model, dm)
     test_data = trainer.test(model, dm)
