@@ -1,15 +1,18 @@
+import numpy as np
 import pytorch_lightning as pl
 import seaborn as sn
 import torch
+import torch.nn.functional as F
 import torch.nn as nn
 from matplotlib import pyplot as plt
-from torch import optim
+from torch import optim, argmax
+from torchmetrics import Accuracy
 from torchmetrics.classification import MulticlassConfusionMatrix, MulticlassAccuracy
 
 from project_2.part_2.data import MNISTDataModule
 
 
-# num of class = 10 (liczby 0-9)
+# 1D vector, num of class = 10 (liczby 0-9)
 class Magda1MNIST(pl.LightningModule):
     def __init__(self, num_classes=10):
         super().__init__()
@@ -32,41 +35,89 @@ class Magda1MNIST(pl.LightningModule):
         self.fc = nn.Linear(32 * 3 * 3, num_classes)
 
         self.loss = nn.CrossEntropyLoss()
-        self.accuracy = MulticlassAccuracy(num_classes=num_classes)
+        self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
+        self.test_pred = []  # collect predictions
+        self.pred_pred = []  # collect predictions
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes, normalize='true')
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-        x = self.flatten(x)
-        output = self.fc(x)
-        return output
-
-    def training_step(self, batch, batch_idx):
-        x, y = batch
-        logits = self(x)
-        loss = self.loss(logits, y)
-        self.accuracy(logits, y)
-        self.log_dict({
-            'train_loss': loss.item(),
-            'train_acc': self.accuracy.compute(),
-        }, on_step=False, on_epoch=True, prog_bar=True)
-        return loss
-
-    def test_step(self, batch, batch_idx):
-        x, y = batch
-        logits = self(x)
-        loss = self.loss(logits, y)
-        self.accuracy(logits, y)
-        self.log_dict({
-            'test_loss': loss.item(),
-            'test_acc': self.accuracy.compute(),
-        })
-        return loss
+        out = self.conv1(x)
+        out = self.conv2(out)
+        out = self.conv3(out)
+        out = self.flatten(out)
+        out = self.fc(out)
+        return out
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters())
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self.forward(x)
+        loss = self.loss(logits, y)
+        self.log('loss', loss)
+        # Track accuracy
+        y_pred = argmax(logits, dim=-1)
+        acc = self.accuracy(y_pred, y)
+        self.log('accuracy', acc)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self.forward(x)
+        loss = self.loss(logits, y)
+        self.log('val_loss', loss)
+        # Track accuracy
+        y_pred = argmax(logits, dim=-1)
+        acc = self.accuracy(y_pred, y)
+        self.log('val_accuracy', acc)
+
+    def test_step(self, batch, batch_idx):
+        x, y = batch
+        # Evaluate model
+        logits = self.forward(x)
+        # Track loss
+        loss = self.loss(logits, y)
+        self.log('test_loss', loss)
+        # Track accuracy
+        y_pred = argmax(logits, dim=-1)  # find label with highest probability
+        acc = self.accuracy(y_pred, y)
+        self.log('test_accuracy', acc)
+        # Collect predictions
+        self.test_pred.extend(y_pred.cpu().numpy())
+        # Update confusion matrix
+        self.confusion_matrix.update(y_pred, y)
+
+    def predict_step(self, batch, batch_idx):
+        x, _ = batch
+        logits = self.forward(x)
+        y_pred = argmax(logits, dim=-1)
+        # Collect predictions
+        self.pred_pred.extend(y_pred.cpu().numpy())
+        return y_pred
+
+
+class MetricTrackerCallback(pl.Callback):
+    def __init__(self):
+        super().__init__()
+        self.losses = {
+            'loss': [],
+            'val_loss': []
+        }
+        self.acc = {
+            'accuracy': [],
+            'val_accuracy': []
+        }
+
+    def on_train_epoch_end(self, trainer, module):
+        metrics = trainer.logged_metrics
+        self.losses['loss'].append(metrics['loss'])
+        self.acc['accuracy'].append(metrics['accuracy'])
+
+    def on_validation_epoch_end(self, trainer, module):
+        metrics = trainer.logged_metrics
+        self.losses['val_loss'].append(metrics['val_loss'])
+        self.acc['val_accuracy'].append(metrics['val_accuracy'])
 
 
 if __name__ == '__main__':
@@ -77,10 +128,10 @@ if __name__ == '__main__':
     model = Magda1MNIST()
 
     # Inicjalizacja trainera
-    trainer = pl.Trainer(max_epochs=100)
+    trainer = pl.Trainer(max_epochs=2)
 
     # Trening
     trainer.fit(model, data_module)
 
     # Testowanie
-    trainer.test(model=model, datamodule=data_module)
+    trainer.test(model=model, datamodule=data_module, )
