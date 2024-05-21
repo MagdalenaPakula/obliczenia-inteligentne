@@ -26,6 +26,7 @@ class Mnist2FeatureModel(pl.LightningModule):
         )
         self.loss = nn.CrossEntropyLoss()
         self.accuracy = MulticlassAccuracy(num_classes=num_classes)
+        self.val_accuracy = MulticlassAccuracy(num_classes=num_classes)
         self.confusion_matrix = MulticlassConfusionMatrix(num_classes=num_classes, normalize='true')
 
     def configure_optimizers(self):
@@ -45,6 +46,20 @@ class Mnist2FeatureModel(pl.LightningModule):
             'train_loss': loss.item(),
             'train_acc': self.accuracy
         }, on_step=False, on_epoch=True, prog_bar=True)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        self.eval()
+        with torch.inference_mode():
+            x, y = batch
+            logits = self(x)
+            loss = self.loss(logits, y)
+            self.val_accuracy(logits, y)
+            self.log_dict({
+                'val_loss': loss.item(),
+                'val_acc': self.val_accuracy
+            }, on_step=False, on_epoch=True, prog_bar=True)
+        self.train()
         return loss
 
     def test_step(self, batch, batch_idx):
