@@ -1,2 +1,4 @@
 data/*
 !data/.gitkeep
+
+part_2/models/saved/
