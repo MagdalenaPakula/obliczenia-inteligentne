@@ -1,7 +1,11 @@
+from pathlib import Path
+
 import pytorch_lightning as pl
 import torch
 from torch import nn
 from torchmetrics.classification import MulticlassAccuracy, MulticlassConfusionMatrix
+
+saved_models_dir = Path(__file__).parent / 'saved'
 
 
 class _ModelBase(pl.LightningModule):

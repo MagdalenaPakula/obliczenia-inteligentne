@@ -5,7 +5,7 @@ import torch.nn as nn
 from matplotlib import pyplot as plt
 
 from project_2.part_2.data import MNISTDataModule
-from project_2.part_2.models import _ModelBase
+from project_2.part_2.models import _ModelBase, saved_models_dir
 
 
 class Mnist2FeatureModel(_ModelBase):
@@ -27,20 +27,33 @@ class Mnist2FeatureModel(_ModelBase):
         super().__init__(feature_extractor, classifier, num_classes)
 
 
-if __name__ == '__main__':
-    torch.manual_seed(42)
+def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.LightningModule:
+    model_path = saved_models_dir / 'kuba_mnist_smol.pt'
+    try:
+        model: pl.LightningModule = torch.load(model_path)
+        return model
+    except FileNotFoundError:
+        model = Mnist2FeatureModel(num_classes=10)
+        trainer.fit(model, data_module)
+        torch.save(model, model_path)
 
+
+def main():
+    torch.manual_seed(42)
     dm = MNISTDataModule()
 
-    model = Mnist2FeatureModel(num_classes=10)
     trainer = pl.Trainer(max_epochs=50, fast_dev_run=False)
-    trainer.fit(model, dm)
-    test_data = trainer.test(model, dm)
+    model = get_model(trainer, dm)
+
+    trainer.test(model, dm)
 
     cm = model.confusion_matrix
-
     fig, ax = plt.subplots()
     sn.heatmap(cm.compute(), annot=True, ax=ax)
     ax.set_xlabel("Predicted label")
     ax.set_ylabel("True label")
     fig.show()
+
+
+if __name__ == '__main__':
+    main()
