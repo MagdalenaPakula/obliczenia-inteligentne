@@ -16,7 +16,8 @@ class Mnist2FeatureModel(_ModelBase):
             nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5),  # 20 * 10 * 10
             nn.MaxPool2d(2),  # 16 * 5 * 5
             nn.Flatten(start_dim=1),
-            nn.Sequential(nn.Linear(16 * 5 * 5, 2), nn.ReLU())
+            nn.Linear(16 * 5 * 5, 2),
+            nn.ReLU()
         )
         classifier = nn.Sequential(
             nn.Linear(2, 5),
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     dm = MNISTDataModule()
 
     model = Mnist2FeatureModel(num_classes=10)
-    trainer = pl.Trainer(max_epochs=100, fast_dev_run=True)
+    trainer = pl.Trainer(max_epochs=50, fast_dev_run=False)
     trainer.fit(model, dm)
     test_data = trainer.test(model, dm)
 
