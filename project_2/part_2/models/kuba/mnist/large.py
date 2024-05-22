@@ -39,6 +39,7 @@ def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.Li
     except FileNotFoundError:
         model = MnistLargeModel(num_classes=10)
         trainer.fit(model, data_module)
+        print("Saving model to disk")
         torch.save(model, model_path)
         return model
 
