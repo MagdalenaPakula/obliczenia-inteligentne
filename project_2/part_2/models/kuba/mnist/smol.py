@@ -12,17 +12,17 @@ from project_2.part_2.visualization import plot_decision_boundary
 class MnistSmolModel(ModelBase):
     def __init__(self, num_classes):
         feature_extractor = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, padding=2),  # 10 * 28 * 28
-            nn.Sigmoid(),
+            nn.Conv2d(in_channels=1, out_channels=10, kernel_size=5, padding=2),  # 10 * 28 * 28
+            nn.ReLU(),
             nn.Dropout2d(p=0.1),
-            nn.MaxPool2d(2),  # 6 * 12 * 12
-            nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5),  # 20 * 10 * 10
-            nn.Sigmoid(),
-            nn.Dropout2d(p=0.1),
-            nn.MaxPool2d(2),  # 16 * 5 * 5
-            nn.Conv2d(in_channels=16, out_channels=2, kernel_size=5),  # 2 * 1 * 1
-            nn.Sigmoid(),
+            nn.MaxPool2d(2),  # 10 * 14 * 14
+            nn.Conv2d(in_channels=10, out_channels=5, kernel_size=5),  # 5 * 10 * 10
+            nn.ReLU(),
+            nn.MaxPool2d(2),  # 5 * 5 * 5
+            nn.Conv2d(in_channels=5, out_channels=2, kernel_size=3),  # 2 * 3 * 3
+            nn.ReLU(),
             nn.Flatten(start_dim=1),
+            nn.Linear(2 * 3 * 3, 2),
         )
         classifier = nn.Sequential(
             nn.Linear(2, 5),
