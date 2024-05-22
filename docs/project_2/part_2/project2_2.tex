@@ -2,7 +2,28 @@
 
 \input{../../prelude.tex}
 \title{Projekt 2 --- Zadanie 2}
+
 \captionsetup{font=small}
+
+\newcommand{\plotAccuraciesFromLoggedMetrics}[1]{
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=\linewidth,
+            height=.5\linewidth,
+            legend pos = south east,
+            grid = major,
+            style = {font=\small}
+        ]
+            \addplot+[mark=none] table[x = epoch, y = train_acc] {#1};
+            \addlegendentry{Training set accuracy};
+
+            \addplot+[mark=none, orange] table[x = epoch, y = val_acc] {#1};
+            \addlegendentry{Test set accuracy};
+        \end{axis}
+    \end{tikzpicture}
+}
+
+
 \begin{document}
 
 \maketitle
@@ -10,8 +31,43 @@
 
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (Jakub Pawlak)}\label{sec:ex1-pawlak_mnist}
 
-\paragraph{Pierwsza architektura}
-\paragraph{Druga architektura prowadząca do ekstrakcji 2 cech}
+\subsection*{Pierwsza architektura}
+
+
+\pgfplotstableread[col sep=comma]{data/kuba/mnist/large.csv}\kubaMnistLarge{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaMnistLarge}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/mnist/large_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 1 architektury}
+\end{figure}
+
+
+\subsection*{Druga architektura, prowadząca do ekstrakcji 2 cech}
+
+\pgfplotstableread[col sep=comma]{data/kuba/mnist/smol.csv}\kubaMnistSmol{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaMnistSmol}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/mnist/smol_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 2 architektury}
+\end{figure}
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (Magdalena Pakuła)}\label{sec:ex1-pakula_mnist}
