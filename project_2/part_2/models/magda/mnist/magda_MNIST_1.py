@@ -13,27 +13,27 @@ from torchmetrics.classification import MulticlassConfusionMatrix
 from project_2.part_2.data import MNISTDataModule
 
 
-# 1D vector, num of class = 10 (liczby 0-9)
+# gives MANY MORE FEATURES
 class Magda1MNIST(pl.LightningModule):
     def __init__(self, num_classes=10):
         super().__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 6, 5, 1, 2),
+            nn.Conv2d(1, 6, 5, 1, 2),  # Output: 6 * 28 * 28
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(2),  # Output: 6 * 14 * 14
         )
         self.conv2 = nn.Sequential(
-            nn.Conv2d(6, 32, 5, 1, 2),
+            nn.Conv2d(6, 32, 5, 1, 2),  # Output: 32 * 14 * 14
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(2),  # Output: 32 * 7 * 7
         )
         self.conv3 = nn.Sequential(
-            nn.Conv2d(32, 32, 5, 1, 2),
+            nn.Conv2d(32, 32, 5, 1, 2),  # Output: 32 * 7 * 7
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(2),  # Output: 32 * 3 * 3
         )
-        self.flatten = nn.Flatten()
-        self.fc = nn.Linear(32 * 3 * 3, num_classes)
+        self.flatten = nn.Flatten()  # Output: 32 * 3 * 3 = 288
+        self.fc = nn.Linear(32 * 3 * 3, num_classes)  # Output: 10 (num_classes)
 
         self.loss = nn.CrossEntropyLoss()
         self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
@@ -132,22 +132,59 @@ def plot_loss(loss_dict) -> None:
 
 
 def plot_accuracy(acc_dict) -> None:
-    # Get accuracy values
-    if torch.cuda.is_available():
-        accuracy = [acc_dict['accuracy'][i].cpu() for i in range(len(acc_dict['accuracy']))]
-        val_accuracy = [acc_dict['val_accuracy'][i].cpu() for i in range(len(acc_dict['val_accuracy']))]
-    else:
-        accuracy = acc_dict['accuracy']
-        val_accuracy = acc_dict['val_accuracy']
+    accuracy = acc_dict['accuracy']
+    val_accuracy = acc_dict['val_accuracy'][:len(accuracy)]  # Truncate val_accuracy to match accuracy length
     plt.figure('accuracy')
-    plt.plot(accuracy, label='accuracy', c='black')
-    plt.plot(val_accuracy, label='val_accuracy', c='red')
-    plt.xlabel('epoch')
-    plt.ylabel('accuracy')
+    plt.plot(accuracy, label='train accuracy', c='black')
+    plt.plot(val_accuracy, label='test accuracy', c='red')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
     plt.legend()
     plt.show()
+    print(len(accuracy), len(val_accuracy))
+
+# DLA WSZYSTKICH 10 EPOCHÓW
+# if __name__ == '__main__':
+#
+#     tracker = MetricTrackerCallback()
+#
+#     data_module = MNISTDataModule()
+#     model = Magda1MNIST()
+#
+#     dirpath = Path.cwd()
+#     # Remove previous best model (if exists)
+#     if os.path.exists('best_model.ckpt'):
+#         os.remove('best_model.ckpt')
+#     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
+#         dirpath=dirpath,
+#         filename="best_model",
+#         monitor='val_loss',
+#         save_top_k=1,
+#         mode='min',
+#     )
+#
+#     trainer = pl.Trainer(max_epochs=10, enable_model_summary=True, callbacks=[tracker, model_checkpoint_callback])
+#
+#     trainer.fit(model, data_module)
+#
+#     # plot_loss(tracker.losses)
+#     plot_accuracy(tracker.acc)
+#
+#     result = trainer.test(model, data_module, verbose=False, ckpt_path=None)
+#
+#     print(f"Accuracy in test data: {result[0]['test_accuracy']}")
+#     print(f"Loss in test data: {result[0]['test_loss']}")
+#
+#     # Access confusion matrix from the best model
+#     confusion_matrix = model.confusion_matrix
+#     fig, ax = plt.subplots()
+#     sns.heatmap(confusion_matrix, annot=True, fmt="d")
+#     ax.set_xlabel("Predicted label")
+#     ax.set_ylabel("True label")
+#     fig.show()
 
 
+# DLA BEST MODEL
 if __name__ == '__main__':
 
     tracker = MetricTrackerCallback()
@@ -173,20 +210,17 @@ if __name__ == '__main__':
         save_top_k=1,
         mode='min',
     )
+    #  powinno byc 10 nevermind ale cos sie idk - potem sprawdzic
+    trainer = pl.Trainer(max_epochs=6, enable_model_summary=True, callbacks=[tracker, early_stopping_callback, model_checkpoint_callback])
 
-    trainer = pl.Trainer(max_epochs=10, enable_model_summary=True, callbacks=[tracker, early_stopping_callback, model_checkpoint_callback])
-
-    # Trening
     trainer.fit(model, data_module)
 
-    plot_loss(tracker.losses)
     plot_accuracy(tracker.acc)
 
     result = trainer.test(model, data_module, verbose=False, ckpt_path="best_model.ckpt")
     print(f"Accuracy in test data: {result[0]['test_accuracy']}")
     print(f"Loss in test data: {result[0]['test_loss']}")
 
-    # Access confusion matrix from the best model
     confusion_matrix = model.confusion_matrix
     fig, ax = plt.subplots()
     sns.heatmap(confusion_matrix, annot=True, fmt="d")
