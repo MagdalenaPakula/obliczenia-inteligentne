@@ -42,8 +42,8 @@ class CIFAR10DataModule(pl.LightningDataModule):
         self.test_dataset: Dataset | None = None
 
     def setup(self, stage: str) -> None:
-        self.train_dataset: Dataset = CIFAR10(self.data_dir, train=True, download=True)
-        self.test_dataset: Dataset = CIFAR10(self.data_dir, train=False, download=True)
+        self.train_dataset: Dataset = CIFAR10(self.data_dir, train=True, transform=self.transform, download=True)
+        self.test_dataset: Dataset = CIFAR10(self.data_dir, train=False, transform=self.transform, download=True)
 
     def train_dataloader(self) -> DataLoader:
         return DataLoader(self.train_dataset, num_workers=4, batch_size=self.batch_size, shuffle=True)

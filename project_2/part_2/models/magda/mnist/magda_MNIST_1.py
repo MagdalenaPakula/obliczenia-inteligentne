@@ -81,7 +81,9 @@ class Magda1MNIST(pl.LightningModule):
         self.log('test_accuracy', acc, on_step=False, on_epoch=True, prog_bar=True)
         self.test_pred.extend(y_pred.cpu().numpy())
         # Calculate and store confusion matrix
-        self.confusion_matrix = confusion_matrix(y, y_pred)
+        # Store predictions and targets for computing confusion matrix later
+        self.test_predictions.extend(y_pred.cpu().numpy())
+        self.test_targets.extend(y.cpu().numpy())
 
     def predict_step(self, batch, batch_idx):
         x, _ = batch
@@ -89,6 +91,10 @@ class Magda1MNIST(pl.LightningModule):
         y_pred = argmax(logits, dim=-1)
         self.pred_pred.extend(y_pred.cpu().numpy())
         return y_pred
+
+    def on_test_epoch_end(self):
+        # Compute confusion matrix using all predictions and targets
+        self.confusion_matrix = confusion_matrix(self.test_targets, self.test_predictions)
 
 
 class MetricTrackerCallback(pl.Callback):
@@ -200,9 +206,17 @@ if __name__ == '__main__':
     model = Magda1MNIST()
 
     dirpath = Path.cwd()
-    # Remove previous best model (if exists)
+
     if os.path.exists('best_model.ckpt'):
-        os.remove('best_model.ckpt')
+        # Load the existing best model
+        model = Magda1MNIST.load_from_checkpoint('best_model.ckpt')
+        print("Loaded existing model from checkpoint")
+    else:
+        # Create a new model if the checkpoint doesn't exist
+        model = Magda1MNIST()
+        print("Created a new model")
+
+    # Model checkpoint callback
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         dirpath=dirpath,
         filename="best_model",

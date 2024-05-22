@@ -10,45 +10,39 @@ from torch import argmax
 from torchmetrics import Accuracy
 import seaborn as sns
 
-from project_2.part_2.data import MNISTDataModule
-from project_2.part_2.models.magda.mnist.magda_MNIST_1 import MetricTrackerCallback, plot_loss, plot_accuracy
-from project_2.part_2.visualization import plot_decision_boundary
+from project_2.part_2.data import CIFAR10DataModule
+from project_2.part_2.models.magda.mnist.magda_MNIST_1 import MetricTrackerCallback, plot_accuracy
 
 
-# gives 2 FEATURES + decision boundary
-class Magda2MNIST(pl.LightningModule):
+class Magda1CIFAR(pl.LightningModule):
     def __init__(self, num_classes=10):
         super().__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 16, 3, 1, 1),  # Reduced filters from 32 to 16
+            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(kernel_size=2, stride=2)
         )
         self.conv2 = nn.Sequential(
-            nn.Conv2d(16, 8, 3, 1, 1),  # Reduced filters from 32 to 16
+            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(kernel_size=2, stride=2)
         )
-        self.flatten = nn.Flatten()
-
-        self.fc = nn.Sequential(
-            nn.Linear(8 * 7 * 7, 2),  # 2 features
-            nn.ReLU(),
-            nn.Linear(2, 10)  # 10 classes
-        )
+        self.fc1 = nn.Linear(32 * 8 * 8, 64)  # Smaller fully connected layer
+        self.fc2 = nn.Linear(64, num_classes)
 
         self.loss = nn.CrossEntropyLoss()
         self.accuracy = Accuracy(task="multiclass", num_classes=num_classes)
-        self.test_pred = []
-        self.pred_pred = []
+        self.test_predictions = []
+        self.test_targets = []
         self.confusion_matrix = None
 
     def forward(self, x):
         x = self.conv1(x)
         x = self.conv2(x)
-        x = self.flatten(x)
-        output = self.fc(x)
-        return output
+        x = x.view(-1, 32 * 8 * 8)  # Flatten
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters())
@@ -82,7 +76,8 @@ class Magda2MNIST(pl.LightningModule):
         self.log('test_accuracy', acc, on_step=False, on_epoch=True, prog_bar=True)
         self.test_pred.extend(y_pred.cpu().numpy())
         # Calculate and store confusion matrix
-        self.confusion_matrix = confusion_matrix(y, y_pred)
+        self.test_predictions.extend(y_pred.cpu().numpy())
+        self.test_targets.extend(y.cpu().numpy())
 
     def predict_step(self, batch, batch_idx):
         x, _ = batch
@@ -91,39 +86,35 @@ class Magda2MNIST(pl.LightningModule):
         self.pred_pred.extend(y_pred.cpu().numpy())
         return y_pred
 
-    def extract_features(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.flatten(x)
-        features = self.fc[0](x)  # Extract features after the first linear layer
-        return features
+    def test_epoch_end(self, outputs):
+        # Compute confusion matrix using all predictions and targets
+        self.confusion_matrix = confusion_matrix(self.test_targets, self.test_predictions)
 
 
 if __name__ == '__main__':
-
     tracker = MetricTrackerCallback()
-    data_module = MNISTDataModule()
-    model = Magda2MNIST()
+    data_module = CIFAR10DataModule()
+    model = Magda1CIFAR()
 
     dirpath = Path.cwd()
     # Remove previous best model (if exists)
-    if os.path.exists('best_model2.ckpt'):
-        os.remove('best_model2.ckpt')
+    if os.path.exists('best_model3.ckpt'):
+        os.remove('best_model3.ckpt')
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         dirpath=dirpath,
-        filename="best_model2",
+        filename="best_model3",
         monitor='val_loss',
         save_top_k=1,
         mode='min',
     )
 
-    trainer = pl.Trainer(max_epochs=6, enable_model_summary=True, callbacks=[tracker, model_checkpoint_callback])
+    trainer = pl.Trainer(max_epochs=2, enable_model_summary=True, callbacks=[tracker, model_checkpoint_callback])
 
     trainer.fit(model, data_module)
 
     plot_accuracy(tracker.acc)
 
-    result = trainer.test(model, data_module, verbose=False, ckpt_path='best_model2.ckpt')
+    result = trainer.test(model, data_module, verbose=False, ckpt_path='best_model3.ckpt')
     print(f"Accuracy in test data: {result[0]['test_accuracy']}")
     print(f"Loss in test data: {result[0]['test_loss']}")
 
@@ -134,8 +125,3 @@ if __name__ == '__main__':
     ax.set_xlabel("Predicted label")
     ax.set_ylabel("True label")
     fig.show()
-
-    # Add decision boundary plot generation
-    plot_decision_boundary(model, data_module.test_dataset())
-    plt.title("Decision boundary on MNIST dataset")
-    plt.show()
