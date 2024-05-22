@@ -8,7 +8,7 @@ from torchmetrics.classification import MulticlassAccuracy, MulticlassConfusionM
 saved_models_dir = Path(__file__).parent / 'saved'
 
 
-class _ModelBase(pl.LightningModule):
+class ModelBase(pl.LightningModule):
     def __init__(self, feature_extractor: nn.Module, classifier: nn.Module, num_classes: int) -> None:
         super().__init__()
         self.feature_extractor = feature_extractor

@@ -5,10 +5,10 @@ import torch.nn as nn
 from matplotlib import pyplot as plt
 
 from project_2.part_2.data import MNISTDataModule
-from project_2.part_2.models import _ModelBase, saved_models_dir
+from project_2.part_2.models import ModelBase, saved_models_dir
 
 
-class MnistLargeModel(_ModelBase):
+class MnistLargeModel(ModelBase):
     def __init__(self, num_classes):
         feature_extractor = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, padding=2),  # 6 * 28 * 28
