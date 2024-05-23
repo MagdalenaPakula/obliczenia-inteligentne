@@ -1,9 +1,12 @@
 \documentclass[10pt]{article}
 
 \input{../../prelude.tex}
+\usepackage{wrapfig}
+
 \title{Projekt 2 --- Zadanie 2}
 
-\captionsetup{font=small}
+% Not needed for page size A3
+% \captionsetup{font=small}
 
 \newcommand{\plotAccuraciesFromLoggedMetrics}[1]{
     \begin{tikzpicture}
@@ -14,7 +17,7 @@
             grid = major,
             legend style={font=\tiny},
             style = {font=\small},
-            ymin=0, ymax=1
+            ymin=0, ymax=1.05
         ]
             \addplot+[mark=none] table[x = epoch, y = train_acc] {#1};
             \addlegendentry{Train acc};
@@ -25,21 +28,48 @@
     \end{tikzpicture}
 }
 
-
+\geometry{a3paper}
 \begin{document}
-
-\maketitle
-\normalsize
-
-\section{Eksperyment 1: Architektury sieci splotowej dla MNIST (Jakub Pawlak)}\label{sec:ex1-pawlak_mnist}
 
 \subsection*{Pierwsza architektura}
 
+\begin{wrapfigure}[10]{r}{.4\textwidth}
+    \tiny
+\begin{verbatim}
+(feature_extractor): Sequential(
+    (0): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+    (1): Sigmoid()
+    (2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (3): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
+    (4): Sigmoid()
+    (5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (6): Flatten(start_dim=1, end_dim=-1)
+)
+(classifier): Sequential(
+    (0): Linear(in_features=400, out_features=120, bias=True)
+    (1): Sigmoid()
+    (2): Linear(in_features=120, out_features=84, bias=True)
+    (3): Sigmoid()
+    (4): Linear(in_features=84, out_features=10, bias=True)
+)
+\end{verbatim}
+\end{wrapfigure}
+
+Pierwsza architektura składa się z warstwy splotowej z jądrem $5\times5$, na wyjściu której obraz ma 6 kanałów, następnie jest przepuszczony przez funkcję sigmoid oraz max pooling.
+Zamierzeniem jest, aby ta warstwa wykrywała krawędzie lub rogi cyfr.
+Z tego też powodu, użyto funkcji aktywacji sigmoid, ponieważ funkcja ReLU całkowicie zeruje ujemne wartości.
+W przypadku wykrywania krawędzi, ujemne wartości mogą być używane do reprezentacji kierunku.
+
+Drugi splot prowadzi do 16 kanałów i ponownie jest używana funkcja sigmoid oraz max pooling.
+Zadaniem tej warstwy jest rozpoznanie większych, bardziej złożonych kształtów.
+Finalnie ekstraktor prowadzi do tensora $16 \times 5 \times 5$, który zostaje spłaszczony.
+
+Klasyfikator to MLP z rozmiarami warstw odpowiednio $400,120,84,10$, używający sigmoidy jako funkcji aktywacji.
 
 \pgfplotstableread[col sep=comma]{data/kuba/mnist/large.csv}\kubaMnistLarge{}
 
 \begin{figure}[H]\centering
-    \begin{subfigure}[t]{.6\textwidth}
+    \begin{subfigure}[t]{.55\textwidth}
         \plotAccuraciesFromLoggedMetrics{\kubaMnistLarge}
         \caption{Wykres zmian accuracy}
     \end{subfigure}
@@ -49,39 +79,17 @@
         \includegraphics[width=\linewidth]{img/kuba/mnist/large_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 1 architektury}
+    \caption{Wyniki dla 1 architektury (Train acc: 0.997; Test acc: 0.987)}
 \end{figure}
 
 
 \subsection*{Druga architektura, prowadząca do ekstrakcji 2 cech}
 
-\tiny
-\begin{verbatim}
-(feature_extractor): Sequential(
-    (0): Conv2d(1, 6, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
-    (1): Sigmoid()
-    (2): Dropout2d(p=0.1, inplace=False)
-    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (4): Conv2d(6, 16, kernel_size=(5, 5), stride=(1, 1))
-    (5): Sigmoid()
-    (6): Dropout2d(p=0.1, inplace=False)
-    (7): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
-    (8): Conv2d(16, 2, kernel_size=(5, 5), stride=(1, 1))
-    (9): Sigmoid()
-    (10): Flatten(start_dim=1, end_dim=-1)
-)
-(classifier): Sequential(
-    (0): Linear(in_features=2, out_features=5, bias=True)
-    (1): ReLU()
-    (2): Linear(in_features=5, out_features=10, bias=True)
-)
-\end{verbatim}
-\normalsize
 
 \pgfplotstableread[col sep=comma]{data/kuba/mnist/smol.csv}\kubaMnistSmol{}
 
 \begin{figure}[H]\centering
-    \begin{subfigure}[t]{.6\textwidth}
+    \begin{subfigure}[t]{.55\textwidth}
         \plotAccuraciesFromLoggedMetrics{\kubaMnistSmol}
         \caption{Wykres zmian accuracy}
     \end{subfigure}
@@ -91,8 +99,51 @@
         \includegraphics[width=\linewidth]{img/kuba/mnist/smol_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury}
+    \caption{Wyniki dla 2 architektury (Train acc: 0.836;Test acc: 0.566)}\label{fig:kuba/mnist/smol}
 \end{figure}
+
+\begin{wrapfigure}[5]{r}{0.25\textwidth}
+    \includegraphics[width=\linewidth]{img/kuba/mnist/smol_db.png}
+    \caption{Granica decyzyjna dla arch.~2}\label{fig:kuba/mnist/smol/decision_boundary}
+\end{wrapfigure}
+
+W drugiej architekturze warunkiem koniecznym jest rozmiar wektora cech, wynoszący 2 cechy.
+Jest to umotywowane chęcią stworzenia wizualizacji granic decyzyjnych.
+Ekstraktor cech składa się z następujących warstw:
+\tiny
+\begin{verbatim}
+(feature_extractor): Sequential(
+    (0): Conv2d(1, 10, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2))
+    (1): ReLU()
+    (2): Dropout2d(p=0.1, inplace=False)
+    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (4): Conv2d(10, 5, kernel_size=(5, 5), stride=(1, 1))
+    (5): ReLU()
+    (6): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (7): Conv2d(5, 2, kernel_size=(3, 3), stride=(1, 1))
+    (8): ReLU()
+    (9): Flatten(start_dim=1, end_dim=-1)
+    (10): Linear(in_features=18, out_features=2, bias=True)
+)
+(classifier): Sequential(
+    (0): Linear(in_features=2, out_features=5, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=5, out_features=10, bias=True)
+)
+\end{verbatim}
+\normalsize
+
+W tym modelu, aby jeszcze bardziej zmniejszyć ilość cech, zastosowano jeszcze jedną warstwę konwolucyjną.
+Finalnie, ekstraktor cech zawiera jedną w pełni połączoną warstwę, w celu redukcji do 2 cech.
+
+W tym modelu postanowiono również przeprowadzić eksperyment z użyciem warstwy dropout w celu poprawienia
+odporności na overfitting.
+Pomimo, że z racji na dużą liczność zbioru treningowego, w eksperymencie 1 nie ma dużego ryzyka przetrenowania, 
+sytuacja może ulec zmianie w eksperymencie 2. Negatywnym efektem użycia warstwy dropout jest spowolnienie procesu uczenia, co jest dobrze widoczne na wykresie.
+
+Warstwy konwolucyjne prowadzą do finalnego tensora o wymiarach $2 \times 3 \times 3$, 10więc na końcu ekstraktora cech znajduje się jeszce jenda warstwa linear, tworząca 2-wymiarowy wektor cech.
+
+Klasyfikator zawiera jedną warstwę ukrytą o rozmiarze 5 neuronów, z funkcją relu, a następnie warstwę wyjściową o rozmiarze 10 neuronów.
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (Magdalena Pakuła)}\label{sec:ex1-pakula_mnist}
@@ -171,19 +222,18 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
         \includegraphics[width=\linewidth]{img/magda/MNIST_small_decision}
         \caption{Wizualizacja granic decyzyjnych}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury}
-    \label{fig:exp1_magda_mnist2}
+    \caption{Wyniki dla 2 architektury}\label{fig:exp1_magda_mnist2}
 \end{figure}
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Jakub Pawlak)}\label{sec:ex1-pawlak_cifar}
 
-\paragraph{Pierwsza architektura}
+\subsection*{Pierwsza architektura}
 
 \pgfplotstableread[col sep=comma]{data/kuba/cifar/large.csv}\kubaCifarLarge{}
 
 \begin{figure}[H]\centering
-    \begin{subfigure}[t]{.6\textwidth}
+    \begin{subfigure}[t]{.55\textwidth}
         \plotAccuraciesFromLoggedMetrics{\kubaCifarLarge}
         \caption{Wykres zmian accuracy}
     \end{subfigure}
@@ -193,16 +243,16 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
         \includegraphics[width=\linewidth]{img/kuba/cifar/large_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 1 architektury}
+    \caption{Wyniki dla 1 architektury (Train acc: 0.931; Test acc: 0.810)}
 \end{figure}
 
 
-\paragraph{Druga architektura prowadząca do ekstrakcji 2 cech}
+\subsection*{Druga architektura prowadząca do ekstrakcji 2 cech}
 
 \pgfplotstableread[col sep=comma]{data/kuba/cifar/smol.csv}\kubaCifarSmol{}
 
 \begin{figure}[H]\centering
-    \begin{subfigure}[t]{.6\textwidth}
+    \begin{subfigure}[t]{.55\textwidth}
         \plotAccuraciesFromLoggedMetrics{\kubaCifarSmol}
         \caption{Wykres zmian accuracy}
     \end{subfigure}
@@ -212,8 +262,33 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
         \includegraphics[width=\linewidth]{img/kuba/cifar/smol_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury}
+    \caption{Wyniki dla 2 architektury (Train acc: 0.607; Test acc: 0.547)}
 \end{figure}
+
+\small
+\begin{verbatim}
+(feature_extractor): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): ReLU()
+    (3): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (4): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (5): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (6): ReLU()
+    (7): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (8): Conv2d(32, 8, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (9): ReLU()
+    (10): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (11): Conv2d(8, 2, kernel_size=(4, 4), stride=(1, 1))
+    (12): Flatten(start_dim=1, end_dim=-1)
+)
+(classifier): Sequential(
+    (0): Linear(in_features=2, out_features=16, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=16, out_features=10, bias=True)
+)
+\end{verbatim}
+\normalsize
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Magdalena Pakuła)}\label{sec:ex1-pakula_cifar}
@@ -312,12 +387,12 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
 \subsection*{Porównanie architektur sieci splotowych}
-Generalne wnioski Magdy dla MNIST: wyszlo zajebiscie, rezultaty same pokazuja - mozna sie bić :)
-Generalne wnioski Magdy dla CIFAR: nie wyszlo zajebiscie, wyniki sa słabe. Dla 1 archi nie udalo mi sie stworzyc modelu ktory by nie robil underfittug - wszystkie mniej czy wiecej to robily, a dla zachowania podobnych experymentow co Kuba to nie zmienialam learning rate. Zmienialam relu, conv layers, filters ale obecny model to moj najlepszy.
+Generalne wnioski Magdy dla MNIST\@: wyszlo zajebiscie, rezultaty same pokazuja --- mozna sie bić :)
+Generalne wnioski Magdy dla CIFAR\@: nie wyszlo zajebiscie, wyniki sa słabe. Dla 1 archi nie udalo mi sie stworzyc modelu ktory by nie robil underfittug --- wszystkie mniej czy wiecej to robily, a dla zachowania podobnych experymentow co Kuba to nie zmienialam learning rate. Zmienialam relu, conv layers, filters ale obecny model to moj najlepszy.
 Jesli chodzi o Archi 2 to tez moj najlepszy model ktory stworzylam, mamy znowu lekki underfitting
 wiadomka ze dla 2 cech beda to znacznie gorsze wyniki w szczegolnosci dla tak skomplikownych i nieczytelnych obrazkow jak CIFAR.
-
-Model Kuby dla Cifara jest better bo... - tutaj wyjasnienie czemu jest taki boski.
+--
+Model Kuby dla Cifara jest better bo\ldots --- tutaj wyjasnienie czemu jest taki boski.
 \subsection*{Wpływ augmentacji danych}
 
 \end{document}
