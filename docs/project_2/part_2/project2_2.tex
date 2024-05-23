@@ -99,7 +99,7 @@
 Pierwsza architektura sieci składa się z trzech warstw splotowych, po każdej następuje warstwa aktywacji ReLU i warstwy maksymalnego łączenia, a także w pełni połączona warstwa do klasyfikacji.
 Wybór trzech warstw splotowych zapewnia równowagę pomiędzy wystarczającą głębokością do uchwycenia złożonych cech a uniknięciem nadmiernej złożoności, która może prowadzić do nadmiernego dopasowania lub wysokich kosztów obliczeniowych.
 Po każdej warstwie splotowej następuje aktywacja ReLU i warstwa maksymalnego łączenia. ReLU pomaga we wprowadzeniu nieliniowości, niezbędnej do uczenia się złożonych wzorców, podczas gdy max-pooling zmniejsza wymiary przestrzenne, zmniejszając w ten sposób obciążenie obliczeniowe i pomagając w wyodrębnieniu dominujących cech.
-Zastosowanie jąder 5x5 z wypełnieniem w pierwszych dwóch warstwach zapewnia zachowanie wymiarów przestrzennych, umożliwiając sieci nauczenie się lepszych hierarchii przestrzennych w obrazach wejściowych.
+Zastosowanie jąder $5\times5$ z wypełnieniem w pierwszych dwóch warstwach zapewnia zachowanie wymiarów przestrzennych, umożliwiając sieci nauczenie się lepszych hierarchii przestrzennych w obrazach wejściowych.
 Architektura ta osiąga dokładność 98,96\% w przypadku danych testowych przy minimalnej stracie testowej wynoszącej 0,0337 (dla najlepszego modelu, tzn. w 5 epoch).
 
 \begin{figure}[htbp]
@@ -122,7 +122,7 @@ Architektura ta osiąga dokładność 98,96\% w przypadku danych testowych przy 
 Druga architektura to bardziej kompaktowy CNN zaprojektowany w celu zmniejszenia wymiarowości do 2 cech przed klasyfikacją. Ten prostszy model ma na celu sprawdzenie, jak dobrze może działać wysoce skompresowana reprezentacja. W tym przypadku zostały zastosowane.
 Architektura rozpoczyna się od dwóch warstw splotowych, w których zastosowano mniej filtrów (16 i 8) w porównaniu do pierwszego modelu. Ta redukcja ma na celu zmusić sieć do wyodrębnienia najważniejszych informacji.
 W warstwie w pełni połączonej elementy (392) są skompresowane do dwóch, co testuje zdolność sieci do destylacji informacji w minimalną reprezentację. Następnie te dwie cechy są odwzorowywane na dziesięć wyników klas, przy czym warstwa aktywacyjna ReLU pomaga zachować nieliniowość w procesie transformacji cech.
-Architektura osiąga dokładność danych testowych wynoszącą 81,07\%, przy stracie testowej wynoszącej 0,7146 (dla najlepszego modelu, tzn. w 5 epoch), oferuje ona wgląd w skuteczność redukcji wymiarowości.
+Architektura osiąga dokładność danych testowych wynoszącą 81,07\%, przy stracie testowej wynoszącej 0.7146 (dla najlepszego modelu, tzn.\ w 5 epoch), oferuje ona wgląd w skuteczność redukcji wymiarowości.
 
 \begin{figure}[htbp]
     \centering
@@ -144,15 +144,49 @@ Architektura osiąga dokładność danych testowych wynoszącą 81,07\%, przy st
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Jakub Pawlak)}\label{sec:ex1-pawlak_cifar}
 
 \paragraph{Pierwsza architektura}
+
+\pgfplotstableread[col sep=comma]{data/kuba/cifar/large.csv}\kubaCifarLarge{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaCifarLarge}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/cifar/large_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 1 architektury}
+\end{figure}
+
+
 \paragraph{Druga architektura prowadząca do ekstrakcji 2 cech}
+
+\pgfplotstableread[col sep=comma]{data/kuba/cifar/smol.csv}\kubaCifarSmol{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaCifarSmol}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/cifar/smol_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 2 architektury}
+\end{figure}
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Magdalena Pakuła)}\label{sec:ex1-pakula_cifar}
 
 \paragraph{Pierwsza architektura}
 W przypadku tej architektury zostały wybrane dwie warstwy splotowe, po których następują warstwy maksymalnego łączenia w celu zmniejszenia próbkowania map obiektów.
-Pierwsza warstwa splotowa posiada 16 filtrów o wymiarach 3x3.
-Druga warstwa splotowa posiada 32 filtry o wymiarach 3x3.
+Pierwsza warstwa splotowa posiada 16 filtrów o wymiarach $3 \times 3$.
+Druga warstwa splotowa posiada 32 filtry o wymiarach $3 \times 3$.
 Funkcje aktywacji ReLU są stosowane po każdej warstwie splotowej.
 Po warstwach splotowych następuje warstwa w pełni połączona z 64 neuronami, po której następuje końcowa warstwa w pełni połączona do klasyfikacji z liczbą neuronów równą liczbie klas (10 dla CIFAR-10).
 Wybór takiej architektury pozwala na uchwycenie na obrazach zarówno cech niskiego, jak i wysokiego poziomu. Głębsze warstwy mogą uczyć się bardziej złożonych wzorów i reprezentacji.
@@ -160,7 +194,7 @@ Funkcje aktywacji ReLU są używane po każdej warstwie splotowej w celu wprowad
 W pełni połączona warstwa przed końcową warstwą klasyfikacyjną ma mniej neuronów w porównaniu z warstwą poprzednią. To zmniejszenie złożoności pomaga w nauce bardziej zwartej reprezentacji przestrzeni cech, potencjalnie redukując nadmierne dopasowanie i obciążenie obliczeniowe.
 
 \paragraph{Druga architektura prowadząca do ekstrakcji 2 cech}
-Druga architektura jest dosyć podobna do pierwszej, tzn. pierwsza wartwa wygląda tak samo, lecz druga warstwa posiada 16 filtrów o wymiarach 3x3.
+Druga architektura jest dosyć podobna do pierwszej, tzn. pierwsza wartwa wygląda tak samo, lecz druga warstwa posiada 16 filtrów o wymiarach $3\times3$.
 Po warstwach splotowych następuje warstwa w pełni połączona, zawierająca tylko 2 neurony. Następnie jest końcowa, w pełni połączona warstwa do klasyfikacji z liczbą neuronów równą liczbie klas
 
 \pagebreak

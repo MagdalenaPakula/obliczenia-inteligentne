@@ -10,16 +10,17 @@ class CIFARSmol(ModelBase):
     def __init__(self):
         feature_extractor = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=3, padding=1),  # 64 * 32 * 32
+            nn.BatchNorm2d(64),
             nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Conv2d(64, 32, kernel_size=3, padding=1),  # 32 * 16 * 16
+            nn.BatchNorm2d(32),
             nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Conv2d(32, 8, kernel_size=3, padding=1),  # 8 * 8 * 8
             nn.ReLU(),
-            nn.MaxPool2d(2),
+            nn.MaxPool2d(2),  # 8 * 4 * 4
             nn.Conv2d(8, 2, kernel_size=4),  # 2 * 1 * 1
-            nn.ReLU(),
             nn.Flatten(start_dim=1)
         )
         classifier = nn.Sequential(
@@ -32,7 +33,7 @@ class CIFARSmol(ModelBase):
 
 def _main():
     dm = CIFAR10DataModule()
-    trainer = pl.Trainer(max_epochs=50, fast_dev_run=False)
+    trainer = pl.Trainer(max_epochs=20, fast_dev_run=False)
 
     def factory():
         return CIFARSmol()
