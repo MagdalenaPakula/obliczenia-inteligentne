@@ -1,11 +1,10 @@
 import pytorch_lightning as pl
-import seaborn as sn
 import torch
 import torch.nn as nn
-from matplotlib import pyplot as plt
 
 from project_2.part_2.data import MNISTDataModule
-from project_2.part_2.models import ModelBase, saved_models_dir
+from project_2.part_2.models import ModelBase
+from project_2.part_2.models.util import get_model, perform_experiment_1
 
 
 class MnistLargeModel(ModelBase):
@@ -30,36 +29,17 @@ class MnistLargeModel(ModelBase):
         super().__init__(feature_extractor, classifier, num_classes)
 
 
-def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.LightningModule:
-    model_path = saved_models_dir / 'kuba_mnist_big.pt'
-    try:
-        model: pl.LightningModule = torch.load(model_path)
-        print("Loaded model from disk")
-        return model
-    except FileNotFoundError:
-        model = MnistLargeModel(num_classes=10)
-        trainer.fit(model, data_module)
-        print("Saving model to disk")
-        torch.save(model, model_path)
-        return model
-
-
 def _main():
     torch.manual_seed(42)
     dm = MNISTDataModule()
 
+    def factory():
+        return MnistLargeModel(num_classes=10)
+
     trainer = pl.Trainer(max_epochs=50, fast_dev_run=False)
-    model = get_model(trainer, dm)
+    model = get_model('kuba_mnist_big.pt', trainer, dm, factory)
 
-    trainer.test(model, dm)
-
-    cm = model.confusion_matrix
-    fig, ax = plt.subplots()
-    sn.heatmap(cm.compute(), annot=True, ax=ax)
-    ax.set_xlabel("Predicted label")
-    ax.set_ylabel("True label")
-    ax.set_title("Confusion matrix on MNIST dataset, Kuba-L model")
-    fig.show()
+    perform_experiment_1(model, 'MNIST Kuba-L', trainer, dm)
 
 
 if __name__ == '__main__':

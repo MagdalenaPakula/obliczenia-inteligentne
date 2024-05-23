@@ -91,7 +91,7 @@
         \includegraphics[width=\linewidth]{img/kuba/mnist/smol_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury}\label{fig:figure}
+    \caption{Wyniki dla 2 architektury}
 \end{figure}
 
 \pagebreak
@@ -179,7 +179,41 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Jakub Pawlak)}\label{sec:ex1-pawlak_cifar}
 
 \paragraph{Pierwsza architektura}
+
+\pgfplotstableread[col sep=comma]{data/kuba/cifar/large.csv}\kubaCifarLarge{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaCifarLarge}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/cifar/large_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 1 architektury}
+\end{figure}
+
+
 \paragraph{Druga architektura prowadząca do ekstrakcji 2 cech}
+
+\pgfplotstableread[col sep=comma]{data/kuba/cifar/smol.csv}\kubaCifarSmol{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.6\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\kubaCifarSmol}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \hspace{2em}
+    \begin{subfigure}[t]{.34\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/kuba/cifar/smol_cm.png}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \caption{Wyniki dla 2 architektury}
+\end{figure}
 
 \pagebreak
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Magdalena Pakuła)}\label{sec:ex1-pakula_cifar}

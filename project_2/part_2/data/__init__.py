@@ -46,10 +46,14 @@ class CIFAR10DataModule(pl.LightningDataModule):
         self.test_dataset: Dataset = CIFAR10(self.data_dir, train=False, transform=self.transform, download=True)
 
     def train_dataloader(self) -> DataLoader:
-        return DataLoader(self.train_dataset, num_workers=4, batch_size=self.batch_size, shuffle=True)
+        return DataLoader(self.train_dataset,
+                          num_workers=4,
+                          persistent_workers=True,
+                          batch_size=self.batch_size,
+                          shuffle=True)
 
     def val_dataloader(self) -> EVAL_DATALOADERS:
         return self.test_dataloader()
 
     def test_dataloader(self) -> DataLoader:
-        return DataLoader(self.test_dataset, batch_size=self.batch_size)
+        return DataLoader(self.test_dataset, num_workers=4, persistent_workers=True, batch_size=self.batch_size)
