@@ -3,6 +3,7 @@ import seaborn as sn
 import torch
 import torch.nn as nn
 from matplotlib import pyplot as plt
+from pytorch_lightning.loggers import CSVLogger
 
 from project_2.part_2.data import CIFAR10DataModule
 from project_2.part_2.models import ModelBase, saved_models_dir
@@ -34,10 +35,12 @@ class MagdaCifarSmall(ModelBase):
         )
         num_features = 2
         classifier = nn.Sequential(
-            nn.Linear(num_features, 8),
+            nn.Linear(num_features, 128),
             nn.ReLU(),
-            nn.Dropout(p=0.5),
-            nn.Linear(8, num_classes)
+            nn.Dropout(p=0.3),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Linear(64, num_classes)
         )
         super().__init__(feature_extractor, classifier, num_classes)
 
@@ -60,7 +63,8 @@ def _main():
     torch.manual_seed(42)
     dm = CIFAR10DataModule()
 
-    trainer = pl.Trainer(max_epochs=11, fast_dev_run=False)
+    logger = CSVLogger("logs", name="magda_mnist_small")
+    trainer = pl.Trainer(max_epochs=11, fast_dev_run=False, logger=logger)
     model = get_model(trainer, dm)
 
     trainer.test(model, dm)

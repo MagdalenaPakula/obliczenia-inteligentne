@@ -3,6 +3,7 @@ import seaborn as sn
 import torch
 import torch.nn as nn
 from matplotlib import pyplot as plt
+from pytorch_lightning.loggers import CSVLogger
 
 from project_2.part_2.data import CIFAR10DataModule
 from project_2.part_2.models import ModelBase, saved_models_dir
@@ -11,31 +12,36 @@ from project_2.part_2.models import ModelBase, saved_models_dir
 class MagdaCifarLarge(ModelBase):
     def __init__(self, num_classes):
         feature_extractor = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3, padding=1),  # 3x32x32 -> 16x32x32
-            nn.BatchNorm2d(16),
+            nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, padding=1),  # 3x32x32 -> 32x32x32
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 16x32x32 -> 16x16x16
+            nn.Dropout(p=0.2),
+            nn.MaxPool2d(kernel_size=2, stride=2),  # 32x32x32 -> 32x16x16
 
-            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, padding=1),  # 16x16x16 -> 32x16x16
-            nn.BatchNorm2d(32),
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3, padding=1),  # 32x16x16 -> 64x16x16
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2, stride=2),  # 32x16x16 -> 32x8x8
+            nn.Dropout(p=0.3),
+            nn.MaxPool2d(kernel_size=2, stride=2),  # 64x16x16 -> 64x8x8
 
-            nn.Flatten(start_dim=1),  # Flatten 32x8x8 to 32*8*8
+            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding=1),  # 64x8x8 -> 128x8x8
+            nn.ReLU(),
+            nn.Dropout(p=0.4),
+            nn.MaxPool2d(kernel_size=2, stride=2),  # 128x8x8 -> 128x4x4
+
+            nn.Flatten(start_dim=1)  # Flatten 128x4x4 to 128*4*4
 
         )
-        num_features = 32 * 8 * 8
+        num_features = 128 * 4 * 4
         classifier = nn.Sequential(
-            nn.Linear(num_features, 64),
+            nn.Linear(num_features, 128),
             nn.ReLU(),
             nn.Dropout(p=0.5),
-            nn.Linear(64, num_classes)
+            nn.Linear(128, num_classes)
         )
         super().__init__(feature_extractor, classifier, num_classes)
 
 
 def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.LightningModule:
-    model_path = saved_models_dir / 'magda_cifar_big.pt'
+    model_path = saved_models_dir / 'magda_cifar_big2.pt'
     try:
         model: pl.LightningModule = torch.load(model_path)
         print("Loaded model from disk")
@@ -52,7 +58,8 @@ def _main():
     torch.manual_seed(42)
     dm = CIFAR10DataModule()
 
-    trainer = pl.Trainer(max_epochs=11, fast_dev_run=False)
+    logger = CSVLogger("logs", name="magda_cifar_big2")
+    trainer = pl.Trainer(max_epochs=11, fast_dev_run=False, logger=logger)
     model = get_model(trainer, dm)
 
     trainer.test(model, dm)
