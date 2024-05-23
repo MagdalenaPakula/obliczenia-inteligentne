@@ -10,7 +10,9 @@ from project_2.part_2.visualization import plot_decision_boundary
 
 
 def get_model(model_file: str, trainer: pl.Trainer, data_module: pl.LightningDataModule,
-              factory: Callable[[], ModelBase]) -> ModelBase:
+              factory: Callable[[], ModelBase],
+              checkpoint_path: str | None = None
+              ) -> ModelBase:
     model_path = saved_models_dir / model_file
     try:
         model: ModelBase = torch.load(model_path)
@@ -18,7 +20,7 @@ def get_model(model_file: str, trainer: pl.Trainer, data_module: pl.LightningDat
         return model
     except FileNotFoundError:
         model: ModelBase = factory()
-        trainer.fit(model, data_module)
+        trainer.fit(model, data_module, ckpt_path=checkpoint_path)
         print("Saving model to disk")
         torch.save(model, model_path)
         return model

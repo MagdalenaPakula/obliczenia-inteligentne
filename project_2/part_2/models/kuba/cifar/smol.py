@@ -38,7 +38,7 @@ def _main():
         return CIFARSmol()
 
     model = get_model('kuba_cifar_smol.pt', trainer, dm, factory)
-    perform_experiment_1(model, 'CIFAR Kuba-S', trainer, dm)
+    perform_experiment_1(model, 'CIFAR Kuba-S', trainer, dm, show_decision_boundary=True)
 
 
 if __name__ == '__main__':
