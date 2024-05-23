@@ -63,7 +63,7 @@ def _main():
     torch.manual_seed(42)
     dm = CIFAR10DataModule()
 
-    logger = CSVLogger("logs", name="magda_mnist_small")
+    logger = CSVLogger("logs", name="magda_cifar_small")
     trainer = pl.Trainer(max_epochs=11, fast_dev_run=False, logger=logger)
     model = get_model(trainer, dm)
 

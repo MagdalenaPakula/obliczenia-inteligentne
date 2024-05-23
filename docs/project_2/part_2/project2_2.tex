@@ -98,7 +98,7 @@
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (Magdalena Pakuła)}\label{sec:ex1-pakula_mnist}
 
 \subsection*{Pierwsza architektura}
-Zawiera trzy warstwy splotowe: każda warstwa wydobywa coraz bardziej abstrakcyjne cechy. Warstwy początkowe rejestrują krawędzie i tekstury, podczas gdy warstwy głębsze rejestrują kształty i bardziej złożone wzory. Ma to kluczowe znaczenie w przypadku rozpoznawania cyfr, gdzie należy rozróżnić subtelne różnice.
+Zawiera trzy warstwy splotowe każda warstwa wydobywa coraz bardziej abstrakcyjne cechy. Warstwy początkowe rejestrują krawędzie i tekstury, podczas gdy warstwy głębsze rejestrują kształty i bardziej złożone wzory. Ma to kluczowe znaczenie w przypadku rozpoznawania cyfr, gdzie należy rozróżnić subtelne różnice.
 Po każdej wartwie splotowej następuje redukcja wymiarowości, dzięki użyciu MaxPool2d, co pozwala sieci skupić się na najbardziej istotnych cechach cyfr, poprawiając generalizację.
 Stopniowy wzrost filtrów (zaczynając od 8, a kończąc na 32) zapewnia równowagę między wydajnością obliczeniową a bogactwem funkcji.
 Ostatecznie model zostaje spłaszczony do 288 obiektów, wystarczającą pojemność do reprezentowania złożonych wzorów, nie będąc jednocześnie zbyt dużym, co mogłoby prowadzić do nadmiernego dopasowania.
@@ -127,7 +127,7 @@ Rezultaty tej metody zostały przedstawione poniżej na wykresie accuracy, macie
             Test loss & 0.045 \\
             \hline
         \end{tabular}
-        \caption{Wyniki accuracy i loss najlepszego modelu}
+        \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury}
     \label{fig:exp1_magda_mnist}
@@ -164,7 +164,7 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
             Test loss & 0.388 \\
             \hline
         \end{tabular}
-        \caption{Wyniki accuracy i loss najlepszego modelu}
+        \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
     \end{subfigure}
     \begin{subfigure}[b]{.19\textwidth}
         \centering
@@ -223,6 +223,7 @@ Składa się z trzech warstw splotowych, gdzie każda z nich wykorzystuje coraz 
 Pierwsza warstwa splotowa zawiera 32 filtry, stosuje funkcję aktywacji ReLU oraz warstwę Dropout z współczynnikiem 0.2, która losowo wyłącza część neuronów, zapobiegając nadmiernemu dopasowaniu. Następnie warstwa MaxPooling zmniejsza rozmiar przestrzenny danych o połowę. Druga warstwa splotowa składa się z 64 filtrów, ponownie stosuje ReLU oraz Dropout z współczynnikiem 0.3, a także warstwę MaxPooling, która zmniejsza rozmiar przestrzenny danych do 8x8. Trzecia warstwa splotowa zawiera 128 filtrów, stosuje ReLU, Dropout z współczynnikiem 0.4 oraz MaxPooling, zmniejszając rozmiar przestrzenny danych do 4x4. Dane są następnie spłaszczone do jednowymiarowego tensora za pomocą warstwy Flatten, umożliwiając przekazanie ich do warstw w pełni połączonych w celu klasyfikacji. Klasyfikator składa się z dwóch warstw w pełni połączonych, gdzie pierwsza redukuje rozmiar cech do 128, stosując funkcję ReLU oraz Dropout z współczynnikiem 0.5, a druga warstwa klasyfikuje dane do liczby klas
 Ta architektura została zoptymalizowana w celu efektywnego wyodrębniania cech z obrazów o niskiej rozdzielczości, takich jak te występujące w zbiorze CIFAR. Większa liczba warstw splotowych oraz zwiększenie liczby filtrów w każdej warstwie pozwalają na lepsze modelowanie danych
 Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
+
 \pgfplotstableread[col sep=comma]{data/magda/cifar/large.csv}\MagdaCifarLarge{}
 
 \begin{figure}[H]\centering
@@ -246,7 +247,7 @@ Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
             Test loss & 0.841 \\
             \hline
         \end{tabular}
-        \caption{Wyniki accuracy i loss najlepszego modelu}
+        \caption{Wyniki accuracy i loss najlepszego modelu (epoch 7)}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury}
     \label{fig:exp1_magda_cifar}
@@ -261,6 +262,40 @@ Ostatnia warstwa splotowa prowadzi do 2 filtrów. A na końcu dodana jest Ffnkcj
 Klasyfikator składa się z trzech warstw w pełni połączonych, które stopniowo redukują rozmiar cech i umożliwiają klasyfikację danych do odpowiedniej liczby klas. Dropout (0.3) w pierwszej warstwie w pełni połączonej zapobiega nadmiernemu dopasowaniu modelu poprzez losowe wyłączanie neuronów podczas treningu.
 
 Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
+
+\pgfplotstableread[col sep=comma]{data/magda/cifar/small.csv}\MagdaCifarLSmall{}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[b]{.4\textwidth}
+        \plotAccuraciesFromLoggedMetrics{\MagdaCifarSmall}
+        \caption{Wykres zmian accuracy}
+    \end{subfigure}
+    \begin{subfigure}[b]{.19\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/magda/Cifar_small_matrix}
+        \caption{Macierz pomyłek}
+    \end{subfigure}
+    \begin{subfigure}[b]{.19\textwidth}
+        \centering
+        \scriptsize
+        \begin{tabular}{|c|c|}
+            \hline
+            Test metric & Result \\
+            \hline
+            Test acc & 0.869 \\
+            Test loss & 0.388 \\
+            \hline
+        \end{tabular}
+        \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
+    \end{subfigure}
+    \begin{subfigure}[b]{.19\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/magda/Cifar_small_decision}
+        \caption{Wizualizacja granic decyzyjnych}
+    \end{subfigure}
+    \caption{Wyniki dla 2 architektury}
+    \label{fig:exp1_magda_cifar2}
+\end{figure}
 
 \pagebreak
 \section{Eksperyment 2: Wyniki dla MNIST}\label{sec:ex2_mnist}

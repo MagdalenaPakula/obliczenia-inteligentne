@@ -41,7 +41,7 @@ class MagdaCifarLarge(ModelBase):
 
 
 def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.LightningModule:
-    model_path = saved_models_dir / 'magda_cifar_big2.pt'
+    model_path = saved_models_dir / 'magda_cifar_big.pt'
     try:
         model: pl.LightningModule = torch.load(model_path)
         print("Loaded model from disk")
@@ -58,7 +58,7 @@ def _main():
     torch.manual_seed(42)
     dm = CIFAR10DataModule()
 
-    logger = CSVLogger("logs", name="magda_cifar_big2")
+    logger = CSVLogger("logs", name="magda_cifar_big")
     trainer = pl.Trainer(max_epochs=11, fast_dev_run=False, logger=logger)
     model = get_model(trainer, dm)
 
