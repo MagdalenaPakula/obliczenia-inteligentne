@@ -60,7 +60,7 @@ def _main():
     torch.manual_seed(42)
     dm = CIFAR10DataModule()
 
-    trainer = pl.Trainer(max_epochs=2, fast_dev_run=False)
+    trainer = pl.Trainer(max_epochs=11, fast_dev_run=False)
     model = get_model(trainer, dm)
 
     trainer.test(model, dm)
