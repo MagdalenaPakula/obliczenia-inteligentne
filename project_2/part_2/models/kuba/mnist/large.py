@@ -36,7 +36,7 @@ def _main():
     def factory():
         return MnistLargeModel(num_classes=10)
 
-    trainer = pl.Trainer(max_epochs=50, fast_dev_run=False)
+    trainer = pl.Trainer(max_epochs=30, fast_dev_run=False)
     model = get_model('kuba_mnist_big.pt', trainer, dm, factory)
 
     perform_experiment_1(model, 'MNIST Kuba-L', trainer, dm)

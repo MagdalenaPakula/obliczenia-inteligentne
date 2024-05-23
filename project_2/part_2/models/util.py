@@ -19,11 +19,12 @@ def get_model(model_file: str, trainer: pl.Trainer, data_module: pl.LightningDat
         print("Loaded model from disk")
         return model
     except FileNotFoundError:
-        model: ModelBase = factory()
-        trainer.fit(model, data_module, ckpt_path=checkpoint_path)
-        print("Saving model to disk")
-        torch.save(model, model_path)
-        return model
+        pass
+    model: ModelBase = factory()
+    trainer.fit(model, data_module, ckpt_path=checkpoint_path)
+    print("Saving model to disk")
+    torch.save(model, model_path)
+    return model
 
 
 def perform_experiment_1(model: ModelBase, model_name: str, trainer: pl.Trainer, data_module: pl.LightningDataModule,
