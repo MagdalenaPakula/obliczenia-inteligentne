@@ -118,7 +118,7 @@ Finalnie, ekstraktor cech zawiera jedną w pełni połączoną warstwę, w celu 
 
 W tym modelu postanowiono również przeprowadzić eksperyment z użyciem warstwy dropout w celu poprawienia
 odporności na overfitting.
-Pomimo, że z racji na dużą liczność zbioru treningowego, w eksperymencie 1 nie ma dużego ryzyka przetrenowania, 
+Pomimo, że z racji na dużą liczność zbioru treningowego, w eksperymencie 1 nie ma dużego ryzyka przetrenowania,
 sytuacja może ulec zmianie w eksperymencie 2. Negatywnym efektem użycia warstwy dropout jest spowolnienie procesu uczenia, co jest dobrze widoczne na wykresie.
 
 Warstwy konwolucyjne prowadzą do finalnego tensora o wymiarach $2 \times 3 \times 3$, 10więc na końcu ekstraktora cech znajduje się jeszce jenda warstwa linear, tworząca 2-wymiarowy wektor cech.
@@ -154,8 +154,8 @@ Rezultaty tej metody zostały przedstawione poniżej na wykresie accuracy, macie
             \hline
             Test metric & Result \\
             \hline
-            Test acc & 0.984 \\
-            Test loss & 0.045 \\
+            Test acc    & 0.984  \\
+            Test loss   & 0.045  \\
             \hline
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
@@ -191,8 +191,8 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
             \hline
             Test metric & Result \\
             \hline
-            Test acc & 0.869 \\
-            Test loss & 0.388 \\
+            Test acc    & 0.869  \\
+            Test loss   & 0.388  \\
             \hline
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
@@ -213,7 +213,7 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
 \pgfplotstableread[col sep=comma]{data/kuba/cifar/large.csv}\kubaCifarLarge{}
 
 
-W tym modelu poczyniono eksperyment z połączeniami rezydualnymi. 
+W tym modelu poczyniono eksperyment z połączeniami rezydualnymi.
 Dodawanie więcej warstw splotowych nie zawsze prowadzi do polepeszenia się skuteczności modelu.
 Połączenia rezydualne stanowią rozwiązanie tego problemu, ponieważ model może wytrenować się w taki sposób, aby pomijać niepotrzebne warstwy.
 W celu normalizacji danych zastosowano również warstwy batchnorm2d.
@@ -257,7 +257,9 @@ W celu normalizacji danych zastosowano również warstwy batchnorm2d.
     \caption{Granica decyzyjna dla arch.~2}\label{fig:kuba/cifar/smol/decision_boundary}
 \end{wrapfigure}
 
-Helo
+Druga architektura, podobnie jak przy zbiorze MNIST, dokonuje ekstrakcji cech do 2-elementowego wektora.
+W przeciwieństwie do poprzedniej architektury, ta nie zawiera połączeń rezydualnych, jednak wciąż zawiera warstwy batchnorm2d.
+
 \tiny
 \begin{verbatim}
 (feature_extractor): Sequential(
@@ -307,13 +309,13 @@ Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
     \begin{subfigure}[b]{.24\textwidth}
         \centering
         \scriptsize
-        \begin{tabular}{|c|c|}
-            \hline
-            Test metric & Result \\
-            \hline
-            Test accuracy & 0.735 \\
-            Test loss & 0.841 \\
-            \hline
+        \begin{tabular}{lc}
+            \toprule
+            Test metric   & Result \\
+            \midrule
+            Test accuracy & 0.735  \\
+            Test loss     & 0.841  \\
+            \bottomrule
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 7)}
     \end{subfigure}
@@ -346,13 +348,13 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
     \begin{subfigure}[b]{.19\textwidth}
         \centering
         \scriptsize
-        \begin{tabular}{|c|c|}
-            \hline
+        \begin{tabular}{lc}
+            \toprule
             Test metric & Result \\
-            \hline
-            Test acc & 0.573 \\
-            Test loss & 1.216 \\
-            \hline
+            \midrule
+            Test acc    & 0.573  \\
+            Test loss   & 1.216  \\
+            \bottomrule
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 10)}
     \end{subfigure}
@@ -361,14 +363,30 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
         \includegraphics[width=\linewidth]{img/magda/Cifar_small_decision}
         \caption{Wizualizacja granic decyzyjnych}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury}
-    \label{fig:exp1_magda_cifar2}
+    \caption{Wyniki dla 2 architektury}\label{fig:exp1_magda_cifar2}
 \end{figure}
 
 \pagebreak
 \section{Eksperyment 2: Wyniki dla MNIST}\label{sec:ex2_mnist}
 
 \paragraph{Najlepsza architektura}
+
+Augmentacje:
+\begin{enumerate}
+    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)}
+\end{enumerate}
+
+\begin{table}[H]\centering
+    \begin{tabular}{cccc}
+        \toprule
+                    & \multicolumn{3}{c}{Ilość obrazów}                                            \\ \cmidrule{2-4}
+        Augmentacja & 10                                & 200                 & 100                \\ \midrule
+        1           & $0.100 \pm 0.0005 $               & $0.795 \pm 0.0421 $ & $0.921 \pm 0.0239$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Wyniki dla augmentacji zbioru mnist (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+\end{table}
+
 \paragraph{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
 
 \pagebreak
