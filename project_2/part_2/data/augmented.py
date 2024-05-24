@@ -82,9 +82,6 @@ class _AugmentedDataModule(pl.LightningDataModule):
             batch_size = int(self.dataset_size/10)
         return DataLoader(self.test_dataset, batch_size=batch_size, shuffle=False)
 
-    def val_dataloader(self):
-        return self.test_dataloader()
-
 
 class AugmentedMNISTDataModule(_AugmentedDataModule):
     """
