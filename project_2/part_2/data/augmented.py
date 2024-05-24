@@ -21,12 +21,22 @@ class _AugmentedDataModule(pl.LightningDataModule):
         self.train_dataset: Dataset = None
         self.test_dataset: Dataset = None
 
+    @property
+    def _batch_size(self):
+        # minimum 500 batches
+        batches_500 = int(self.dataset_size / 500)
+        return min(64, max(batches_500, 1))
+
+    @property
+    def dataset_size(self) -> int:
+        return self.subset_size * self.num_augmentations
+
     def _augment_dataset(self, train_dataset):
         classes: torch.Tensor = torch.tensor(train_dataset.targets, dtype=torch.int).unique()
         num_classes: int = classes.size(0)
         num_samples_single_class = self.subset_size // num_classes
 
-        generator = torch.Generator().manual_seed(42)
+        generator = torch.Generator()
         augmented_images: torch.Tensor | None = None
         labels = torch.zeros(0)
 
@@ -64,13 +74,16 @@ class _AugmentedDataModule(pl.LightningDataModule):
 
     def train_dataloader(self, batch_size: int | None = None) -> DataLoader:
         if batch_size is None:
-            batch_size = self.subset_size
+            batch_size = self._batch_size
         return DataLoader(self.train_dataset, batch_size=batch_size, shuffle=True, num_workers=4)
 
     def test_dataloader(self, batch_size: int | None = None) -> DataLoader:
         if batch_size is None:
-            batch_size = self.subset_size
+            batch_size = int(self.dataset_size/10)
         return DataLoader(self.test_dataset, batch_size=batch_size, shuffle=False)
+
+    def val_dataloader(self):
+        return self.test_dataloader()
 
 
 class AugmentedMNISTDataModule(_AugmentedDataModule):
