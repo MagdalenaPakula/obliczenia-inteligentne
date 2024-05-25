@@ -25,7 +25,7 @@ class _AugmentedDataModule(pl.LightningDataModule):
     def _batch_size(self):
         # minimum 500 batches
         batches_500 = int(self.dataset_size / 500)
-        return min(64, max(batches_500, 1))
+        return min(64, max(batches_500, 2))
 
     @property
     def dataset_size(self) -> int:
