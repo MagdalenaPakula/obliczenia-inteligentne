@@ -400,9 +400,9 @@ Architektura Kuba
 \begin{table}[H]\centering
     \begin{tabular}{cccc}
         \toprule
-                    & \multicolumn{3}{c}{Ilość obrazów}                                            \\ \cmidrule{2-4}
-        Augmentacja & 10                                & 200                 & 100                \\ \midrule
-        1           & $0.100 \pm 0.0005 $               & $0.795 \pm 0.0421 $ & $0.921 \pm 0.0239$ \\
+                     & \multicolumn{3}{c}{Ilość obrazów}                                            \\ \cmidrule{2-4}
+        Augmentacja  & 10                                & 200                 & 1000               \\ \midrule
+        Jakub Pawlak & $0.100 \pm 0.001 $               & $0.795 \pm 0.042 $ & $0.921 \pm 0.024$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -411,6 +411,17 @@ Architektura Kuba
 \subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
 
 Architekrura Magda
+
+\begin{table}[H]\centering
+    \begin{tabular}{cccc}
+        \toprule
+                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
+        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
+        Jakub Pawlak & $0.106 \pm 0.031 $                & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+\end{table}
 
 \pagebreak
 \section{Eksperyment 2: Wyniki dla CIFAR10}\label{sec:ex2_cifar}
@@ -437,9 +448,31 @@ Architekrura Magda
 
 Arch. Kuba
 
+\begin{table}[H]\centering
+    \begin{tabular}{cccc}
+        \toprule
+                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
+        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
+        Jakub Pawlak & $0.126 \pm 0.014 $                & $0.298 \pm 0.021 $ & $0.466 \pm 0.029$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+\end{table}
+
 \subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
 
 Arch. Magda
+
+\begin{table}[H]\centering
+    \begin{tabular}{cccc}
+        \toprule
+                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
+        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
+        Jakub Pawlak & $0.100 \pm 0.001 $                & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$ \\
+        \bottomrule
+    \end{tabular}
+    \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+\end{table}
 
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
