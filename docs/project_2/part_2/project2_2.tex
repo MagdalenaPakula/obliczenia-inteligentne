@@ -79,7 +79,7 @@ Klasyfikator to MLP z rozmiarami warstw odpowiednio $400,120,84,10$, używający
         \includegraphics[width=\linewidth]{img/kuba/mnist/smol_cm.png}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury (Train acc: 0.836;Test acc: 0.566)}\label{fig:kuba/mnist/smol}
+    \caption{Wyniki dla 2 architektury (Train acc: 0.836;Test acc: 0.866)}\label{fig:kuba/mnist/smol}
 \end{figure}
 
 \begin{wrapfigure}[12]{r}{0.4\textwidth}
@@ -150,13 +150,13 @@ Rezultaty tej metody zostały przedstawione poniżej na wykresie accuracy, macie
     \begin{subfigure}[b]{.24\textwidth}
         \centering
         \scriptsize
-        \begin{tabular}{|c|c|}
-            \hline
+        \begin{tabular}{cc}
+            \toprule
             Test metric & Result \\
-            \hline
+            \midrule
             Test acc    & 0.984  \\
             Test loss   & 0.045  \\
-            \hline
+            \bottomrule
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
     \end{subfigure}
@@ -187,13 +187,13 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
     \begin{subfigure}[b]{.19\textwidth}
         \centering
         \scriptsize
-        \begin{tabular}{|c|c|}
-            \hline
+        \begin{tabular}{cc}
+            \toprule
             Test metric & Result \\
-            \hline
+            \midrule
             Test acc    & 0.869  \\
             Test loss   & 0.388  \\
-            \hline
+            \bottomrule
         \end{tabular}
         \caption{Wyniki accuracy i loss najlepszego modelu (epoch 5)}
     \end{subfigure}
@@ -369,12 +369,33 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
 \pagebreak
 \section{Eksperyment 2: Wyniki dla MNIST}\label{sec:ex2_mnist}
 
-\paragraph{Najlepsza architektura}
+\subsection*{Augmentacje}
 
 Augmentacje:
 \begin{enumerate}
-    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)}
+    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- Jakub Pawlak
+    \item {\color{red}\emph{todo}} --- Magdalena Pakuła % TODO Magdalena
 \end{enumerate}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/kuba/mnist/augmentations.png}
+        \caption{Jakub Pawlak}
+    \end{subfigure}
+    \begin{subfigure}[t]{.45\textwidth}
+        % TODO Magdalena
+        \centering
+        \includegraphics[width=.7\linewidth]{img/kuba/mnist/augmentations.png}
+        \caption{Magdalena Pakuła}
+    \end{subfigure}
+    \caption{Augmentacje dla zbioru MNIST (górny wiersz zawiera oryginalne obrazki)}
+\end{figure}
+
+
+\subsection*{Najlepsza architektura}
+
+Architektura Kuba
 
 \begin{table}[H]\centering
     \begin{tabular}{cccc}
@@ -384,16 +405,41 @@ Augmentacje:
         1           & $0.100 \pm 0.0005 $               & $0.795 \pm 0.0421 $ & $0.921 \pm 0.0239$ \\
         \bottomrule
     \end{tabular}
-    \caption{Wyniki dla augmentacji zbioru mnist (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
 \end{table}
 
-\paragraph{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
+\subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
+
+Architekrura Magda
 
 \pagebreak
 \section{Eksperyment 2: Wyniki dla CIFAR10}\label{sec:ex2_cifar}
 
-\paragraph{Najlepsza architektura}
-\paragraph{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
+\subsection*{Augmentacje}
+
+\begin{figure}[H]\centering
+    \begin{subfigure}[t]{.45\textwidth}
+        \centering
+        \includegraphics[width=.7\linewidth]{img/kuba/cifar/augmentations.png}
+        \caption{Jakub Pawlak}
+    \end{subfigure}
+    \begin{subfigure}[t]{.45\textwidth}
+        % TODO Magdalena
+        \centering
+        \includegraphics[width=.7\linewidth]{img/kuba/cifar/augmentations.png}
+        \caption{Magdalena Pakuła}
+    \end{subfigure}
+    \caption{Augmentacje dla zbioru CIFAR10 (górny wiersz zawiera oryginalne obrazki)}
+\end{figure}
+
+
+\subsection*{Najlepsza architektura}
+
+Arch. Kuba
+
+\subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
+
+Arch. Magda
 
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
@@ -401,7 +447,7 @@ Augmentacje:
 Generalne wnioski Magdy dla MNIST\@: wyszlo zajebiscie, rezultaty same pokazuja --- mozna sie bić :)
 Generalne wnioski Magdy dla CIFAR\@: nie wyszlo zajebiscie, wyniki sa słabe. Dla 1 archi nie udalo mi sie stworzyc modelu ktory by nie robil underfittug --- wszystkie mniej czy wiecej to robily, a dla zachowania podobnych experymentow co Kuba to nie zmienialam learning rate. Zmienialam relu, conv layers, filters ale obecny model to moj najlepszy.
 Jesli chodzi o Archi 2 to tez moj najlepszy model ktory stworzylam, mamy znowu lekki underfitting
-wiadomka ze dla 2 cech beda to znacznie gorsze wyniki w szczegolnosci dla tak skomplikownych i nieczytelnych obrazkow jak CIFAR.
+wiadomka ze dla 2 cech beda to znacznie gorsze wyniki w szczegolnosci dla tak skomplikownych i nieczytelnych obrazkow jak CIFAR\@.
 --
 Model Kuby dla Cifara jest better bo\ldots --- tutaj wyjasnienie czemu jest taki boski.
 \subsection*{Wpływ augmentacji danych}
