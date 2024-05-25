@@ -79,7 +79,7 @@ class _AugmentedDataModule(pl.LightningDataModule):
 
     def test_dataloader(self, batch_size: int | None = None) -> DataLoader:
         if batch_size is None:
-            batch_size = int(self.dataset_size/10)
+            batch_size = int(self.dataset_size / 10)
         return DataLoader(self.test_dataset, batch_size=batch_size, shuffle=False)
 
 
@@ -155,27 +155,59 @@ class AugmentedCIFAR10DataModule(_AugmentedDataModule):
             self.train_dataset = TensorDataset(augmented_images, labels)
 
 
-def _show_augmented_mnist():
+def visualize_augmentations(dataset: str, augmentation: v2.Transform, num_augmentations: int = 1):
     torch.manual_seed(42)
 
     mnist = MNIST(DATA_DIR, train=True, transform=v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
                   download=False)
 
-    aug = AugmentedMNISTDataModule(
-        transform=v2.Compose([v2.ToTensor()]),
-        augmentation=v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20),
-        subset_size=20,
-        num_augmentations=5,
-    )
-    aug.setup()
+    data_module: AugmentedMNISTDataModule | AugmentedCIFAR10DataModule
+    if dataset == 'mnist':
+        data_module = AugmentedMNISTDataModule(
+            transform=v2.Compose([v2.ToTensor()]),
+            augmentation=v2.Identity(),
+            subset_size=10,
+            num_augmentations=1,
+        )
+    elif dataset == 'cifar':
+        data_module = AugmentedCIFAR10DataModule(
+            transform=v2.Compose([v2.ToTensor()]),
+            augmentation=v2.Identity(),
+            subset_size=10,
+            num_augmentations=1,
+        )
+    else:
+        raise ValueError(f'Dataset {dataset} is not supported')
 
-    train_dl = aug.train_dataloader(batch_size=25)
-    images, labels = next(iter(train_dl))
+    data_module.setup()
 
-    grid = torchvision.utils.make_grid(images, nrow=5, padding=3, pad_value=1.)
+    train_dl = data_module.train_dataloader(batch_size=10)
+    images, _labels = next(iter(train_dl))
+
+    all_images = [images]
+
+    for _ in range(num_augmentations):
+        augmented = [augmentation(img.unsqueeze(0)) for img in images]
+        all_images.append(torch.cat(augmented))
+
+    grid = torchvision.utils.make_grid(torch.cat(all_images), nrow=10, padding=3, pad_value=1.)
     plt.imshow(grid.permute(1, 2, 0))
-    plt.show()
+    plt.axis('off')
 
 
 if __name__ == '__main__':
-    _show_augmented_mnist()
+    mnist_augmentation = v2.Compose([
+        v2.RandomAffine(degrees=20, scale=(0.6, 1.5), shear=20),
+    ])
+    visualize_augmentations('mnist', mnist_augmentation, num_augmentations=5)
+    plt.show()
+
+    cifar_augmentation = v2.Compose([
+        v2.RandomHorizontalFlip(),
+        v2.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(1, 1.2), shear=10),
+        v2.Resize((36, 36)),
+        v2.RandomCrop((32, 32)),
+        v2.ColorJitter(brightness=0.2, hue=0.05, saturation=0.1)
+    ])
+    visualize_augmentations('cifar', cifar_augmentation, num_augmentations=5)
+    plt.show()
