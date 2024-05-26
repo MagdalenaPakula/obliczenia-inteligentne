@@ -44,6 +44,15 @@ class MagdaCifarSmall(ModelBase):
         )
         super().__init__(feature_extractor, classifier, num_classes)
 
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        logits = self(x)
+        # Ensure the labels are of type Long
+        y = y.long()
+        loss = nn.functional.cross_entropy(logits, y)
+        self.log('train_loss', loss)
+        return loss
+
 
 def get_model(trainer: pl.Trainer, data_module: pl.LightningDataModule) -> pl.LightningModule:
     model_path = saved_models_dir / 'magda_cifar_small.pt'
