@@ -3,7 +3,7 @@ from torchvision.transforms import v2
 
 from project_2.part_2.data.augmented import AugmentedCIFAR10DataModule
 from project_2.part_2.experiment_2 import perform_experiment_2
-from project_2.part_2.models.magda.cifar.new_small import MagdaCifarSmall
+from project_2.part_2.models.magda.cifar.small import MagdaCifarSmall
 
 
 def _main():
