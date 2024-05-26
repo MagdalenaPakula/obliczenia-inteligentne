@@ -2,7 +2,7 @@ import pytorch_lightning as pl
 from torchvision.transforms import v2
 from project_2.part_2.data.augmented import AugmentedMNISTDataModule
 from project_2.part_2.experiment_2 import perform_experiment_2
-from project_2.part_2.models.magda.mnist.new_small import MagdaMnistSmall
+from project_2.part_2.models.magda.mnist.small import MagdaMnistSmall
 
 
 def _main():
