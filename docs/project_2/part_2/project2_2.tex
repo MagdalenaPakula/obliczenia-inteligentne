@@ -17,6 +17,8 @@
             grid = major,
             legend style={font=\tiny},
             style = {font=\small},
+            xmin=0,
+            enlarge x limits = 0.05 ,
             ymin=0, ymax=1.05
         ]
             \addplot+[mark=none] table[x = epoch, y = train_acc] {#1};
@@ -30,6 +32,9 @@
 
 \geometry{a3paper}
 \begin{document}
+
+\maketitle
+\normalsize
 
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (JakubPawlak)}\label{sec:ex1-pawlak_mnist}
 
