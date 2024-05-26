@@ -52,15 +52,6 @@ class _CIFARLargeFeatureExtractor(nn.Module):
         flat = x.flatten(start_dim=1)
         return flat
 
-    def training_step(self, batch, batch_idx):
-        x, y = batch
-        logits = self(x)
-        # Ensure the labels are of type Long
-        y = y.long()
-        loss = nn.functional.cross_entropy(logits, y)
-        self.log('train_loss', loss)
-        return loss
-
 
 class CifarLargeModel(ModelBase):
     def __init__(self):
