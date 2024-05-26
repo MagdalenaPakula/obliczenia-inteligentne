@@ -41,7 +41,7 @@ def _test_subset_size(module_factory: Callable[[int], pl.LightningDataModule],
 
     print(f"===== Subset size: {subset_size} =====")
     print(f"Accuracies: {test_accuracies}")
-    print(f"\u03bc = {mean_accuracy:.2f}, \u03c3 = {std_dev_accuracy:.2f} ")
+    print(f"\u03bc = {mean_accuracy:.3f}, \u03c3 = {std_dev_accuracy:.3f} ")
     return mean_accuracy, std_dev_accuracy
 
 
