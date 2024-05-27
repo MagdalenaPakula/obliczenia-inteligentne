@@ -436,7 +436,7 @@ Rezultaty przedstawione są na rys.~\ref{fig:exp1_magda_cifar2}.
 \subsection*{Augmentacje}
 \begin{enumerate}
     \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- (Jakub Pawlak)
-    \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- (Magdalena Pakuła) --- \\
+    \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- (Magdalena Pakuła)  \\
           Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
           Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
 \end{enumerate}
@@ -481,10 +481,10 @@ Architektura Magda
     \begin{tabular}{cccccc}
         \toprule
                          & \multicolumn{5}{c}{Ilość obrazów}                                                                                  \\ \cmidrule{2-6}
-        Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
+        Augmentacja      & 10                              & 100               & 200                & 1000              & 10\,000           \\ \midrule
         Jakub Pawlak     & $0.106 \pm 0.031 $                &                   & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$                     \\
-        Magdalena Pakuła & $0.134 \pm 0.041 $                &                   & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$                     \\
-        Brak             &                                   & $0.152 \pm 0.040$ & $0.142 \pm 0.033$  & $0.147 \pm 0.020$ & $0.564 \pm 0.011$ \\
+        Magdalena Pakuła & $0.134 \pm 0.041 $                & $0.164 \pm 0.052$   & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$                     \\
+        Brak             &                                 & $0.152 \pm 0.040$   & $0.142 \pm 0.033$    & $0.147 \pm 0.020$   & $0.564 \pm 0.011$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -538,7 +538,7 @@ Arch. Magda
         Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
         Jakub Pawlak     & $0.100 \pm 0.001 $                &                   & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$                     \\
         Magdalena Pakuła & $0.099 \pm 0.004 $                &                   & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$                     \\
-        Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.100 \pm 0.009$ \\
+        Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.573 \pm 0.053$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
