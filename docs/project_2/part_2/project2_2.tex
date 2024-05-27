@@ -583,9 +583,12 @@ Augmentacje takie jak \textit{RandomHorizontalFlip} i drobne zmiany w jasności 
 Druga augmentacja wprowadza bardziej agresywne zmiany, takie jak \textit{RandomRotation} i \textit{RandomErasing}, które mogą prowadzić do utraty istotnych informacji w obrazach, a dodatkowo \textit{GaussianBlur} może zmniejszać wyrazistość kluczowych cech w obrazach, co utrudnia modelowi naukę.
 Jednakże, model przy takich trudnych zmianach poradził sobie zadowalająco.
 
-Podsumowując, augmentacja jest szczególnie przydatna, gdy mamy ograniczoną liczbę oryginalnych przykładów.
-Pozwala uniknąć przeuczenia i poprawić ogólną zdolność modelu do generalizacji.
+Zauważyliśmy, że augmentacja danych na MNIST prowadzi do niewielkiego, ale zauważalnego wzrostu dokładności.
+Ponieważ zestaw danych jest stosunkowo prosty i dobrze zdefiniowany, bazowy model sieci może osiągnąć wysoką dokładność nawet bez augmentacji.
+Niemniej jednak, dodanie augmentacji może pomóc modelowi lepiej generalizować na niewielkie wariacje w danych, co prowadzi do poprawy wyników.
 
-
+Co innego następuje w zbiorze CIFAR, który posiada bardziej złożone zestawy danych i ze względu na większą różnorodność i złożoność obrazów, augmentacja danych jest bardziej istotna.
+Dobrze zdefiniowane augmentacje danych prowadzą do wzrostu dokładności modelu, jednak ze względu na tą złożoność danych, modele sieci mogą też być podatne na overfitting.
+Zastosowanie augmentacji pomaga w zapobieganiu przetrenowaniu poprzez zwiększenie różnorodności danych treningowych, co z kolei pomaga modelowi lepiej generalizować na nowe, niewidoczne dane.
 
 \end{document}
