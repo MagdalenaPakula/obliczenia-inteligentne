@@ -494,6 +494,19 @@ Architektura Magda
 \section{Eksperyment 2: Wyniki dla CIFAR10}\label{sec:ex2_cifar}
 
 \subsection*{Augmentacje}
+\begin{enumerate}
+    \item \texttt{dupa} --- (Jakub Pawlak)
+    \item \texttt{  v2.RandomRotation(degrees=30),
+                    v2.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3), value='random'),
+                    v2.RandomAffine(degrees=20, translate=(0.1, 0.1), scale=(0.8, 1.2), shear=15),
+                    v2.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
+                    v2.GaussianBlur(kernel_size=3)} --- (Magdalena Pakuła)  \\
+                    W tej technice losowo obracamy obrazy o maksymalnie 30 stopni, co pozwala na uczenie na różne orientacje obiektów w obrazach.
+                    Następnie, losowo zacieramy części obrazu z pewnym prawdopodobieństwem (0.5), co symuluje uszkodzenia obrazu lub brak danych.
+                    Losowo przekształcamy afiniczne, tzn. dodanie wystapienia przesunięcia, skalowania i skręcania obrazu. Następnie, zmianiamy jasność, kontrast, nasycenie i barwę.
+                    Ostatecznie dodane jest rozmycie Gaussowskie rozmiarze jądra 3, co pomaga w redukcji szumów oraz zwiększa zdolność modelu do generalizacji poprzez usuwanie drobnych szczegółów, które mogą być przypadkowe lub nieistotne dla klasyfikacji.
+
+\end{enumerate}
 
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{.45\textwidth}
@@ -561,7 +574,6 @@ Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą j
 Dodatkowo pozwalają na bardziej stabilną optymalizację modelu oraz mogą osiągać lepsze wyniki przy mniejszej liczbie warstw.
 Można zauważyć zauważyć również na wykresie accuracy fig. ~\ref{fig:exp1_magda_cifar} underfitting, który wynika ze zbyt dużej ilości funkcji Dropout, na co należy uważać.
 
-
 W drugiej architekturze dla zbioru CIFAR wyniki osiągają następująco (0.547 i 0.573) fig. ~\ref{fig:exp1_kuba_cifar2} i fig. ~\ref{fig:exp1_magda_cifar2}.
 W tym wypadku modele osiągają podobne wyniki, jednak minimalna różnica może wynikać z faktu, iż drugi model jest bardziej zaawansowany - posiada więcej warstw konwolucyjnych i wartsw Dropout, co wpływa na mniejszą zdolność do nauki skomplikowanych wzorów w zbiorze.
 Warto zauważyć overfitting w późniejszych epochach dla modelu drugiego, który może wynikać z braku regularyzacji (np.
@@ -580,8 +592,8 @@ Jest to prawdopodobnie spowodowane tym, że \textit{ElasticTransform} wprowadza 
 W przypadku augmentacji na zbiorze CIFAR lepszą augmentacją okazała się ta zaproponowana przez pierwszą osobę, gdzie na 1000 przypadków test accuracy wynosiło w 1 architekturze 0.466 oraz 0.137 (w porównaniu z 0.412 i 0.108) tab. ~\ref{tab:augmented_cifar_big} i tab. ~\ref{tab:augmented_cifar_small}.
 Jest to znów niewielka różnica, jednak wynika ona z faktu, iż pierwsza augmentacja stosuje mniej agresywne transformacje, które dodają różnorodność bez nadmiernego zniekształcania obrazów.
 Augmentacje takie jak \textit{RandomHorizontalFlip} i drobne zmiany w jasności i odcieniu, pomagają modelowi lepiej generalizować, unikając nadmiernego dopasowania do specyficznych wzorców.
-Druga augmentacja wprowadza bardziej agresywne zmiany, takie jak \textit{RandomRotation} i \textit{RandomErasing}, które mogą prowadzić do utraty istotnych informacji w obrazach, a dodatkowo \textit{GaussianBlur} może zmniejszać wyrazistość kluczowych cech w obrazach, co utrudnia modelowi naukę.
-Jednakże, model przy takich trudnych zmianach poradził sobie zadowalająco.
+Druga augmentacja wprowadza bardziej agresywne zmiany, takie jak \textit{RandomRotation} i \textit{RandomErasing}, które w przypadku zbioru CIFAR o małej rozdzielczości prowadzą do utraty istotnych informacji a dodatkowo \textit{GaussianBlur} zmniejsza już niską wyrazistość kluczowych cech w obrazach, co utrudnia modelowi naukę.
+Jednakże, model przy takich trudnych zmianach poradził sobie w porządku, a takie transformacje zostały zaproponowane w ramach testu i sprawdzenia jak zbiór poradziłby sobie z takimi zmianami.
 
 Zauważyliśmy, że augmentacja danych na MNIST prowadzi do niewielkiego, ale zauważalnego wzrostu dokładności.
 Ponieważ zestaw danych jest stosunkowo prosty i dobrze zdefiniowany, bazowy model sieci może osiągnąć wysoką dokładność nawet bez augmentacji.
