@@ -65,6 +65,7 @@ Klasyfikator to MLP z rozmiarami warstw odpowiednio $400,120,84,10$, używający
         \caption{Macierz pomyłek}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury (Train acc: 0.997; Test acc: 0.987)}
+    \label{fig:exp1_kuba_mnist}
 \end{figure}
 
 
@@ -433,11 +434,9 @@ Rezultaty przedstawione są na rys.~\ref{fig:exp1_magda_cifar2}.
 \section{Eksperyment 2: Wyniki dla MNIST}\label{sec:ex2_mnist}
 
 \subsection*{Augmentacje}
-
-Augmentacje:
 \begin{enumerate}
-    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- Jakub Pawlak
-    \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- Magdalena Pakuła -
+    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- (Jakub Pawlak)
+    \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- (Magdalena Pakuła) --- \\
           Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
           Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
 \end{enumerate}
@@ -450,7 +449,7 @@ Augmentacje:
     \end{subfigure}
     \begin{subfigure}[t]{.45\textwidth}
         \centering
-        \includegraphics[width=.7\linewidth]{img/magda/augmented_MNIST}
+        \includegraphics[width=0.7\linewidth]{img/magda/augmented_MNIST}
         \caption{Magdalena Pakuła}
     \end{subfigure}
     \caption{Augmentacje dla zbioru MNIST (górny wiersz zawiera oryginalne obrazki)}
@@ -575,7 +574,7 @@ Przy ocenie wpływu liczby danych treningowych, można wprost zauważyć, że wi
 Oba rodzaje augmentacji przyniosły poprawę wyników, jednakże zauważono, że augmentacja dla zbioru MNIST za pomocą \textit{ElsticTransform} osiągnęła lepsze wyniki w porównaniu do augmentacji za pomocą \textit{RandomAffine}.
 Jest to prawdopodobnie spowodowane tym, że \textit{ElasticTransform} wprowadza bardziej losowe i skomplikowane transformacje, co może zwiększyć różnorodność danych treningowych i pomóc w lepszym uogólnieniu modelu oraz może lepiej radzić sobie z zastosowanymi deformacjami, co jest szczególnie przydatne w przypadku danych obrazowych.
 
-W przypadku augmentacji na zbiorze CIFAR lepszą augmentacją okazała się ta zaproponowana przez pierwszą osobę, gdzie na 1000 przypadków test accuracy wynosiło w 1 architekturze 0.466 oraz 0.137 (w porównaniu z 0.412 i 0.108) tab. ~\ref{tab:augmented_cifar_big} i tab. tab. ~\ref{tab:augmented_cifar_small}.
+W przypadku augmentacji na zbiorze CIFAR lepszą augmentacją okazała się ta zaproponowana przez pierwszą osobę, gdzie na 1000 przypadków test accuracy wynosiło w 1 architekturze 0.466 oraz 0.137 (w porównaniu z 0.412 i 0.108) tab. ~\ref{tab:augmented_cifar_big} i tab. ~\ref{tab:augmented_cifar_small}.
 Jest to znów niewielka różnica, jednak wynika ona z faktu, iż pierwsza augmentacja stosuje mniej agresywne transformacje, które dodają różnorodność bez nadmiernego zniekształcania obrazów.
 Augmentacje takie jak \textit{RandomHorizontalFlip} i drobne zmiany w jasności i odcieniu, pomagają modelowi lepiej generalizować, unikając nadmiernego dopasowania do specyficznych wzorców.
 Druga augmentacja wprowadza bardziej agresywne zmiany, takie jak \textit{RandomRotation} i \textit{RandomErasing}, które mogą prowadzić do utraty istotnych informacji w obrazach, a dodatkowo \textit{GaussianBlur} może zmniejszać wyrazistość kluczowych cech w obrazach, co utrudnia modelowi naukę.
