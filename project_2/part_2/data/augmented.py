@@ -197,17 +197,23 @@ def visualize_augmentations(dataset: str, augmentation: v2.Transform, num_augmen
 
 if __name__ == '__main__':
     mnist_augmentation = v2.Compose([
-        v2.RandomAffine(degrees=20, scale=(0.6, 1.5), shear=20),
+        v2.ElasticTransform(alpha=50.0, sigma=5.0),
+        # v2.RandomAffine(degrees=20, scale=(0.6, 1.5), shear=20),
     ])
     visualize_augmentations('mnist', mnist_augmentation, num_augmentations=5)
     plt.show()
 
     cifar_augmentation = v2.Compose([
-        v2.RandomHorizontalFlip(),
-        v2.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(1, 1.2), shear=10),
-        v2.Resize((36, 36)),
-        v2.RandomCrop((32, 32)),
-        v2.ColorJitter(brightness=0.2, hue=0.05, saturation=0.1)
+        v2.RandomRotation(degrees=30),
+        v2.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3), value='random'),
+        v2.RandomAffine(degrees=20, translate=(0.1, 0.1), scale=(0.8, 1.2), shear=15),
+        v2.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
+        v2.GaussianBlur(kernel_size=3)
+        # v2.RandomHorizontalFlip(),
+        # v2.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(1, 1.2), shear=10),
+        # v2.Resize((36, 36)),
+        # v2.RandomCrop((32, 32)),
+        # v2.ColorJitter(brightness=0.2, hue=0.05, saturation=0.1)
     ])
     visualize_augmentations('cifar', cifar_augmentation, num_augmentations=5)
     plt.show()

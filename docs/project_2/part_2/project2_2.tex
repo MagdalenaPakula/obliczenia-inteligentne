@@ -60,6 +60,7 @@ Klasyfikator to MLP z rozmiarami warstw odpowiednio $400,120,84,10$, używający
         \caption{Macierz pomyłek}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury (Train acc: 0.997; Test acc: 0.987)}
+    \label{fig:exp1_kuba_mnist}
 \end{figure}
 
 
@@ -179,8 +180,8 @@ Rezultaty tej metody zostały przedstawione poniżej na rys. ~\ref{fig:exp1_magd
     \caption{Wyniki dla 2 architektury (Train acc: 0.871; Test acc: 0.869)}\label{fig:exp1_magda_mnist2}
 \end{figure}
 
-\begin{wrapfigure}[12]{r}{0.4\textwidth}
-    \includegraphics[width=0.6\linewidth]{img/magda/MNIST_small_decision}
+\begin{wrapfigure}[1]{r}{0.4\textwidth}
+    \includegraphics[width=\linewidth]{img/magda/MNIST_small_decision}
     \caption{Granica decyzyjna dla arch.~2}\label{fig:img/magda/MNIST_small_decision}
 \end{wrapfigure}
 
@@ -245,6 +246,7 @@ W celu normalizacji danych zastosowano również warstwy batchnorm2d.
         \caption{Macierz pomyłek}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury (Train acc: 0.931; Test acc: 0.810)}
+    \label{fig:exp1_kuba_cifar}
 \end{figure}
 
 
@@ -264,10 +266,11 @@ W celu normalizacji danych zastosowano również warstwy batchnorm2d.
         \caption{Macierz pomyłek}
     \end{subfigure}
     \caption{Wyniki dla 2 architektury (Train acc: 0.607; Test acc: 0.547)}
+    \label{fig:exp1_kuba_cifar2}
 \end{figure}
 
 
-\begin{wrapfigure}[12]{r}{0.4\textwidth}
+\begin{wrapfigure}[1]{r}{0.4\textwidth}
     \includegraphics[width=\linewidth]{img/kuba/cifar/smol_db.png}
     \caption{Granica decyzyjna dla arch.~2}\label{fig:kuba/cifar/smol/decision_boundary}
 \end{wrapfigure}
@@ -356,13 +359,15 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
         \includegraphics[width=\linewidth]{img/magda/Cifar_small_matrix}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury (Train acc: 0.539; Test acc: 0.573)}\label{fig:exp1_magda_cifar2}
+    \caption{Wyniki dla 2 architektury (Train acc: 0.539; Test acc: 0.573)}
+    \label{fig:exp1_magda_cifar2}
 \end{figure}
 
 \begin{wrapfigure}[12]{r}{0.4\textwidth}
-    \includegraphics[width=\linewidth]{img/magda/Cifar_small_decision}
+    \includegraphics[width=0.6\linewidth]{img/magda/Cifar_small_decision}
     \caption{Granica decyzyjna dla arch.~2}\label{fig:img/magda/Cifar_small_decision}
 \end{wrapfigure}
+
 
 \tiny
 \begin{verbatim}
@@ -419,9 +424,8 @@ Augmentacje:
         \caption{Jakub Pawlak}
     \end{subfigure}
     \begin{subfigure}[t]{.45\textwidth}
-        % TODO Magdalena
         \centering
-        \includegraphics[width=.7\linewidth]{img/kuba/mnist/augmentations.png}
+        \includegraphics[width=.7\linewidth]{img/magda/augmented_MNIST}
         \caption{Magdalena Pakuła}
     \end{subfigure}
     \caption{Augmentacje dla zbioru MNIST (górny wiersz zawiera oryginalne obrazki)}
@@ -438,6 +442,7 @@ Architektura Kuba
                      & \multicolumn{3}{c}{Ilość obrazów}                                            \\ \cmidrule{2-4}
         Augmentacja  & 10                                & 200                 & 1000               \\ \midrule
         Jakub Pawlak & $0.100 \pm 0.001 $               & $0.795 \pm 0.042 $ & $0.921 \pm 0.024$ \\
+        Magdalena Pakuła & $0.100 \pm 0.000 $                & $0.811 \pm 0.033 $ & $0.931 \pm 0.019$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -471,9 +476,8 @@ Architektura Magda
         \caption{Jakub Pawlak}
     \end{subfigure}
     \begin{subfigure}[t]{.45\textwidth}
-        % TODO Magdalena
         \centering
-        \includegraphics[width=.7\linewidth]{img/kuba/cifar/augmentations.png}
+        \includegraphics[width=.7\linewidth]{img/magda/augmented_CIFAR}
         \caption{Magdalena Pakuła}
     \end{subfigure}
     \caption{Augmentacje dla zbioru CIFAR10 (górny wiersz zawiera oryginalne obrazki)}
@@ -490,9 +494,11 @@ Arch. Kuba
                      & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
         Augmentacja  & 10                                & 200                & 1000              \\ \midrule
         Jakub Pawlak & $0.126 \pm 0.014 $                & $0.298 \pm 0.021 $ & $0.466 \pm 0.029$ \\
+        Magdalena Pakuła & $0.151 \pm 0.016 $                & $0.263 \pm 0.013 $ & $0.412 \pm 0.038$ \\
         \bottomrule
     \end{tabular}
-    \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \caption{Wyniki dla 1 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \label{tab:augmented_cifar_big}
 \end{table}
 
 \subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
@@ -505,20 +511,54 @@ Arch. Magda
                      & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
         Augmentacja  & 10                                & 200                & 1000              \\ \midrule
         Jakub Pawlak & $0.100 \pm 0.001 $                & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$ \\
+        Magdalena Pakuła & $0.099 \pm 0.004 $                & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$ \\
         \bottomrule
     \end{tabular}
-    \caption{Wyniki dla 2 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \label{tab:augmented_cifar_small}
 \end{table}
 
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
 \subsection*{Porównanie architektur sieci splotowych}
-Generalne wnioski Magdy dla MNIST\@: wyszlo zajebiscie, rezultaty same pokazuja --- mozna sie bić :)
-Generalne wnioski Magdy dla CIFAR\@: nie wyszlo zajebiscie, wyniki sa słabe. Dla 1 archi nie udalo mi sie stworzyc modelu ktory by nie robil underfittug --- wszystkie mniej czy wiecej to robily, a dla zachowania podobnych experymentow co Kuba to nie zmienialam learning rate. Zmienialam relu, conv layers, filters ale obecny model to moj najlepszy.
-Jesli chodzi o Archi 2 to tez moj najlepszy model ktory stworzylam, mamy znowu lekki underfitting
-wiadomka ze dla 2 cech beda to znacznie gorsze wyniki w szczegolnosci dla tak skomplikownych i nieczytelnych obrazkow jak CIFAR\@.
---
-Model Kuby dla Cifara jest better bo\ldots --- tutaj wyjasnienie czemu jest taki boski.
+W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne (0.987 i 0.984) fig. ~\ref{fig:exp1_kuba_mnist} i fig. ~\ref{fig:exp1_magda_mnist}.
+Wynika to z faktu, że ten zbiór nie jest zbytnio skomplikowany i przy obu modelach można w sieci splotowej można otrzymać rewelacyjne wyniki.
+Różnica w wyniku może wynikać z bardziej złożonego klasyfikatora z 3 warstwami liniowymi w lepszym modelu w porównanu z jedną warstwa liniową w gorszym.
+
+W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio (0.866 i 0.869) fig. ~\ref{fig:kuba/mnist/smol} i fig. ~\ref{fig:exp1_magda_mnist2}.
+W tym wypadku modele na tym zbiorze działają podobnie.
+Minimalna różnica może polegać na fakcie, iż drugi model ma większą liczbę kanałów w warstwach konwolucyjnych, co może pomóc w wydobyciu bardziej złożonych cech, jednak jest to jak widać różnica minimalna.
+
+W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierwszy (0.810 i 0.679) fig. ~\ref{fig:exp1_kuba_cifar} i fig. ~\ref{fig:exp1_magda_cifar}.
+Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą jest użycie połączeń resztkowych \textit{ang. \textquotedbl{}residual connections\textquotedbl{}}, które pomagają w przepływie gradientowym i zapobiegają zanikaniu gradientów, co ułatwia uczenie się wag.
+Dodatkowo pozwalają na bardziej stabilną optymalizację modelu oraz mogą osiągać lepsze wyniki przy mniejszej liczbie warstw.
+Można zauważyć zauważyć również na wykresie accuracy fig. ~\ref{fig:exp1_magda_cifar} underfitting, który wynika ze zbyt dużej ilości funkcji Dropout, na co należy uważać.
+
+
+W drugiej architekturze dla zbioru CIFAR wyniki osiągają następująco (0.547 i 0.573) fig. ~\ref{fig:exp1_kuba_cifar2} i fig. ~\ref{fig:exp1_magda_cifar2}.
+W tym wypadku modele osiągają podobne wyniki, jednak minimalna różnica może wynikać z faktu, iż drugi model jest bardziej zaawansowany - posiada więcej warstw konwolucyjnych i wartsw Dropout, co wpływa na mniejszą zdolność do nauki skomplikowanych wzorów w zbiorze.
+Warto zauważyć overfitting w późniejszych epochach dla modelu drugiego, który może wynikać z braku regularyzacji (np.
+przez Dropout), przez co model nadmiernie dopasowuje sie do danych treningowych.
+
+
+Różnice w wartości accuracy na zbiorze testowym na obu zbiorach danych wynikają ze złożoności i skomplikowania zbioru CIFAR nad dość prostym wizuzalnie zbiorem MNIST.
+Niekiedy obrazki ze zbioru CIFAR mogą być trudno rozpoznawalne dla ludzkiego oka, a tym bardziej dla modelu.
+Niemniej jednak, modele wykorzystane w eksperymentach poradziły sobie z zadaniem klasyfikacji zadowalająco.
+
 \subsection*{Wpływ augmentacji danych}
+Przy ocenie wpływu liczby danych treningowych, można wprost zauważyć, że większa liczba przykładów treningowych prowadzi do lepszych wyników.
+Oba rodzaje augmentacji przyniosły poprawę wyników, jednakże zauważono, że augmentacja dla zbioru MNIST za pomocą \textit{ElsticTransform} osiągnęła lepsze wyniki w porównaniu do augmentacji za pomocą \textit{RandomAffine}.
+Jest to prawdopodobnie spowodowane tym, że \textit{ElasticTransform} wprowadza bardziej losowe i skomplikowane transformacje, co może zwiększyć różnorodność danych treningowych i pomóc w lepszym uogólnieniu modelu oraz może lepiej radzić sobie z zastosowanymi deformacjami, co jest szczególnie przydatne w przypadku danych obrazowych.
+
+W przypadku augmentacji na zbiorze CIFAR lepszą augmentacją okazała się ta zaproponowana przez pierwszą osobę, gdzie na 1000 przypadków test accuracy wynosiło w 1 architekturze 0.466 oraz 0.137 (w porównaniu z 0.412 i 0.108) tab. ~\ref{tab:augmented_cifar_big} i tab. tab. ~\ref{tab:augmented_cifar_small}.
+Jest to znów niewielka różnica, jednak wynika ona z faktu, iż pierwsza augmentacja stosuje mniej agresywne transformacje, które dodają różnorodność bez nadmiernego zniekształcania obrazów.
+Augmentacje takie jak \textit{RandomHorizontalFlip} i drobne zmiany w jasności i odcieniu, pomagają modelowi lepiej generalizować, unikając nadmiernego dopasowania do specyficznych wzorców.
+Druga augmentacja wprowadza bardziej agresywne zmiany, takie jak \textit{RandomRotation} i \textit{RandomErasing}, które mogą prowadzić do utraty istotnych informacji w obrazach, a dodatkowo \textit{GaussianBlur} może zmniejszać wyrazistość kluczowych cech w obrazach, co utrudnia modelowi naukę.
+Jednakże, model przy takich trudnych zmianach poradził sobie zadowalająco.
+
+Podsumowując, augmentacja jest szczególnie przydatna, gdy mamy ograniczoną liczbę oryginalnych przykładów.
+Pozwala uniknąć przeuczenia i poprawić ogólną zdolność modelu do generalizacji.
+
+
 
 \end{document}
