@@ -461,12 +461,13 @@ Rezultaty przedstawione są na rys.~\ref{fig:exp1_magda_cifar2}.
 Architektura Kuba
 
 \begin{table}[H]\centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{cccccc}
         \toprule
-                     & \multicolumn{3}{c}{Ilość obrazów}                                            \\ \cmidrule{2-4}
-        Augmentacja  & 10                                & 200                 & 1000               \\ \midrule
-        Jakub Pawlak & $0.100 \pm 0.001 $               & $0.795 \pm 0.042 $ & $0.921 \pm 0.024$ \\
-        Magdalena Pakuła & $0.100 \pm 0.000 $                & $0.811 \pm 0.033 $ & $0.931 \pm 0.019$ \\
+                         & \multicolumn{5}{c}{Ilość obrazów}                                                                                  \\ \cmidrule{2-6}
+        Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
+        Jakub Pawlak     & $0.100 \pm 0.001 $                &                   & $0.795 \pm 0.042 $ & $0.921 \pm 0.024$                     \\
+        Magdalena Pakuła & $0.100 \pm 0.000 $                &                   & $0.811 \pm 0.033 $ & $0.931 \pm 0.019$                     \\
+        Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.638 \pm 0.145$ & $0.931 \pm 0.016$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -477,12 +478,13 @@ Architektura Kuba
 Architektura Magda
 
 \begin{table}[H]\centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{cccccc}
         \toprule
-                         & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
-        Augmentacja      & 10                                & 200                & 1000              \\ \midrule
-        Jakub Pawlak     & $0.106 \pm 0.031 $                & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$ \\
-        Magdalena Pakuła & $0.134 \pm 0.041 $                & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$ \\
+                         & \multicolumn{5}{c}{Ilość obrazów}                                                                                  \\ \cmidrule{2-6}
+        Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
+        Jakub Pawlak     & $0.106 \pm 0.031 $                &                   & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$                     \\
+        Magdalena Pakuła & $0.134 \pm 0.041 $                &                   & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$                     \\
+        Brak             &                                   & $0.152 \pm 0.040$ & $0.142 \pm 0.033$  & $0.147 \pm 0.020$ & $0.564 \pm 0.011$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -513,16 +515,16 @@ Architektura Magda
 Arch. Kuba
 
 \begin{table}[H]\centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{cccccc}
         \toprule
-                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
-        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
-        Jakub Pawlak & $0.126 \pm 0.014 $                & $0.298 \pm 0.021 $ & $0.466 \pm 0.029$ \\
-        Magdalena Pakuła & $0.151 \pm 0.016 $                & $0.263 \pm 0.013 $ & $0.412 \pm 0.038$ \\
+                         & \multicolumn{5}{c}{Ilość obrazów}                                                                                  \\ \cmidrule{2-6}
+        Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
+        Jakub Pawlak     & $0.126 \pm 0.014 $                &                   & $0.298 \pm 0.021 $ & $0.466 \pm 0.029$                     \\
+        Magdalena Pakuła & $0.151 \pm 0.016 $                &                   & $0.263 \pm 0.013 $ & $0.412 \pm 0.038$                     \\
+        Brak             &                                   & $0.142 \pm 0.025$ & $0.180 \pm 0.004$  & $0.294 \pm 0.025$ & $0.637 \pm 0.009$ \\
         \bottomrule
     \end{tabular}
-    \caption{Wyniki dla 1 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
-    \label{tab:augmented_cifar_big}
+    \caption{Wyniki dla 1 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}\label{tab:augmented_cifar_big}
 \end{table}
 
 \subsection*{Najelpsza architektura prowadząca do ekstrakcji 2 cech}
@@ -530,12 +532,13 @@ Arch. Kuba
 Arch. Magda
 
 \begin{table}[H]\centering
-    \begin{tabular}{cccc}
+    \begin{tabular}{cccccc}
         \toprule
-                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
-        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
-        Jakub Pawlak & $0.100 \pm 0.001 $                & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$ \\
-        Magdalena Pakuła & $0.099 \pm 0.004 $                & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$ \\
+                         & \multicolumn{5}{c}{Ilość obrazów}                                                                                  \\ \cmidrule{2-6}
+        Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000           \\ \midrule
+        Jakub Pawlak     & $0.100 \pm 0.001 $                &                   & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$                     \\
+        Magdalena Pakuła & $0.099 \pm 0.004 $                &                   & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$                     \\
+        Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.100 \pm 0.009$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
