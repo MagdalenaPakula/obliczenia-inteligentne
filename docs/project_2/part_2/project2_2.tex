@@ -17,6 +17,8 @@
             grid = major,
             legend style={font=\tiny},
             style = {font=\small},
+            xmin=0,
+            enlarge x limits = 0.05 ,
             ymin=0, ymax=1.05
         ]
             \addplot+[mark=none] table[x = epoch, y = train_acc] {#1};
@@ -30,6 +32,9 @@
 
 \geometry{a3paper}
 \begin{document}
+
+\maketitle
+\normalsize
 
 \section{Eksperyment 1: Architektury sieci splotowej dla MNIST (JakubPawlak)}\label{sec:ex1-pawlak_mnist}
 
@@ -60,7 +65,6 @@ Klasyfikator to MLP z rozmiarami warstw odpowiednio $400,120,84,10$, używający
         \caption{Macierz pomyłek}
     \end{subfigure}
     \caption{Wyniki dla 1 architektury (Train acc: 0.997; Test acc: 0.987)}
-    \label{fig:exp1_kuba_mnist}
 \end{figure}
 
 
@@ -228,11 +232,26 @@ Ekstraktor cech składa się z następujących warstw:
 
 \pgfplotstableread[col sep=comma]{data/kuba/cifar/large.csv}\kubaCifarLarge{}
 
+Obrazy w zbiorze CIFAR10 są dużo bardziej złożone niż cyfry ze zbioru MNIST\@.
+Przede wszystkim zawierają 3 kanały, a dodatkowo przedstawiają obiekty bardziej skomplikowane niż kształty cyfr.
 
-W tym modelu poczyniono eksperyment z połączeniami rezydualnymi.
-Dodawanie więcej warstw splotowych nie zawsze prowadzi do polepeszenia się skuteczności modelu.
-Połączenia rezydualne stanowią rozwiązanie tego problemu, ponieważ model może wytrenować się w taki sposób, aby pomijać niepotrzebne warstwy.
-W celu normalizacji danych zastosowano również warstwy batchnorm2d.
+Taka charakterystyka zbioru warunkuje zastosowanie głębszych sieci, zdolnych do ekstrakcji bardziej złożonych cech.
+
+Głębsze architektury sieci skutkują większą ilością parametrów, a co za tym idzie, wolniejszym procesem uczenia.
+W celu przyspieszenia uczenia, zdecydowano się na normalizację danych za pomocą warstw BatchNorm2d.
+
+Ponadto, postanowiono poczynić eksperyment z połączeniami resztkowymi, inspirowanymi sieciami ResNet.
+
+Ekstraktor cech składa się z 3 głównych etapów: \texttt{step\_1}, \texttt{step\_2}, \texttt{step\_3}.
+Zawierają one warstwy splotowe, normalizacyjne, nieliniowe funckje aktywacji, jak również max pooling.
+Zadaniem tych etapów jest zmniejszenie rozmiarów obrazu jak i ilości kanałów
+(za wyjątkiem etapu \texttt{step\_1}, który zwiększa ilość kanałów, w celu ekstrakcji jak największej ilości cech w początkowej fazie).
+
+Dodatkowo, etapy główne są oddzielone dwoma modułami resztkowymi (\texttt{residual\_1} oraz \texttt{residual\_2}), które nie zmieniają wymiarów obrazu.
+Wejście do kolejnych warstw głównych stanowi suma wyjść z poprzedniej warstwy resztkowej oraz głównej.
+
+Dzięki temu sieć staje się bardziej elastyczna --- jeśli warstwy splotowe nie są konieczne, sieć może wyuczyć się w ten sposób, aby wyjście z warstwy resztkowej było równe 0.
+W ten sposób do następnego modułu głównego zostanie przekazane po prostu wyjście z poprzedniego modułu głównego, efektywnie ``pomijając'' moduł resztkowy.
 
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{.55\textwidth}
@@ -270,13 +289,18 @@ W celu normalizacji danych zastosowano również warstwy batchnorm2d.
 \end{figure}
 
 
-\begin{wrapfigure}[1]{r}{0.4\textwidth}
+\begin{wrapfigure}[7]{r}{0.4\textwidth}
     \includegraphics[width=\linewidth]{img/kuba/cifar/smol_db.png}
     \caption{Granica decyzyjna dla arch.~2}\label{fig:kuba/cifar/smol/decision_boundary}
 \end{wrapfigure}
 
 Druga architektura, podobnie jak przy zbiorze MNIST, dokonuje ekstrakcji cech do 2-elementowego wektora.
-W przeciwieństwie do poprzedniej architektury, ta nie zawiera połączeń rezydualnych, jednak wciąż zawiera warstwy batchnorm2d.
+Z uwagi na niską rozdzielczość obrazków zdecydowano się użyć niewielkiego rozmiaru jądra w warstwach splotowych.
+Podobnie jak w poprzednim modelu, dla przyspieszenia uczenia użyto warstw BatchNorm2d.
+Standardowo, w celu zmniejszenia rozmiaru obrazów, a co za tym idzie ilości parametrów, użyte są warswty max pooling.
+Na końcu ekstraktora cech dane zostają spłasczone do 2-elementowego wektora.
+
+Klasyfikator standardowo składa się z 2 w pełni połączonych warstw.
 
 \tiny
 \begin{verbatim}
@@ -336,16 +360,7 @@ Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
 
 
 \subsection*{Druga architektura prowadząca do ekstrakcji 2 cech}
-Składa się z 4 warstw splotowych z 32, 64 i 128 filtrami, które pozwalają na stopniowe wyodrębnianie coraz bardziej złożonych cech z danych wejściowych.
-Następie użycie BatchNorm2d stabilizuje proces treningu i pozwala na szybsze uczenie się modelu, a funkcja aktywacji ReLU wprowadza nieliniowość.
-Następnie jest wartswa MaxPooling redukująca rozmiar danych.
-Ostatnia warstwa splotowa prowadzi do 2 filtrów.
-Na końcu dodana jest Funkcja aktywacji ReLU.
-Klasyfikator składa się z trzech warstw w pełni połączonych, które stopniowo redukują rozmiar cech i umożliwiają klasyfikację danych do odpowiedniej liczby klas.
-Dropout (0.3) w pierwszej warstwie w pełni połączonej zapobiega nadmiernemu dopasowaniu modelu poprzez losowe wyłączanie neuronów podczas treningu.
-Możemy dostrzec różnicę w klasyfikacji modelu, a użyciem funkcji Dropout w obu architekturach.
 
-Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
 
 \pgfplotstableread[col sep=comma]{data/magda/cifar/small.csv}\MagdaCifarSmall{}
 
@@ -363,11 +378,21 @@ Rezultaty przedstawione są na rys. ~\ref{fig:exp1_magda_cifar2}.
     \label{fig:exp1_magda_cifar2}
 \end{figure}
 
-\begin{wrapfigure}[12]{r}{0.4\textwidth}
-    \includegraphics[width=0.6\linewidth]{img/magda/Cifar_small_decision}
+\begin{wrapfigure}[10]{r}{0.4\textwidth}
+    \includegraphics[width=\linewidth]{img/magda/Cifar_small_decision}
     \caption{Granica decyzyjna dla arch.~2}\label{fig:img/magda/Cifar_small_decision}
 \end{wrapfigure}
 
+Składa się z 4 warstw splotowych z 32, 64 i 128 filtrami, które pozwalają na stopniowe wyodrębnianie coraz bardziej złożonych cech z danych wejściowych.
+Następie użycie BatchNorm2d stabilizuje proces treningu i pozwala na szybsze uczenie się modelu, a funkcja aktywacji ReLU wprowadza nieliniowość.
+Następnie jest wartswa MaxPooling redukująca rozmiar danych.
+Ostatnia warstwa splotowa prowadzi do 2 filtrów.
+Na końcu dodana jest Funkcja aktywacji ReLU\@.
+Klasyfikator składa się z trzech warstw w pełni połączonych, które stopniowo redukują rozmiar cech i umożliwiają klasyfikację danych do odpowiedniej liczby klas.
+Dropout (0.3) w pierwszej warstwie w pełni połączonej zapobiega nadmiernemu dopasowaniu modelu poprzez losowe wyłączanie neuronów podczas treningu.
+Możemy dostrzec różnicę w klasyfikacji modelu, a użyciem funkcji Dropout w obu architekturach.
+
+Rezultaty przedstawione są na rys.~\ref{fig:exp1_magda_cifar2}.
 
 \tiny
 \begin{verbatim}
@@ -413,8 +438,8 @@ Augmentacje:
 \begin{enumerate}
     \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- Jakub Pawlak
     \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- Magdalena Pakuła -
-                Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
-                Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
+          Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
+          Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
 \end{enumerate}
 
 \begin{figure}[H]\centering
@@ -455,9 +480,9 @@ Architektura Magda
 \begin{table}[H]\centering
     \begin{tabular}{cccc}
         \toprule
-                     & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
-        Augmentacja  & 10                                & 200                & 1000              \\ \midrule
-        Jakub Pawlak & $0.106 \pm 0.031 $                & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$ \\
+                         & \multicolumn{3}{c}{Ilość obrazów}                                          \\ \cmidrule{2-4}
+        Augmentacja      & 10                                & 200                & 1000              \\ \midrule
+        Jakub Pawlak     & $0.106 \pm 0.031 $                & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$ \\
         Magdalena Pakuła & $0.134 \pm 0.041 $                & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$ \\
         \bottomrule
     \end{tabular}

@@ -28,15 +28,6 @@ class MnistLargeModel(ModelBase):
         )
         super().__init__(feature_extractor, classifier, num_classes)
 
-    def training_step(self, batch, batch_idx):
-        x, y = batch
-        logits = self(x)
-        # Ensure the labels are of type Long
-        y = y.long()
-        loss = nn.functional.cross_entropy(logits, y)
-        self.log('train_loss', loss)
-        return loss
-
 
 def _main():
     torch.manual_seed(42)
