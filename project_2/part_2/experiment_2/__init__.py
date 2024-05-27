@@ -55,7 +55,10 @@ def perform_experiment_2(module_factory: Callable[[int], pl.LightningDataModule]
 
     results = dict()
 
-    for subset_size in [10, 200, 1000]:
+    for subset_size in [100, 200, 1000, 10_000]:
+        # todo: remove this
+        if subset_size in [200,1000]:
+            continue
         mean, std_dev = _test_subset_size(module_factory, model_factory, subset_size, epochs)
         results[subset_size] = (mean, std_dev)
 
