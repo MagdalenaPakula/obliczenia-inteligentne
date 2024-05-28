@@ -29,6 +29,7 @@ class ModelBase(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         x, y = batch
+        y = y.long()
         logits = self(x)
         loss = self.loss(logits, y)
         self.accuracy(logits, y)

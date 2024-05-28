@@ -455,8 +455,11 @@ v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)
 v2.ElasticTransform(alpha=50.0, sigma=5.0)
     \end{verbatim}
     \normalsize
-    Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
+    Użyta transformacja symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
+    Obrazy są zniekształcone w sposób elastyczny z parametrem $\alpha=50.0$ i odchyleniem standardowym $\sigma=5.0$.
     Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
+    Dzięki temu transformacja ta pozwala modelowi lepiej radzić sobie z różnicami w naturalnym piśmie odręcznym, poprawiając jego zdolność do generalizacji.
+    Przykładowo, cyfry mogą być delikatnie rozciągnięte lub skręcone, co wprowadza do zbioru bardziej realistyczne wariacje.
 \end{multicols}
 
 \begin{figure}[H]\centering
@@ -484,8 +487,8 @@ Architektura Kuba
                          & \multicolumn{5}{c}{Ilość obrazów}                                                                                   \\ \cmidrule{2-6}
         Augmentacja      & 10                                & 100               & 200                & 1000              & 10\,000            \\ \midrule
         Jakub Pawlak     & $0.100 \pm 0.001 $                & $0.541 \pm 0.161$ & $0.795 \pm 0.042 $ & $0.921 \pm 0.024$ & $0.942 \pm 0.008 $ \\
-        Magdalena Pakuła & $0.100 \pm 0.000 $                &                   & $0.811 \pm 0.033 $ & $0.931 \pm 0.019$                      \\
-        Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.638 \pm 0.145$ & $0.931 \pm 0.016$  \\
+        Magdalena Pakuła & $0.100 \pm 0.000 $                & $0.651 \pm 0.051$ & $0.811 \pm 0.033$ & $0.931 \pm 0.019$ & $0.948 \pm 0.008$ \\
+        Brak             &                                 & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.638 \pm 0.145$ & $0.931 \pm 0.016$  \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 1 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
@@ -501,11 +504,12 @@ Architektura Magda
                          & \multicolumn{5}{c}{Ilość obrazów}                                                                                   \\ \cmidrule{2-6}
         Augmentacja      & 10                                & 100                & 200                & 1000              & 10\,000           \\ \midrule
         Jakub Pawlak     & $0.106 \pm 0.031 $                & $0.130 \pm 0.037 $ & $0.385 \pm 0.037 $ & $0.530 \pm 0.045$ & $0.671 \pm 0.020$ \\
-        Magdalena Pakuła & $0.134 \pm 0.041 $                & $0.164 \pm 0.052$  & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$                     \\
-        Brak             &                                   & $0.152 \pm 0.040$  & $0.142 \pm 0.033$  & $0.147 \pm 0.020$ & $0.564 \pm 0.011$ \\
+        Magdalena Pakuła & $0.134 \pm 0.041 $                & $0.164 \pm 0.052$  & $0.375 \pm 0.054 $ & $0.533 \pm 0.039$ & $0.707 \pm 0.038$                     \\
+        Brak             &                                 & $0.152 \pm 0.040$  & $0.142 \pm 0.033$  & $0.147 \pm 0.020$ & $0.564 \pm 0.011$ \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze MNIST z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
+    \label{tab:Wyniki_small_MNIST_tabela}
 \end{table}
 
 \pagebreak
@@ -529,7 +533,7 @@ v2.ColorJitter(brightness=0.2, hue=0.05, saturation=0.1)
     Duże strefy czerni wprowadzone w wyniku augmentacji nie są więc czymś normalnie występującym w zbiorze, mogłyby zatem wypaczać uczenie.
     W celu niwelacji tego problemu, zastosowano zwiększenie rozmiaru obrazu do $36\times36$, a następnie przycięcie go do oryginalnego rozmiaru, w nadziei, że w ten sposób czarne artefakty na krawędziach zostaną w większości ``wycięte''.
     Na końcu, ponieważ zbiór przedstawia kolorowe obrazy, zastosowano efekt \emph{ColorJitter} delikatnie zmieniający jasność, odcień i nasycenie.
-    W ten sposób model nie powinien łączyć poszczególnych klas z bardzo konkretnymi barwami. 
+    W ten sposób model nie powinien łączyć poszczególnych klas z bardzo konkretnymi barwami.
     \newcolumn{}
     \paragraph{Magdalena Pakuła}
     \scriptsize
@@ -543,8 +547,9 @@ v2.GaussianBlur(kernel\_size=3)
     \normalsize
     W tej technice losowo obracamy obrazy o maksymalnie 30 stopni, co pozwala na uczenie na różne orientacje obiektów w obrazach.
     Następnie, losowo zacieramy części obrazu z pewnym prawdopodobieństwem (0.5), co symuluje uszkodzenia obrazu lub brak danych.
-    Losowo przekształcamy afiniczne, tzn.\ dodanie wystapienia przesunięcia, skalowania i skręcania obrazu. Następnie, zmianiamy jasność, kontrast, nasycenie i barwę.
-    Ostatecznie dodane jest rozmycie Gaussowskie rozmiarze jądra 3, co pomaga w redukcji szumów oraz zwiększa zdolność modelu do generalizacji poprzez usuwanie drobnych szczegółów, które mogą być przypadkowe lub nieistotne dla klasyfikacji.
+    Użyta transformacja \emph{RandomAffine} łączy w sobie przesunięcie, skalowanie i skręcanie obrazu, z maksymalnym kątem obrotu 20 stopni, translacją do 10\%, skalowaniem od 80\% do 120\%, i pochyleniem do 15 stopni.
+    Dodano również efekt \emph{ColorJitter}, który zmienia jasność, kontrast, nasycenie i barwę, co jest szczególnie istotne w przypadku kolorowych obrazów.
+    Ostatecznie, rozmycie Gaussowskie o rozmiarze jądra 3 pomaga w redukcji szumów oraz zwiększa zdolność modelu do generalizacji poprzez usuwanie drobnych szczegółów, które mogą być przypadkowe lub nieistotne dla klasyfikacji.
 \end{multicols}
 
 \begin{figure}[H]\centering
@@ -564,7 +569,7 @@ v2.GaussianBlur(kernel\_size=3)
 
 \subsection*{Najlepsza architektura}
 
-Arch. Kuba
+Architektura Kuba
 
 \begin{table}[H]\centering
     \begin{tabular}{cccccc}
@@ -572,7 +577,7 @@ Arch. Kuba
                          & \multicolumn{5}{c}{Ilość obrazów}                                                                                    \\ \cmidrule{2-6}
         Augmentacja      & 10                                & 100                & 200                & 1000              & 10\,000            \\ \midrule
         Jakub Pawlak     & $0.126 \pm 0.014 $                & $0.224 \pm 0.028 $ & $0.298 \pm 0.021 $ & $0.466 \pm 0.029$ & $0.656 \pm 0.009 $ \\
-        Magdalena Pakuła & $0.151 \pm 0.016 $                &                    & $0.263 \pm 0.013 $ & $0.412 \pm 0.038$                      \\
+        Magdalena Pakuła & $0.151 \pm 0.016 $                &  $0.206 \pm 0.021$ & $0.263 \pm 0.013 $ & $0.412 \pm 0.038$                      \\
         Brak             &                                   & $0.142 \pm 0.025$  & $0.180 \pm 0.004$  & $0.294 \pm 0.025$ & $0.637 \pm 0.009$  \\
         \bottomrule
     \end{tabular}
@@ -589,8 +594,8 @@ Arch. Magda
                          & \multicolumn{5}{c}{Ilość obrazów}                                                                                    \\ \cmidrule{2-6}
         Augmentacja      & 10                                & 100                & 200                & 1000              & 10\,000            \\ \midrule
         Jakub Pawlak     & $0.100 \pm 0.001 $                & $ 0.100 \pm 0.000$ & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$ & $0.184 \pm 0.084 $ \\
-        Magdalena Pakuła & $0.099 \pm 0.004 $                &                    & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$                      \\
-        Brak             &                                   & $0.100 \pm 0.000$  & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.573 \pm 0.053$  \\
+        Magdalena Pakuła & $0.099 \pm 0.004 $                & $0.100 \pm 0.000$ & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$  & $0.197 \pm 0.053$   \\
+        Brak             &                                   & $0.100 \pm 0.000$  & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.323 \pm 0.053$  \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}\label{tab:augmented_cifar_small}
@@ -599,7 +604,7 @@ Arch. Magda
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
 \subsection*{Porównanie architektur sieci splotowych}
-W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne: 
+W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne:
 0.987 i 0.984 (patrz: rys.~\ref{fig:exp1_kuba_mnist} i rys.~\ref{fig:exp1_magda_mnist}).
 Wynika to z faktu, że ten zbiór nie jest zbytnio skomplikowany i przy obu modelach można w sieci splotowej można otrzymać rewelacyjne wyniki.
 Różnica w wyniku może wynikać z bardziej złożonego klasyfikatora z 3 warstwami liniowymi w lepszym modelu w porównanu z jedną warstwa liniową w gorszym.
@@ -607,15 +612,15 @@ Różnica w wyniku może wynikać z bardziej złożonego klasyfikatora z 3 warst
 W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio 0.866 i 0.869 (rys.~\ref{fig:kuba/mnist/smol} i~\ref{fig:exp1_magda_mnist2}).
 W tym wypadku modele na tym zbiorze działają podobnie.
 Minimalna różnica może polegać na fakcie, iż drugi model ma większą liczbę kanałów w warstwach konwolucyjnych, co może pomóc w wydobyciu bardziej złożonych cech, jednak jest to jak widać różnica minimalna.
-Zaskakującym może wydawać się fakt, iż model pani Magdaleny uzyskuje lepszy wynik accuracy, pomimo, że jest całkowicie niezdolny do rozpoznania cyfry ``0''.
+Zaskakującym może wydawać się fakt, iż model drugi uzyskuje lepszy wynik accuracy, pomimo, że jest całkowicie niezdolny do rozpoznania cyfry ``0''.
 
-Można również zauważyć ``przycinanie'' ujemnych współrzędnych wynikające z użycia funkcji ReLU na wyjściu ekstraktora cech, 
+Można również zauważyć ``przycinanie'' ujemnych współrzędnych wynikające z użycia funkcji ReLU na wyjściu ekstraktora cech,
 co bardzo dobrze widać na rys.~\ref{fig:img/magda/MNIST_small_decision}.
 Aby uniknąć tego zjawiska, model znajdujący się na rys.~\ref{fig:kuba/cifar/smol/decision_boundary} nie zawiera funkcji ReLU na wyjściu ekstraktora cech.
 Jednakże, w momencie pisania tychże wniosków, okazuje się, że nie była to zbyt mądra decyzja, ponieważ skutkuje to bezpośrednim sąsiedztwem dwóch warstw liniowych, co negatywnie wpływa na możliwości modelu.
 Podobnym problem zawiera również 2 architektura opisana w sekcji 3.
 
-W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierszy --- 
+W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierszy ---
 0.810 (rys.~\ref{fig:exp1_kuba_cifar}) kontra 0.679 (rys.~\ref{fig:exp1_magda_cifar}).
 Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą jest użycie połączeń resztkowych (\emph{ang. residual connections}), które zwiększają elastyczność modelu.
 Na wykresie accuracy na rys.~\ref{fig:exp1_magda_cifar}można również zauważyć, że accuracy na zbiorze treningowym jest niższe niż na testowym, co wynika ze zbyt dużej ilości warstw Dropout, na co należy uważać.
