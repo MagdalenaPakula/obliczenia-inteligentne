@@ -5,16 +5,17 @@ import torchvision.transforms as transforms
 from pytorch_lightning.utilities.types import EVAL_DATALOADERS
 from torch.utils.data import Dataset, DataLoader
 from torchvision.datasets import MNIST, CIFAR10
+from torchvision.transforms import v2
 
 DATA_DIR = str(Path(__file__).parent.parent.parent / 'data')
 
 
 class MNISTDataModule(pl.LightningDataModule):
-    def __init__(self):
+    def __init__(self, transform: v2.Transform | None = None) -> None:
         super().__init__()
         self.batch_size = 100
         self.data_dir = DATA_DIR
-        self.transform = transforms.Compose([transforms.ToTensor()])
+        self.transform = transform if transform is not None else transforms.Compose([transforms.ToTensor()])
         self.train_dataset: Dataset | None = None
         self.test_dataset: Dataset | None = None
 
@@ -33,11 +34,11 @@ class MNISTDataModule(pl.LightningDataModule):
 
 
 class CIFAR10DataModule(pl.LightningDataModule):
-    def __init__(self):
+    def __init__(self, transform: v2.Transform | None = None) -> None:
         super().__init__()
         self.batch_size = 64
         self.data_dir = DATA_DIR
-        self.transform = transforms.Compose([transforms.ToTensor()])
+        self.transform = transform if transform is not None else transforms.Compose([transforms.ToTensor()])
         self.train_dataset: Dataset | None = None
         self.test_dataset: Dataset | None = None
 
