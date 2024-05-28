@@ -2,6 +2,8 @@
 
 \input{../../prelude.tex}
 \usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{gensymb}
 
 \title{Projekt 2 --- Zadanie 2}
 
@@ -432,12 +434,30 @@ Rezultaty przedstawione są na rys.~\ref{fig:exp1_magda_cifar2}.
 \section{Eksperyment 2: Wyniki dla MNIST}\label{sec:ex2_mnist}
 
 \subsection*{Augmentacje}
-\begin{enumerate}
-    \item \texttt{v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)} --- (Jakub Pawlak)
-    \item \texttt{v2.ElasticTransform(alpha=50.0, sigma=5.0)} --- (Magdalena Pakuła)  \\
-          Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
-          Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
-\end{enumerate}
+
+\begin{multicols}{2}
+    \paragraph{Jakub Pawlak}
+    \small
+    \begin{verbatim}
+v2.RandomAffine(degrees=10, scale=(0.6, 1.5), shear=20)
+    \end{verbatim}
+    \normalsize
+    Użyta transformacja łączy w sobie 3 różne techniki --- obrót, skalowanie i pochylenie.
+    Cyfry mogą być obrócone o kąt pomiędzy $-10\degree$ a $10\degree$.
+    Ma to na celu wytrenowanie modelu w rozpoznawaniu cyfr, nawet jeśli nie będą idealnie proste (nawet cyfra 1 na poniższym rysunku nie jest w oryginalnym zbiorze prosta).
+    Kąt obrotu został ograniczony na tyle, żeby uzyskane w ten sposób obrazy wciąż przedstawiały odpowiednie cyfry (obraz cyfry 4 obrócona o 10\textdegree{} wciąż przedstawia cyfrę 4, jednak ten sam obraz obrócony o 180\textdegree{} nie przedstawiałby żadnej cyfry).
+    Skalowanie ma na celu wprowadzenie do zbioru cyfr o różnym rozmiarze, w nadziei, że sprawi to, że sieć wyuczy się rozpoznawania cyfr po kształcie, a nie po lokalizacji konkretnych pikseli.
+    Obrazy są również pochylone (\emph{ang. shear}) ponieważ, pisząc odręcznie, wiele ludzi pisze właśnie w sposób pochyły.
+    \newcolumn{}
+    \paragraph{Magdalena Pakuła}
+    \small
+    \begin{verbatim}
+v2.ElasticTransform(alpha=50.0, sigma=5.0)
+    \end{verbatim}
+    \normalsize
+    Technika ta symuluje lekkie wypaczenie lub rozciągnięcie odręcznie zapisanych cyfr, naśladując naturalne różnice w sposobie pisania.
+    Ma to znaczenie dla zbioru MNIST, ponieważ pismo odręczne w świecie rzeczywistym może być nieco zniekształcone w porównaniu z cyfrą idealnie wyśrodkowaną i proporcjonalną.
+\end{multicols}
 
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{.45\textwidth}
@@ -492,19 +512,40 @@ Architektura Magda
 \section{Eksperyment 2: Wyniki dla CIFAR10}\label{sec:ex2_cifar}
 
 \subsection*{Augmentacje}
-\begin{enumerate}
-    \item \texttt{dupa} --- (Jakub Pawlak)
-    \item \texttt{  v2.RandomRotation(degrees=30),
-                    v2.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3), value='random'),
-                    v2.RandomAffine(degrees=20, translate=(0.1, 0.1), scale=(0.8, 1.2), shear=15),
-                    v2.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
-                    v2.GaussianBlur(kernel_size=3)} --- (Magdalena Pakuła)  \\
-                    W tej technice losowo obracamy obrazy o maksymalnie 30 stopni, co pozwala na uczenie na różne orientacje obiektów w obrazach.
-                    Następnie, losowo zacieramy części obrazu z pewnym prawdopodobieństwem (0.5), co symuluje uszkodzenia obrazu lub brak danych.
-                    Losowo przekształcamy afiniczne, tzn. dodanie wystapienia przesunięcia, skalowania i skręcania obrazu. Następnie, zmianiamy jasność, kontrast, nasycenie i barwę.
-                    Ostatecznie dodane jest rozmycie Gaussowskie rozmiarze jądra 3, co pomaga w redukcji szumów oraz zwiększa zdolność modelu do generalizacji poprzez usuwanie drobnych szczegółów, które mogą być przypadkowe lub nieistotne dla klasyfikacji.
 
-\end{enumerate}
+\begin{multicols}{2}
+    \paragraph{Jakub Pawlak}
+    \scriptsize
+    \begin{verbatim}
+v2.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(1, 1.2), shear=10),
+v2.Resize((36, 36)),
+v2.RandomCrop((32, 32)),
+v2.ColorJitter(brightness=0.2, hue=0.05, saturation=0.1)
+    \end{verbatim}
+    \normalsize
+    W tym przypadku, podobnie jak dla poprzedniego zbioru danych, użyto transformacji \emph{RandomAffine}.
+    Jednakże, w wyniku tej transformacji mogą pojawić się na obrazie nowe piksele, mające kolor czarny.
+    O ile w przypadku zbioru MNIST nie było to problemem, ponieważ tamte obrazy miały czarne tło, o tyle w przypadku zbioru CIFAR, tła są kolorowe.
+    Duże strefy czerni wprowadzone w wyniku augmentacji nie są więc czymś normalnie występującym w zbiorze, mogłyby zatem wypaczać uczenie.
+    W celu niwelacji tego problemu, zastosowano zwiększenie rozmiaru obrazu do $36\times36$, a następnie przycięcie go do oryginalnego rozmiaru, w nadziei, że w ten sposób czarne artefakty na krawędziach zostaną w większości ``wycięte''.
+    Na końcu, ponieważ zbiór przedstawia kolorowe obrazy, zastosowano efekt \emph{ColorJitter} delikatnie zmieniający jasność, odcień i nasycenie.
+    W ten sposób model nie powinien łączyć poszczególnych klas z bardzo konkretnymi barwami. 
+    \newcolumn{}
+    \paragraph{Magdalena Pakuła}
+    \scriptsize
+    \begin{verbatim}
+v2.RandomRotation(degrees=30),
+v2.RandomErasing(p=0.5, scale=(0.02, 0.2), ratio=(0.3, 3.3), value='random'),
+v2.RandomAffine(degrees=20, translate=(0.1, 0.1), scale=(0.8, 1.2), shear=15),
+v2.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3, hue=0.1),
+v2.GaussianBlur(kernel\_size=3)
+\end{verbatim}
+    \normalsize
+    W tej technice losowo obracamy obrazy o maksymalnie 30 stopni, co pozwala na uczenie na różne orientacje obiektów w obrazach.
+    Następnie, losowo zacieramy części obrazu z pewnym prawdopodobieństwem (0.5), co symuluje uszkodzenia obrazu lub brak danych.
+    Losowo przekształcamy afiniczne, tzn.\ dodanie wystapienia przesunięcia, skalowania i skręcania obrazu. Następnie, zmianiamy jasność, kontrast, nasycenie i barwę.
+    Ostatecznie dodane jest rozmycie Gaussowskie rozmiarze jądra 3, co pomaga w redukcji szumów oraz zwiększa zdolność modelu do generalizacji poprzez usuwanie drobnych szczegółów, które mogą być przypadkowe lub nieistotne dla klasyfikacji.
+\end{multicols}
 
 \begin{figure}[H]\centering
     \begin{subfigure}[t]{.45\textwidth}
@@ -558,25 +599,31 @@ Arch. Magda
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
 \subsection*{Porównanie architektur sieci splotowych}
-W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne (0.987 i 0.984) fig.~\ref{fig:exp1_kuba_mnist} i fig.~\ref{fig:exp1_magda_mnist}.
+W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne: 
+0.987 i 0.984 (patrz: rys.~\ref{fig:exp1_kuba_mnist} i rys.~\ref{fig:exp1_magda_mnist}).
 Wynika to z faktu, że ten zbiór nie jest zbytnio skomplikowany i przy obu modelach można w sieci splotowej można otrzymać rewelacyjne wyniki.
 Różnica w wyniku może wynikać z bardziej złożonego klasyfikatora z 3 warstwami liniowymi w lepszym modelu w porównanu z jedną warstwa liniową w gorszym.
 
-W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio (0.866 i 0.869) fig.~\ref{fig:kuba/mnist/smol} i fig.~\ref{fig:exp1_magda_mnist2}.
+W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio 0.866 i 0.869 (rys.~\ref{fig:kuba/mnist/smol} i~\ref{fig:exp1_magda_mnist2}).
 W tym wypadku modele na tym zbiorze działają podobnie.
 Minimalna różnica może polegać na fakcie, iż drugi model ma większą liczbę kanałów w warstwach konwolucyjnych, co może pomóc w wydobyciu bardziej złożonych cech, jednak jest to jak widać różnica minimalna.
+Zaskakującym może wydawać się fakt, iż model pani Magdaleny uzyskuje lepszy wynik accuracy, pomimo, że jest całkowicie niezdolny do rozpoznania cyfry ``0''.
 
-W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierwszy (0.810 i 0.679) fig.~\ref{fig:exp1_kuba_cifar} i fig.~\ref{fig:exp1_magda_cifar}.
-Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą jest użycie połączeń resztkowych \textit{ang. \textquotedbl{}residual connections\textquotedbl{}}, które pomagają w przepływie gradientowym i zapobiegają zanikaniu gradientów, co ułatwia uczenie się wag.
-Dodatkowo pozwalają na bardziej stabilną optymalizację modelu oraz mogą osiągać lepsze wyniki przy mniejszej liczbie warstw.
-Można zauważyć zauważyć również na wykresie accuracy fig.~\ref{fig:exp1_magda_cifar} underfitting, który wynika ze zbyt dużej ilości funkcji Dropout, na co należy uważać.
+Można również zauważyć ``przycinanie'' ujemnych współrzędnych wynikające z użycia funkcji ReLU na wyjściu ekstraktora cech, 
+co bardzo dobrze widać na rys.~\ref{fig:img/magda/MNIST_small_decision}.
+Aby uniknąć tego zjawiska, model znajdujący się na rys.~\ref{fig:kuba/cifar/smol/decision_boundary} nie zawiera funkcji ReLU na wyjściu ekstraktora cech.
+Jednakże, w momencie pisania tychże wniosków, okazuje się, że nie była to zbyt mądra decyzja, ponieważ skutkuje to bezpośrednim sąsiedztwem dwóch warstw liniowych, co negatywnie wpływa na możliwości modelu.
+Podobnym problem zawiera również 2 architektura opisana w sekcji 3.
 
+W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierszy --- 
+0.810 (rys.~\ref{fig:exp1_kuba_cifar}) kontra 0.679 (rys.~\ref{fig:exp1_magda_cifar}).
+Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą jest użycie połączeń resztkowych (\emph{ang. residual connections}), które zwiększają elastyczność modelu.
+Na wykresie accuracy na rys.~\ref{fig:exp1_magda_cifar}można również zauważyć, że accuracy na zbiorze treningowym jest niższe niż na testowym, co wynika ze zbyt dużej ilości warstw Dropout, na co należy uważać.
 
-W drugiej architekturze dla zbioru CIFAR wyniki osiągają następująco (0.547 i 0.573) fig.~\ref{fig:exp1_kuba_cifar2} i fig.~\ref{fig:exp1_magda_cifar2}.
-W tym wypadku modele osiągają podobne wyniki, jednak minimalna różnica może wynikać z faktu, iż drugi model jest bardziej zaawansowany - posiada więcej warstw konwolucyjnych i wartsw Dropout, co wpływa na mniejszą zdolność do nauki skomplikowanych wzorów w zbiorze.
+W drugiej architekturze dla zbioru CIFAR wyniki wyniosły odpowiednio 0.547 i 0.573 (patrz: rys.~\ref{fig:exp1_kuba_cifar2} i~\ref{fig:exp1_magda_cifar2}).
+W tym wypadku modele osiągają podobne wyniki, jednak minimalna różnica może wynikać z faktu, iż drugi model jest bardziej zaawansowany --- posiada więcej warstw konwolucyjnych i wartsw Dropout, co wpływa na mniejszą zdolność do nauki skomplikowanych wzorów w zbiorze.
 Warto zauważyć overfitting w późniejszych epochach dla modelu drugiego, który może wynikać z braku regularyzacji (np.
 przez Dropout), przez co model nadmiernie dopasowuje sie do danych treningowych.
-
 
 Różnice w wartości accuracy na zbiorze testowym na obu zbiorach danych wynikają ze złożoności i skomplikowania zbioru CIFAR nad dość prostym wizuzalnie zbiorem MNIST\@.
 Niekiedy obrazki ze zbioru CIFAR mogą być trudno rozpoznawalne dla ludzkiego oka, a tym bardziej dla modelu.
