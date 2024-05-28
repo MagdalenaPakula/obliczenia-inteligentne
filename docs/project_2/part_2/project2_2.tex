@@ -332,16 +332,16 @@ Klasyfikator standardowo składa się z 2 w pełni połączonych warstw.
 \section{Eksperyment 1: Architektury sieci splotowej dla CIFAR10 (Magdalena Pakuła)}\label{sec:ex1-pakula_cifar}
 
 \subsection*{Pierwsza architektura}
-Składa się z trzech warstw splotowych, gdzie każda z nich wykorzystuje coraz większą liczbę filtrów o rozmiarze 3x3.
+Składa się z trzech warstw splotowych, gdzie każda z nich wykorzystuje coraz większą liczbę filtrów o rozmiarze $3 \times 3$.
 Pierwsza warstwa splotowa zawiera 32 filtry, stosuje funkcję aktywacji ReLU oraz warstwę Dropout z współczynnikiem 0.2, która losowo wyłącza część neuronów, zapobiegając nadmiernemu dopasowaniu.
 Następnie warstwa MaxPooling zmniejsza rozmiar przestrzenny danych o połowę.
-Druga warstwa splotowa składa się z 64 filtrów, ponownie stosuje ReLU oraz Dropout z współczynnikiem 0.3, a także warstwę MaxPooling, która zmniejsza rozmiar przestrzenny danych do 8x8.
-Trzecia warstwa splotowa zawiera 128 filtrów, stosuje ReLU, Dropout z współczynnikiem 0.4 oraz MaxPooling, zmniejszając rozmiar przestrzenny danych do 4x4.
+Druga warstwa splotowa składa się z 64 filtrów, ponownie stosuje ReLU oraz Dropout z współczynnikiem 0.3, a także warstwę MaxPooling, która zmniejsza rozmiar przestrzenny danych do $8 \times 8$.
+Trzecia warstwa splotowa zawiera 128 filtrów, stosuje ReLU, Dropout z współczynnikiem 0.4 oraz MaxPooling, zmniejszając rozmiar przestrzenny danych do $4 \times 4$.
 Dane są następnie spłaszczone do jednowymiarowego tensora za pomocą warstwy Flatten, umożliwiając przekazanie ich do warstw w pełni połączonych w celu klasyfikacji.
 Klasyfikator składa się z dwóch warstw w pełni połączonych, gdzie pierwsza redukuje rozmiar cech do 128, stosując funkcję ReLU oraz Dropout z współczynnikiem 0.5, a druga warstwa klasyfikuje dane do liczby klas.
-Ta architektura została zoptymalizowana w celu efektywnego wyodrębniania cech z obrazów o niskiej rozdzielczości, takich jak te występujące w zbiorze CIFAR.
+Ta architektura została zoptymalizowana w celu efektywnego wyodrębniania cech z obrazów o niskiej rozdzielczości, takich jak te występujące w zbiorze CIFAR\@.
 Większa liczba warstw splotowych oraz zwiększenie liczby filtrów w każdej warstwie pozwalają na lepsze modelowanie danych, jednak możemy też zauważyć dosyć niskie train accuracy ze względu na ilość użyć funkcji Dropout.
-Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
+Rezultaty tej metody zostały przedstawione na rys.~\ref{fig:exp1_magda_cifar}.
 
 \pgfplotstableread[col sep=comma]{data/magda/cifar/large.csv}\MagdaCifarLarge{}
 
@@ -355,8 +355,7 @@ Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
         \includegraphics[width=\linewidth]{img/magda/CIFAR_large_matrix}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 1 architektury (Train acc: 0.623; Test acc: 0.679)}
-    \label{fig:exp1_magda_cifar}
+    \caption{Wyniki dla 1 architektury (Train acc: 0.623; Test acc: 0.679)}\label{fig:exp1_magda_cifar}
 \end{figure}
 
 
@@ -375,8 +374,7 @@ Rezultaty tej metody zostały przedstawione na rys. ~\ref{fig:exp1_magda_cifar}.
         \includegraphics[width=\linewidth]{img/magda/Cifar_small_matrix}
         \caption{Macierz pomyłek}
     \end{subfigure}
-    \caption{Wyniki dla 2 architektury (Train acc: 0.539; Test acc: 0.573)}
-    \label{fig:exp1_magda_cifar2}
+    \caption{Wyniki dla 2 architektury (Train acc: 0.539; Test acc: 0.573)}\label{fig:exp1_magda_cifar2}
 \end{figure}
 
 \begin{wrapfigure}[10]{r}{0.4\textwidth}
@@ -554,33 +552,32 @@ Arch. Magda
         Brak             &                                   & $0.100 \pm 0.000$ & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.573 \pm 0.053$ \\
         \bottomrule
     \end{tabular}
-    \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}
-    \label{tab:augmented_cifar_small}
+    \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}\label{tab:augmented_cifar_small}
 \end{table}
 
 \pagebreak
 \section{Analiza i wnioski}\label{sec:wyniki}
 \subsection*{Porównanie architektur sieci splotowych}
-W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne (0.987 i 0.984) fig. ~\ref{fig:exp1_kuba_mnist} i fig. ~\ref{fig:exp1_magda_mnist}.
+W pierwszej architekturze dla zbioru MNIST wyniki zaprezentowane są bardzo podobne (0.987 i 0.984) fig.~\ref{fig:exp1_kuba_mnist} i fig.~\ref{fig:exp1_magda_mnist}.
 Wynika to z faktu, że ten zbiór nie jest zbytnio skomplikowany i przy obu modelach można w sieci splotowej można otrzymać rewelacyjne wyniki.
 Różnica w wyniku może wynikać z bardziej złożonego klasyfikatora z 3 warstwami liniowymi w lepszym modelu w porównanu z jedną warstwa liniową w gorszym.
 
-W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio (0.866 i 0.869) fig. ~\ref{fig:kuba/mnist/smol} i fig. ~\ref{fig:exp1_magda_mnist2}.
+W drugiej architekturze dla zbioru MNIST występuje podobna sytuacja, gdzie wyniki to odpowiednio (0.866 i 0.869) fig.~\ref{fig:kuba/mnist/smol} i fig.~\ref{fig:exp1_magda_mnist2}.
 W tym wypadku modele na tym zbiorze działają podobnie.
 Minimalna różnica może polegać na fakcie, iż drugi model ma większą liczbę kanałów w warstwach konwolucyjnych, co może pomóc w wydobyciu bardziej złożonych cech, jednak jest to jak widać różnica minimalna.
 
-W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierwszy (0.810 i 0.679) fig. ~\ref{fig:exp1_kuba_cifar} i fig. ~\ref{fig:exp1_magda_cifar}.
+W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierwszy (0.810 i 0.679) fig.~\ref{fig:exp1_kuba_cifar} i fig.~\ref{fig:exp1_magda_cifar}.
 Pierwszy model ma bardziej złożoną architekturę, a decydującą różnicą jest użycie połączeń resztkowych \textit{ang. \textquotedbl{}residual connections\textquotedbl{}}, które pomagają w przepływie gradientowym i zapobiegają zanikaniu gradientów, co ułatwia uczenie się wag.
 Dodatkowo pozwalają na bardziej stabilną optymalizację modelu oraz mogą osiągać lepsze wyniki przy mniejszej liczbie warstw.
-Można zauważyć zauważyć również na wykresie accuracy fig. ~\ref{fig:exp1_magda_cifar} underfitting, który wynika ze zbyt dużej ilości funkcji Dropout, na co należy uważać.
+Można zauważyć zauważyć również na wykresie accuracy fig.~\ref{fig:exp1_magda_cifar} underfitting, który wynika ze zbyt dużej ilości funkcji Dropout, na co należy uważać.
 
-W drugiej architekturze dla zbioru CIFAR wyniki osiągają następująco (0.547 i 0.573) fig. ~\ref{fig:exp1_kuba_cifar2} i fig. ~\ref{fig:exp1_magda_cifar2}.
+W drugiej architekturze dla zbioru CIFAR wyniki osiągają następująco (0.547 i 0.573) fig.~\ref{fig:exp1_kuba_cifar2} i fig.~\ref{fig:exp1_magda_cifar2}.
 W tym wypadku modele osiągają podobne wyniki, jednak minimalna różnica może wynikać z faktu, iż drugi model jest bardziej zaawansowany - posiada więcej warstw konwolucyjnych i wartsw Dropout, co wpływa na mniejszą zdolność do nauki skomplikowanych wzorów w zbiorze.
 Warto zauważyć overfitting w późniejszych epochach dla modelu drugiego, który może wynikać z braku regularyzacji (np.
 przez Dropout), przez co model nadmiernie dopasowuje sie do danych treningowych.
 
 
-Różnice w wartości accuracy na zbiorze testowym na obu zbiorach danych wynikają ze złożoności i skomplikowania zbioru CIFAR nad dość prostym wizuzalnie zbiorem MNIST.
+Różnice w wartości accuracy na zbiorze testowym na obu zbiorach danych wynikają ze złożoności i skomplikowania zbioru CIFAR nad dość prostym wizuzalnie zbiorem MNIST\@.
 Niekiedy obrazki ze zbioru CIFAR mogą być trudno rozpoznawalne dla ludzkiego oka, a tym bardziej dla modelu.
 Niemniej jednak, modele wykorzystane w eksperymentach poradziły sobie z zadaniem klasyfikacji zadowalająco.
 
