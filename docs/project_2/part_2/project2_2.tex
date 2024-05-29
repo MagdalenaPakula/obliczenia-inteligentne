@@ -596,7 +596,7 @@ Arch. Magda
         Augmentacja      & 10                                & 100                & 200                & 1000              & 10\,000            \\ \midrule
         Jakub Pawlak     & $0.100 \pm 0.001 $                & $ 0.100 \pm 0.000$ & $0.100 \pm 0.000 $ & $0.137 \pm 0.046$ & $0.184 \pm 0.084 $ \\
         Magdalena Pakuła & $0.099 \pm 0.004 $                & $0.100 \pm 0.000$ & $0.100 \pm 0.000 $ & $0.108 \pm 0.023$  & $0.197 \pm 0.053$   \\
-        Brak             &                                   & $0.100 \pm 0.000$  & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.0.191 \pm 0.146$  \\
+        Brak             &                                   & $0.100 \pm 0.000$  & $0.100 \pm 0.000$  & $0.100 \pm 0.000$ & $0.0.123 \pm 0.046$  \\
         \bottomrule
     \end{tabular}
     \caption{Wyniki dla 2 architektury na zbiorze CIFAR z augmentacją (accuracy z 10 prób w formie $\mu \pm \sigma$)}\label{tab:augmented_cifar_small}
@@ -619,7 +619,7 @@ Można również zauważyć ``przycinanie'' ujemnych współrzędnych wynikając
 co bardzo dobrze widać na rys.~\ref{fig:img/magda/MNIST_small_decision}.
 Aby uniknąć tego zjawiska, model znajdujący się na rys.~\ref{fig:kuba/cifar/smol/decision_boundary} nie zawiera funkcji ReLU na wyjściu ekstraktora cech.
 Jednakże, w momencie pisania tychże wniosków, okazuje się, że nie była to zbyt mądra decyzja, ponieważ skutkuje to bezpośrednim sąsiedztwem dwóch warstw liniowych, co negatywnie wpływa na możliwości modelu.
-Podobnym problem zawiera również 2 architektura opisana w sekcji 3.
+Podobny problem zawiera również 2 architektura opisana w sekcji 3.
 
 W pierwszej architekturze dla zbioru CIFAR zdecydowanie lepsze wyniki osiąga model pierszy ---
 0.810 (rys.~\ref{fig:exp1_kuba_cifar}) kontra 0.679 (rys.~\ref{fig:exp1_magda_cifar}).
