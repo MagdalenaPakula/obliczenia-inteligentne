@@ -1,6 +1,7 @@
 \documentclass[10pt]{article}
 
 \input{../../prelude.tex}
+\usepackage{wrapfig}
 \title{Projekt 2 --- Zadanie 1}
 \captionsetup{font=small}
 \begin{document}
@@ -141,21 +142,32 @@ W ten sposób obraz $28\times28$ zredukowano do 36-elementowego wektora.
     \caption{Przykłady ekstrakcji cech metodą HOG}
 \end{figure}
 
+\scriptsize
+\textbf{Inne podejścia} W tym miejscu zasadnym byłoby wskazać, że w przypadku ekstrakcji cech do 2-elementowego wektora zostały również sprawdzone inne metody.
+Jednym ze sprawdzonych cech była długość najdłuższej prostej. Obraz był w tym celu najpierw przekształcany na binarny, a następnie poddawany dylatacji.
+Następnie, sprawdzano wszystkie punkty należące do obrazu parami, i jeżeli prosta pomiędzy nimi była całkowicie zawarta w cyfrze, liczono długość odcinka między punktami.
+Długość najdłuższego odcinka stanowiła wartość jednej z cech. Miało to na celu wyróżnić cyfry z długimi prostymi odcinkami (np. 1, 7), od tych bardziej ``krętych'' (2, 5, 3).
 
+Drugą cechą była ilość segmentów całkowicie otoczonych przez cyfrę (1 dla cyfr 6,9,0; 2 dla cyfry 8), obliczane za pomocą algorytmu floodfill.
+Niestety, sprawiało to problemy z powodu dwojakiego sposobu zapisu cyfry 4, jak również istnienia ``niedomkniętych'' cyfr 9.
 
+Ogółem, udało się uzyskać niezbyt satysfakcjonujące wyniki ok.\ 30\%.
+Dlatego też, mając na względzie, że posłuży to wizualizacji, postanowiono skorzystać ze statystycznej metody dedykowanej redukcji wymiarów na potrzeby wizualizacji.
+\normalsize
 
 \paragraph{t-Distributed Stochastic Neighbor Embedding (t-SNE)} jest stochastyczną metodą redukcji wymiarów, często wykorzystywaną przy tworzeniu wizualizacji.
 
+\begin{wrapfigure}[11]{r}{.5\textwidth}\centering
+    \vspace*{-2em}
+    \includegraphics[width=\linewidth]{img/tsne_embedding.png}
+    \caption{Wizualicacja docelowej przestrzeni t-SNE}\label{fig:tsne-embed}
+\end{wrapfigure}
 
 Próbuje ona rozłożyć punkty w przestrzeni docelowej zachowując lokalnych sąsiadów z przestrzeni źródłowej.
 Metoda ta bada odległości między punktami w przestrzeni źródłowej i przypisuje im rozkład prawdopodobieństwa w opraciu o rozkład standardowy.
 Następnie wybiera (losowo lub przez PCA) rozkład punktów w przestrzeni docelowej i analizuje ich odległości, przypisując im prawdopodobieństwa oparte o rozkład Cauchy'ego.
 Następnie za pomocą metody minimalizacji gradientu stara się zminimalizować różnicę pomiędzy rozkładami w przestrzeni źródłowej i docelowej.
 
-\begin{figure}[H]\centering
-    \includegraphics[width=.6\linewidth]{img/tsne_embedding.png}
-    \caption{Wizualicacja docelowej przestrzeni t-SNE}\label{fig:tsne-embed}
-\end{figure}
 
 \pagebreak
 

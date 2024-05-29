@@ -110,8 +110,10 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
         raise ValueError("Plotting decision boundary requires 2D features")
 
     # Create a mesh of points for visualization
-    x_min, x_max = features[:, 0].min() - 1, features[:, 0].max() + 1
-    y_min, y_max = features[:, 1].min() - 1, features[:, 1].max() + 1
+    offset = np.abs(features).max() * 0.1
+
+    x_min, x_max = features[:, 0].min() - offset, features[:, 0].max() + offset
+    y_min, y_max = features[:, 1].min() - offset, features[:, 1].max() + offset
     xx, yy = np.meshgrid(np.linspace(x_min, x_max, resolution), np.linspace(y_min, y_max, resolution))
     xx = xx.astype(np.float32)
     yy = yy.astype(np.float32)
@@ -127,7 +129,8 @@ def plot_decision_boundary(classifier: Callable[[ndarray], ndarray],
         plt.contourf(xx, yy, y_pred, alpha=0.2, cmap=cmap)
 
     # draw points
-    plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap, s=size)
+    scatter = plt.scatter(features[:, 0], features[:, 1], c=labels, cmap=cmap, s=size)
+    plt.legend(*scatter.legend_elements(), title="Classes", loc='lower right', bbox_to_anchor=(1, 0))
 
     if title:
         plt.title(title)

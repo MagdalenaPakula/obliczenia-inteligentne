@@ -13,3 +13,7 @@ raw/
 
 # saved pytorch objects
 *.pt
+*.ckpt
+
+# pytorch lightning dirs
+lightning_logs/
