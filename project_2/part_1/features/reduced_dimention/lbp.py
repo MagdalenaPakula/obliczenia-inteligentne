@@ -2,17 +2,25 @@ import numpy as np
 import torch
 from matplotlib import pyplot as plt
 from skimage.feature import local_binary_pattern
+
 from project_2.part_1.data.MNIST import load_dataset_MNIST
+
 
 def lbp_image(image, radius=1, n_points=8):
     image = image.numpy().squeeze()  # Convert from tensor to numpy array
     lbp_img = local_binary_pattern(image, n_points, radius, method='uniform')
-    return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0)  # Convert back
+    # return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  # Ensure correct shape
+
+    # Flatten and normalize LBP image
+    lbp_img = lbp_img.flatten()
+    lbp_img = (lbp_img - np.min(lbp_img)) / (np.max(lbp_img) - np.min(lbp_img))
+    return torch.tensor(lbp_img, dtype=torch.float32)    # Ensure correct shape
 
 
 def lbp_histogram(lbp_image, n_bins=10):
     lbp_image = lbp_image.squeeze().numpy()
     hist, _ = np.histogram(lbp_image, bins=n_bins, range=(0, n_bins), density=True)
+    hist /= np.sum(hist)  # Normalizacja histogramu
     return hist
 
 
@@ -34,11 +42,18 @@ if __name__ == "__main__":
     # Load MNIST dataset
     datasets_mnist = load_dataset_MNIST(transform=lambda x: lbp_image(x, radius=1, n_points=8))
 
+    # Extract LBP features and visualize the dataset
+    lbp_features = []
+    for image, _ in datasets_mnist['train_dataset']:
+        hist = lbp_histogram(image)
+        lbp_features.append(hist)
+    lbp_features = np.array(lbp_features)
+
     # Visualize LBP-transformed MNIST dataset
     print("Visualizing LBP-transformed MNIST dataset:")
     visualize_LBP(datasets_mnist['train_dataset'])
 
-    # Extract and visualize the first 3 LBP images and their histograms
+    # Visualize the first 3 LBP images and their histograms
     print("Visualizing the first 3 LBP-transformed images and their histograms:")
     for i in range(3):
         example_image, label = datasets_mnist['train_dataset'][i]
@@ -55,7 +70,7 @@ if __name__ == "__main__":
         plt.show()
 
         # Compute and visualize the LBP histogram
-        lbp_hist = lbp_histogram(example_image, n_bins=10)
+        lbp_hist = lbp_histogram(example_image)
         plt.figure()
         plt.bar(range(len(lbp_hist)), lbp_hist, width=0.5, edgecolor='black')
         plt.title(f'Histogram of LBP codes for Digit {label}')

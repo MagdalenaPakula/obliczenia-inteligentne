@@ -1,46 +1,80 @@
 import numpy as np
 import torch
 from matplotlib import pyplot as plt
-from torch.utils.data import DataLoader, Dataset
-from torcheval.metrics import MulticlassConfusionMatrix
-import seaborn as sn
+from torch.utils.data import DataLoader
+from project_1.visualization import plot_decision_boundary, plot_voronoi_diagram
 from project_2.part_1.MLP import MLP
-from project_2.part_1.data.MNIST import load_dataset_MNIST
 from project_2.part_1.experiments import train_model, evaluate_model
-from project_2.part_1.features.two_dimentional.pca import pca_features
+
+from project_2.part_1.features.two_dimentional.pca import get_mnist_pca
+
+MODEL_PATH = "mnist_pca_model.pt"
 
 
-def perform_experiment_pca(dataset: dict[str, str | Dataset], model: MLP, epochs=50, learning_rate=0.01):
+def get_prediction(model, x: np.ndarray) -> np.ndarray:
+    num_predictions = x.shape[0]
+    with torch.inference_mode():
+        result = model(torch.tensor(x))
+        result = result.numpy().astype(np.float32)
+        assert result.shape[0] == num_predictions
+        return result.argmax(axis=1)
+
+
+def create_and_train_model(train_loader) -> torch.nn.Module:
+    torch.manual_seed(42)
+    input_size = 2
+    hidden_layer_size = 512
+    output_size = 10
+    model = MLP(input_size, hidden_layer_size, output_size)
+    train_model(model, train_loader, epochs=100, learning_rate=0.05)
+    torch.save(model, MODEL_PATH)
+    return model
+
+
+def loader_to_np_array(loader: DataLoader) -> tuple[np.ndarray, np.ndarray]:
+    features, labels = np.zeros((0, 2)), np.zeros((0,))
+    for data, l in loader:
+        features = np.append(features, data, axis=0)
+        labels = np.append(labels, l, axis=0)
+
+    return np.array(features), np.array(labels)
+
+
+def main():
+    dataset = get_mnist_pca()
+
     name = dataset['name']
-    train_images = dataset['train_dataset'].data
-    train_targets = dataset['train_dataset'].targets
+    train_dataset = dataset['train_dataset']
+    test_dataset = dataset['test_dataset']
+    train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-    # Perform PCA on train images
-    pca_train_features = pca_features(train_images)
+    # get model
+    try:
+        model = torch.load(MODEL_PATH)
+    except FileNotFoundError:
+        model = create_and_train_model(train_loader)
 
-    # Create train loader with PCA features
-    train_loader = DataLoader(list(zip(pca_train_features, train_targets)), batch_size=64, shuffle=True)
-
-    # Train model
-    train_model(model, train_loader, epochs=epochs, learning_rate=learning_rate)
-
-    # Evaluate the trained model on the test set
-    test_images = dataset['test_dataset'].data
-    test_targets = dataset['test_dataset'].targets
-    pca_test_features = pca_features(test_images)
-    test_loader = DataLoader(list(zip(pca_test_features, test_targets)), batch_size=64, shuffle=False)
     evaluate_model(model, test_loader, name)
 
+    x_test, y_fact = loader_to_np_array(test_loader)
 
-if __name__ == "__main__":
-    # Load MNIST datasets
-    datasets_mnist = load_dataset_MNIST()
+    x_test = x_test.astype(np.float32)[:1000]
+    y_fact = y_fact.astype(np.float32)[:1000]
 
-    # Create MLP model
-    input_dim = 2  # Two principal components
-    hidden_dim = 4
-    output_dim = 10  # 10 classes (0-9)
-    model = MLP(input_dim, hidden_dim, output_dim)
+    y_pred = get_prediction(model, x_test)
 
-    # Perform experiment
-    perform_experiment_pca(datasets_mnist, model, epochs=50, learning_rate=0.01)
+    def classifier(x: np.ndarray) -> np.ndarray:
+        return get_prediction(model, x)
+
+    plot_voronoi_diagram(x_test, y_pred, y_fact, colormap=plt.get_cmap('tab10'),
+                         diagram_title='MNIST PCA voronoi diagram')
+    plt.show()
+
+    plot_decision_boundary(classifier, x_test, y_fact, cmap='tab10', resolution=500, size=10,
+                           title='MNIST decision boundary with real labels', try_this_if_does_not_work=True)
+    plt.show()
+
+
+if __name__ == '__main__':
+    main()
