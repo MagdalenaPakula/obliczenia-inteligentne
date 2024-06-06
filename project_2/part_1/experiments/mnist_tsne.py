@@ -8,7 +8,7 @@ from project_2.part_1.MLP import MLP
 from project_2.part_1.experiments import train_model, evaluate_model
 from project_2.part_1.features.two_dimentional.tsne import get_mnist_tsne
 
-MODEL_PATH = "mnist_tsne_model.pt"
+MODEL_PATH = "MLP_mnist_tsne.pt"
 
 
 def get_prediction(model, x: np.ndarray) -> np.ndarray:

@@ -8,8 +8,7 @@ from project_2.part_1.experiments import train_model, evaluate_model
 
 from project_2.part_1.features.two_dimentional.pca import get_mnist_pca
 
-# MODEL_PATH = "mnist_pca_model_halko.pt"
-MODEL_PATH = "mnist_pca_model_lepszy.pt"
+MODEL_PATH = "mnist_pca_model.pt"
 
 
 def get_prediction(model, x: np.ndarray) -> np.ndarray:

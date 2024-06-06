@@ -5,6 +5,8 @@ from project_2.part_1.data.MNIST import load_dataset_MNIST
 from project_2.part_1.experiments import perform_experiment
 from project_2.part_1.features.reduced_dimention.hog import hog_feature_extraction
 
+MODEL_PATH = "../../../project_3/models/MLP_mnist_hog.pt"
+
 if __name__ == '__main__':
     dataset = load_dataset_MNIST(transform=hog_feature_extraction)
 
@@ -17,3 +19,6 @@ if __name__ == '__main__':
         model = MLP(input_size, hidden_layer_size, output_size)
 
         perform_experiment(dataset, model, epochs=5, learning_rate=0.1)
+
+        torch.save(model, MODEL_PATH)
+        print(f"Model saved to {MODEL_PATH}")
