@@ -5,8 +5,14 @@ from project_2.part_1.MLP import MLP
 from project_2.part_1.data.other_datasets import load_other_datasets
 from project_2.part_1.experiments import perform_experiment
 
-if __name__ == '__main__':
 
+def save_model(model, dataset_name):
+    model_path = f"{dataset_name.replace(' ', '_').lower()}_mlp_model.pt"
+    torch.save(model, model_path)
+    print(f"Model for {dataset_name} saved to {model_path}")
+
+
+if __name__ == '__main__':
     # found by trial and error
     hidden_layer_sizes = {
         "Iris Dataset": 7,
@@ -25,3 +31,6 @@ if __name__ == '__main__':
         model = MLP(input_size, hidden_size, output_size)
 
         perform_experiment(dataset, model, epochs=200, learning_rate=0.1)
+
+        # Save the trained model
+        save_model(model, dataset['name'])
