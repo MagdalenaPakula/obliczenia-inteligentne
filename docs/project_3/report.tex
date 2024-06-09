@@ -8,7 +8,7 @@
 
 \begin{document}
 
-\title{Report 3 - Obliczenia Inteligentne}
+\title{Explaining the Black Box: A Study on the Application of Explainable Artificial Intelligence (XAI) Techniques to Machine Learning Models}
 \author{
     \IEEEauthorblockN{Magdalena Pakuła}
     \IEEEauthorblockA{WFTIMS\\
@@ -21,61 +21,71 @@
     Email: 234767@edu.p.lodz.pl}
 }
 
-
 \maketitle
 
 \begin{abstract}
-This document provides guidelines and a template for writing conference papers using \LaTeX\ in accordance with IEEE standards. It covers various aspects such as formatting, styling, and referencing.
+
+    The increasing reliance on artificial neural networks in various applications has raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
+    This report addresses this challenge by exploring the application of Explainable Artificial Intelligence (XAI) techniques to machine learning models.
+    Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or MinParamPerturbation techniques.
+    Our study aims to shed light on the previously trained models, providing a deeper understanding of how they make predictions and present those findings in this report
+
 \end{abstract}
 
-\begin{IEEEkeywords}
-component, formatting, style, styling
-\end{IEEEkeywords}
+\section{Introduction}\label{sec:introduction}
 
-\section{Introduction}
-This document serves as a model and instructions for formatting conference papers using \LaTeX\ according to IEEE standards.
+    Artificial neural networks have revolutionized various industries and applications, from healthcare to finance, by enabling accurate predictions and decision-making.
+    However, the increasing reliance on these models has also raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
+    This opacity can lead to a lack of trust in the models, as well as difficulties in identifying biases and errors.
+    To address this challenge, Explainable Artificial Intelligence (XAI) techniques have emerged as a crucial step towards building more transparent and accountable machine learning models.
+    By applying XAI methods, we can gain insights into the internal workings of complex models, providing a deeper understanding of how they make predictions and enabling more informed decision-making.
+    This project aims to explore the application of XAI techniques to machine learning models, specifically focusing on local explanation approaches such as attributions and counterfactual examples.
+    By shedding light on the previously trained models, we aim to provide a better understanding of how they make predictions and contribute to the development of more transparent and trustworthy AI systems.
 
-\section{Ease of Use}
+\section{Related Work}\label{sec:related-work}
 
-\subsection{Maintaining the Integrity of the Specifications}
-The IEEEtran class file is utilized to format and style the text of your paper. Please adhere to the prescribed margins, column widths, line spaces, and text fonts.
+    One of the first work in this paper's domain is \cite{ribeiro2016should} by Ribeiro et al.
+    This is the first paper introducing LIME (Local Interpretable Model-Agnostic Explanations) framework, which generates local, interpretable explanations for the predictions of any machine learning model.
+    Another influential text is the book \cite{molnar2019interpretable} by Christoph Molnar, which provides an overview of various XAI techniques, including feature importance, partial dependence plots, and SHAP values.
+    Molnar discusses both global and local explanation methods, highlighting their strengths, weaknesses, and appropriate use cases.
+    The last paper \cite{samek2017explainable} by Samek et al. offers a broader perspective on the field of XAI.
+    The authors present a taxonomy of XAI techniques, categorizing them into different groups based on their underlying principles and goals.
+    The paper also discusses the opportunities and challenges in developing XAI systems.
 
-\section{Prepare Your Paper Before Styling}
-Before formatting your paper, ensure all content is written and organized. Please review sections \ref{AA}--\ref{SCM} for proofreading and grammar tips.
+    Those papers provide a solid ground for understanding the importance of interpretability and explainability in machine learning.
+    However, there is still a need for further experimentation and evaluation on diverse datasets and scenarios to better understand the strengths and limitations of different XAI approaches.
 
-\subsection{Abbreviations and Acronyms}\label{AA}
-Define abbreviations when first used in the text. Abbreviations such as IEEE, SI, MKS, CGS, etc., need not be defined again.
+\section{Methods}\label{sec:methodology}
 
-\subsection{Units}
-Follow SI units primarily, with English units in parentheses if necessary. Ensure consistency in unit usage and avoid mixing SI and CGS units.
+    This experiment will be conducted on varius types of data and different models.
+    Those models are: MLP models for classifying iris flowers, distinguishing wines and diagnosing breast cancer, MLP models and CNN network for classifying handwritten numbers from the MNIST dataset and lastly CNN network for distinguishing objects in images from the CIFAR10 dataset.
 
-\subsection{Equations}
-Number equations consecutively and ensure symbols are defined before or immediately following the equation.
+    Based on the research, general knowledge, and the types of data and models involved, the experiment will utilize a combination of local and global explanation methods to provide insights into the inner workings of these machine learning systems.
 
-\subsection{\LaTeX-Specific Advice}
-Use soft cross-references (\verb|\eqref|) and avoid \verb|{eqnarray}| environment. Use \verb|{align}| or \verb|{IEEEeqnarray}| instead.
+\subsection{Explainable AI Techniques}\label{subsec:explainable-ai-techniques}
 
-\subsection{Some Common Mistakes}\label{SCM}
-Avoid common mistakes such as incorrect punctuation, confusing homophones, and misuse of abbreviations.
+    For local explanations, the following techniques will be employed:
 
-\subsection{Authors and Affiliations}
-List authors and affiliations sequentially. Keep affiliations concise.
+    \begin{itemize}
+    \item \textbf{LIME}: This method learns an interpretable model around the prediction, allowing for an understanding of the key factors driving the model's output for a specific instance. LIME is a suitable choice as it is a model-agnostic approach that can be applied to a wide range of machine learning models, including the MLP and CNN architectures used in this experiment.
+    \item \textbf{Saliency Maps}: Saliency maps highlight the input features that have the most significant influence on the model's prediction for a given instance. This technique is particularly useful for understanding the decision-making process of the CNN models used for image classification tasks, as it can identify the salient regions of the input images that are driving the predictions.
+    \item \textbf{Minimal Parameter Perturbation}: This counterfactual explanation method identifies the minimal changes required to the input features to change the model's prediction. By understanding the necessary perturbations, we can gain insights into the model's decision boundaries and the key factors contributing to its predictions.
+    \end{itemize}
 
-\subsection{Identify the Headings}
-Organize headings as component heads and text heads. Follow the hierarchical structure for text heads.
+    In addition to these local explanation methods, the experiment will also explore global explanations to understand the overall behavior and assumptions of the trained models.
 
-\subsection{Figures and Tables}
-Position figures and tables appropriately and ensure proper labeling. Use descriptive labels and avoid ambiguity.
+\subsection{Experiments}\label{subsec:experiments}
 
-\section*{Acknowledgment}
-Acknowledgments should be brief and located at the end of the text.
+\section{Results}\label{sec:results}
+    Present the results of the local and global explanations.
+    Interpret the findings, discuss their significance, and potential implications.
 
-\section*{References}
-Number citations consecutively within brackets and ensure proper punctuation.
+\section{Summary}\label{sec:summary}
+    Summarize the main conclusions and suggest future work.
 
-\begin{thebibliography}{00}
-\bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
-% Include other references here
-\end{thebibliography}
+\section{References}\label{sec:references}
+
+    \bibliographystyle{IEEEtran}
+    \bibliography{references}
 
 \end{document}
