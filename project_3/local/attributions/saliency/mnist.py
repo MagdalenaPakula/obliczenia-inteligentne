@@ -21,13 +21,18 @@ def get_sample_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
 
 
 def plot_original_and_attributions(original: torch.Tensor, attributions: torch.Tensor):
-    original_img = original.permute(1, 2, 0).detach().numpy()
-    attributions_img = attributions.permute(1, 2, 0).detach().numpy()
+    assert original.dim() == 3, "Original tensor does not have 3 dimensions (channel, height, width)"
+    assert attributions.dim() == 3, "Attributions tensor does not have 3 dimensions (channel, height, width)"
+
+    original_img: np.ndarray = original.permute(1, 2, 0).detach().numpy()
+    attributions_img: np.ndarray = attributions.permute(1, 2, 0).detach().numpy()
 
     fig, axis = plt.subplots(1, 2)
     axis[0].imshow(original_img, cmap='gray')
+    axis[0].set_axis_off()
     axis[0].set_title('Original image')
     axis[1].imshow(attributions_img)
+    axis[1].set_axis_off()
     axis[1].set_title('Attributions')
     fig.show()
 
