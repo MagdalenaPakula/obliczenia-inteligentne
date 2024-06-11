@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-
+from captum.attr import visualization as viz
 from captum.attr import IntegratedGradients
 from matplotlib import pyplot as plt
 from project_2.part_2.models.kuba import MnistLargeModel
@@ -22,15 +22,15 @@ def plot_original_and_attributions_with_colorbar(original: torch.Tensor, attribu
     ax1.set_axis_off()
     ax1.set_title('Original image')
 
-    # Attributions
-    ax2.imshow(attributions_img, cmap='bwr', vmin=-attributions_img.max(), vmax=attributions_img.max())
-    ax2.set_axis_off()
-    ax2.set_title('Attributions')
-
-    # Colorbar
-    cbar = fig.colorbar(ax2.imshow(attributions_img, cmap='bwr'), ax=ax2)
-    cbar.set_label('Attribution score')
-
+    # Visualize the blended heatmap - sign="all", sign="positive", sign="negative"
+    viz.visualize_image_attr(attributions_img,
+                             original_image=original_img,
+                             method='blended_heat_map',
+                             sign="absolute_value",
+                             title="Overlayed Integrated Gradients",
+                             plt_fig_axis=(fig, ax2))
+    # outlier_perc=1
+    # method = "blended_heat_map" or  "heat_map"
     fig.tight_layout()
     plt.show()
 
