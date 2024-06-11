@@ -1,0 +1,18 @@
+Example for class 'setosa' is predicted to be setosa
+[('sepal length (cm) <= -0.90', -0.2983556412795043), ('sepal width (cm) > 0.56', -0.2016320994537504), ('petal width (cm) <= -1.18', -0.07411570376223665), ('petal length (cm) <= -1.23', -0.07389041995564297)]
+Example for class 'versicolor' is predicted to be versicolor
+[('sepal length (cm) > 0.67', 0.2653811194039465), ('0.13 < petal width (cm) <= 0.79', 0.07424897620392779), ('0.34 < petal length (cm) <= 0.76', 0.047548879755675705), ('-0.13 < sepal width (cm) <= 0.56', 0.0009614751494330064)]
+Example for class 'virginica' is predicted to be virginica
+[('petal width (cm) > 0.79', -0.21945629442604958), ('petal length (cm) > 0.76', -0.1531099382477805), ('-0.05 < sepal length (cm) <= 0.67', 0.1040170150861263), ('-0.13 < sepal width (cm) <= 0.56', -0.002859546719838762)]
+
+Example for class 'class_0' is predicted to be class_0
+[('alcohol > 0.84', -0.3134332679978472), ('proline > 0.76', -0.264433236765466), ('alcalinity_of_ash <= -0.69', -0.2251982383093865), ('magnesium > 0.51', -0.11390769081064545), ('proanthocyanins > 0.63', 0.08002171008559669), ('-0.74 < nonflavanoid_phenols <= -0.18', -0.0482748726325857), ('-0.66 < malic_acid <= -0.42', 0.047185845557030495), ('-0.02 < ash <= 0.70', -0.04026117740681837), ('od280/od315_of_diluted_wines > 0.79', -0.028340722297950868), ('0.03 < hue <= 0.71', 0.02827508670536462)]
+Example for class 'class_1' is predicted to be class_1
+[('ash <= -0.57', 0.23436775805290394), ('alcalinity_of_ash <= -0.69', -0.20354445514585237), ('color_intensity <= -0.80', 0.17680075941809859), ('malic_acid <= -0.66', 0.13254550904544882), ('-0.78 < proline <= -0.23', 0.10325458185131137), ('-0.79 < alcohol <= 0.06', 0.09423340514431178), ('magnesium <= -0.82', 0.08732574994681586), ('proanthocyanins <= -0.60', -0.04592480473543597), ('-0.74 < nonflavanoid_phenols <= -0.18', -0.04071096048405102), ('flavanoids <= -0.83', -0.038761580066257295)]
+Example for class 'class_2' is predicted to be class_2
+[('malic_acid <= -0.66', 0.12932652917362636), ('magnesium > 0.51', -0.10169963853701124), ('hue <= -0.77', -0.09662396275257475), ('nonflavanoid_phenols <= -0.74', -0.09330437006968492), ('-0.78 < proline <= -0.23', 0.09283071105886193), ('-0.80 < color_intensity <= -0.16', 0.0901569512123598), ('-0.79 < alcohol <= 0.06', 0.06639030677980597), ('proanthocyanins <= -0.60', -0.059140785363461144), ('-0.69 < alcalinity_of_ash <= 0.00', -0.038531557147961006), ('-0.57 < ash <= -0.02', 0.03503977403731557)]
+
+Example for class 'malignant' is predicted to be malignant
+[('area error > 0.11', -0.2803607666279344), ('radius error > 0.27', -0.27142521036525513), ('worst texture <= -0.75', 0.2172974835723366), ('worst concavity > 0.53', -0.2120154535643591), ('fractal dimension error > 0.29', 0.21120084791576466), ('mean concavity > 0.53', -0.20558354106385127), ('worst radius > 0.52', -0.15484021409513796), ('worst concave points > 0.71', -0.151437129696968), ('worst smoothness > 0.60', -0.14501619150912912), ('compactness error > 0.39', 0.13594166343368777)]
+Example for class 'benign' is predicted to be benign
+[('worst texture <= -0.75', 0.21842857185438763), ('-0.49 < area error <= -0.35', 0.11693408539760825), ('texture error <= -0.69', -0.09013183858850903), ('-0.62 < radius error <= -0.29', 0.08454431147818825), ('mean texture <= -0.73', 0.07439644700747527), ('-0.68 < worst compactness <= -0.27', -0.07233220030349469), ('mean fractal dimension <= -0.72', -0.06777535676504395), ('-0.59 < fractal dimension error <= -0.23', -0.06004003787372975), ('-0.69 < compactness error <= -0.28', -0.049467416103845994), ('-0.69 < worst fractal dimension <= -0.22', 0.04814347795800571)]
