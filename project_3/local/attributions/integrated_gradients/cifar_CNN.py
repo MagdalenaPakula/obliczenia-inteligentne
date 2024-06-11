@@ -35,7 +35,7 @@ def plot_original_and_attributions_with_blended_heatmap(original: torch.Tensor, 
     ax1.set_axis_off()
     ax1.set_title('Original image')
 
-    # Visualize the blended heatmap
+    # Visualize the blended heatmap - sign="all", sign="positive", sign="negative"
     viz.visualize_image_attr(attributions_img, original_image=original_img, method="blended_heat_map", sign="all",
                              show_colorbar=True, title="Overlayed Integrated Gradients", plt_fig_axis=(fig, ax2))
 
