@@ -8,8 +8,6 @@ from project_3.local.attributions.saliency.mnist import get_sample_data
 from project_3.models import get_model
 
 
-
-
 def plot_original_and_attributions_with_colorbar(original: torch.Tensor, attributions: torch.Tensor):
     assert original.dim() == 3, "Original tensor does not have 3 dimensions (channel, height, width)"
     assert attributions.dim() == 3, "Attributions tensor does not have 3 dimensions (channel, height, width)"
@@ -17,7 +15,6 @@ def plot_original_and_attributions_with_colorbar(original: torch.Tensor, attribu
     original_img: np.ndarray = original.permute(1, 2, 0).detach().numpy()
     attributions_img: np.ndarray = attributions.permute(1, 2, 0).detach().numpy()
 
-    # Create a figure with 2 subplots and a colorbar
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
     # Original image
