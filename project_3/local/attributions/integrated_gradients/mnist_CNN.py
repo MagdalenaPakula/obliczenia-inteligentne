@@ -11,7 +11,7 @@ from project_3.local.attributions.saliency.mnist import get_sample_data
 from project_3.models import get_model
 
 
-def plot_original_and_attributions_with_colorbar(original: torch.Tensor, attributions: torch.Tensor):
+def plot_original_and_attributions_integrated_grad(original: torch.Tensor, attributions: torch.Tensor):
     assert original.dim() == 3, "Original tensor does not have 3 dimensions (channel, height, width)"
     assert attributions.dim() == 3, "Attributions tensor does not have 3 dimensions (channel, height, width)"
 
@@ -85,7 +85,8 @@ def _main():
         model.zero_grad()
         gradients = ig.attribute(img.unsqueeze(0), target=label.item())
 
-        # plot_original_and_attributions_with_colorbar(img, gradients.squeeze(0))
+        plot_original_and_attributions_integrated_grad(img, gradients.squeeze(0))
+
         plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
 
 
