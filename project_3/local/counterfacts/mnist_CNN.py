@@ -17,6 +17,11 @@ def random_affine_attack(image, degrees):
     perturbed_image = transform(image)
     return perturbed_image
 
+def elastic_transform_attack(image, alpha):
+    transform = transforms.Compose([transforms.ElasticTransform(alpha=alpha, sigma=5.0)])
+    perturbed_image = transform(image)
+    return perturbed_image
+
 
 def plot_original_and_perturbed(original_image, perturbed_image, true_label, predicted_label):
     original_image = original_image.squeeze().detach().cpu().numpy()
@@ -49,19 +54,17 @@ def _main():
 
         min_pert = MinParamPerturbation(
             forward_func=model,
-            attack=random_affine_attack,
-            arg_name="degrees",
-            arg_min=10,
-            arg_max=30,
-            arg_step=1,
+            attack=elastic_transform_attack,
+            arg_name="alpha",
+            arg_min=0.0,
+            arg_max=50.0,
+            arg_step=0.01,
         )
-        perturbed_image, min_degrees = min_pert.evaluate(img.unsqueeze(0), target=label)
+        perturbed_image, _ = min_pert.evaluate(img.unsqueeze(0), target=label)
 
         if perturbed_image is not None:
-            print(f"min_degrees: {min_degrees}")
             predicted_label = model(perturbed_image).argmax(dim=1).item()
             plot_original_and_perturbed(img, perturbed_image, label, predicted_label)
-
 
 if __name__ == '__main__':
     _main()
