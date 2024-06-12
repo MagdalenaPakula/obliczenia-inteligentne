@@ -242,6 +242,57 @@ Overfitting could cause the model to focus on some background pixels, that are n
 However, it should be noted that during the model evaluation, we did not observe a drop in accuracy on the test set during training --- a typical sign of overfitting.
 Additionally, the performance of the model on the testing data was satisfactory, which speaks against the potential issues with the model.
 
+To further investigate this model we used Integrated Gradients method as well.
+\begin{figure}[h]\centering
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/4_again2}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/9}
+    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-integrated-grad}
+\end{figure}
+As previously the blue pixels show the areas that most influence the model's predictions and red the least.
+
+Obtained integrated gradients perfectly present and explain which areas are taken into account when predicting by a model.
+Examples on fig.~\ref{fig:mnist-cnn-integrated-grad} show that digit 3 is most recognizable by its' two distinctive curves.
+This insight aligns with human intuition about the defining features of the numeral 3.
+Integrated Gradients also reveal nuances in distinguishing between visually similar digits.
+For digits 4 and 9, while they share some similarities, the connected top part plays a critical role in differentiation.
+Moreover, this method highlight areas in the digits where the model might make errors or find ambiguity.
+In the central areas of digits 4 and 9, represented by less intense colors (notably red), the model's certainty decreases.
+This suggests these regions resemble characteristics of multiple digits, potentially leading to misclassification.
+
+We extended our analysis by implementing the SLIC superpixel method.
+
+\begin{figure}[h]\centering
+    \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8}
+    \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8_1}
+    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-slic}
+\end{figure}
+
+SLIC generates segmented regions that highlight the spatial importance of different parts of the digit.
+By focusing on these superpixels, we gain insights into which regions the model prioritizes when making decisions.
+For example on the fig.~\ref{fig:mnist-cnn-slic} we observe that in case of classification fo difit 8, the most crucial part is the center, where two curves cross each other.
+Integrating this method enhances model transparency and improves understanding of the model prediction.
+
+At last, we used peturbation technique on different digits to check, how model would classify them, if part of the image would be covered.
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_1}
+    \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_3}
+    \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_10}
+    \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_3}
+    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
+\end{figure}
+
+We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that Covering the bottom part of the digit 8 leads the model to classify it as 9.
+Similarly, covering part of the digit 6 results in a misclassification as 4.
+These observations highlight specific regions of the image that significantly influence the model's predictions.
+The perfect example of explanation of the figures on ~\ref{fig:mnist-cnn-integrated-grad} is with the coverage of the top part of 9, which results in misclassification as 4.
+Therefore, it proves the fact that the top part of digit 9 is most influential.
+Same results are obtained on the last example, where instead of predicting 3, model predicts 5 due to lack of the top curve.
+
+This technique is a powerful tool for error analysis and diagnosis.
+Using it demonstrates how small changes in input can affect model predictions and trustworthiness.
+
 \subsection{CIFAR10 CNN classifier}\label{subsec:experiment-cifar}
 
 \section{Summary}\label{sec:summary}
