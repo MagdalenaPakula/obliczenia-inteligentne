@@ -1,7 +1,7 @@
 import numpy as np
 import torch
-from captum.attr import visualization as viz
 from captum.attr import IntegratedGradients
+from captum.attr import visualization as viz
 from matplotlib import pyplot as plt
 from skimage.color import label2rgb
 from skimage.segmentation import slic
@@ -64,7 +64,7 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
     ax2.set_title('Original image')
 
     # Attributions image with colorbar
-    im = ax3.imshow(attributions_img, cmap="RdBu", vmin=-1, vmax=1)
+    ax3.imshow(attributions_img, cmap="RdBu", vmin=-1, vmax=1)
     ax3.set_axis_off()
     ax3.set_title("Overlayed Integrated Gradients")
 
