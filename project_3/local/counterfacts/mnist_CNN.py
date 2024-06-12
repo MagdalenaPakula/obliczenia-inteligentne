@@ -28,8 +28,13 @@ def elastic_transform_attack(image, alpha):
 
 def cover_top(image, cover_size=10):
     perturbed_image = image.clone()
-    # Cover a part of the image with black pixels
     perturbed_image[:, :cover_size, :cover_size] = 0.0
+    return perturbed_image
+
+
+def cover_bottom(image, cover_size=10):
+    perturbed_image = image.clone()
+    perturbed_image[:, :, -cover_size:, :] = 0.0
     return perturbed_image
 
 
