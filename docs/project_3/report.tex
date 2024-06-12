@@ -27,13 +27,13 @@
 \begin{abstract}
     The increasing reliance on artificial neural networks in various applications has raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
     This report addresses this challenge by exploring the application of so-called Explainable Artificial Intelligence (XAI) techniques to machine learning models.
-    Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or MinParamPerturbation techniques.
+    Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or Integrated Gradients techniques.
     Our study aims to shed light on the previously trained models, providing a deeper understanding of how they make predictions and present those findings in this report
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
 
-\IEEEPARstart{A}{rtificial} neural networks have revolutionized various industries and applications, from healthcare to finance, by enabling accurate predictions and decision-making.
+\IEEEPARstart{A}{rtificial} neural networks (ANNs) have revolutionized various industries and applications, from healthcare to finance, by enabling accurate predictions and decision-making.
 However, the increasing reliance on these models has also raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
 This opacity can lead to a lack of trust in the models, as well as difficulties in identifying biases and errors.
 To address this challenge, Explainable Artificial Intelligence (XAI) techniques have emerged as a crucial step towards building more transparent and accountable machine learning models.
@@ -42,18 +42,32 @@ This project aims to explore the application of XAI techniques to machine learni
 By shedding light on the previously trained models, we aim to provide a better understanding of how they make predictions and contribute to the development of more transparent and trustworthy AI systems.
 
 \section{Related Work}\label{sec:related-work}
+During this study, we explored various methods used to enhance the interpretability and transparency of ANNs through XAI techniques.
+The first paper in this domain we examined was~\cite{ribeiro2016should} by Ribeiro et al.
+This paper was the first to publicly introduce the Local Interpretable Model-Agnostic Explanations (LIME) framework, which generates local, interpretable explanations for the predictions of any machine learning model.
+The key idea behind LIME is to approximate the original complex model with an interpretable model that is locally faithful to the prediction of interest.
+This paper was an important step in the development of XAI techniques, as it demonstrated the feasibility and utility of interpretable explanations.
+Since then, the field of XAI has continued to evolve, with many other techniques (e.g. SHAP, TCAV, GradCAM) being proposed to enhance the transparency and interpretability of AI systems.
+However, LIME provides local explanations that are specific to individual predictions and while useful, these local explanations may not offer a comprehensive understanding of the model's overall behavior~\cite{NIPS2017_8a20a862}.
 
-One of the first work in this paper's domain is~\cite{ribeiro2016should} by Ribeiro et al.
-This is the first paper introducing LIME (Local Interpretable Model-Agnostic Explanations) framework, which generates local, interpretable explanations for the predictions of any machine learning model.
-Another influential text is the book~\cite{molnar2019interpretable} by Christoph Molnar, which provides an overview of various XAI techniques, including feature importance, partial dependence plots, and SHAP values.
-Molnar discusses both global and local explanation methods, highlighting their strengths, weaknesses, and appropriate use cases.
-The last paper~\cite{samek2017explainable} by Samek et al.\ offers a broader perspective on the field of XAI\@.
-The authors present a taxonomy of XAI techniques, categorizing them into different groups based on their underlying principles and goals.
-The paper also discusses the opportunities and challenges in developing XAI systems.
+Different approach for understanding model predictions are saliency maps thoroughly explained by Simonyan et al.~\cite{Simonyan14a}.
+This paper presents the method, which computes the gradient of the score of the predicted class with respect to the input image.
+The gradient essentially measures how small changes in each pixel value of the image will affect the output score.
+The absolute values of these gradients are taken to represent the importance of each pixel and pixels with larger gradient magnitudes are considered more important for the classification decision.
+Therefore, saliency maps effectively highlight discriminative image regions and objects, which are easily interpretable by a human eye.
+Such examples are shown and prove the usefulness of this method.
 
-Those papers provide a solid ground for understanding the importance of interpretability and explainability in machine learning.
-However, there is still a need for further experimentation and evaluation on diverse datasets and scenarios to better understand the strengths and limitations of different XAI approaches.
+To have a broader view and better understanding using another method we reviewed another influential paper by Sundararajan et al.~\cite{ribeiro2016should}, which provided an alternative surrogate-based methods like LIME or sometimes misleading saliency maps~\cite{adebayo2018sanity}.
+The authors introduce and demonstrate the usefulness of Integrated Gradients through various case studies, including image classification.
+They show that this method can provide meaningful and intuitive explanations of the model's predictions, which can be valuable for tasks like feature importance analysis.
+Additionally, the authors compare Integrated Gradients method to other gradient-based attribution methods, such as Saliency Maps and Deconvolution, and highlight the advantages of it in terms of satisfying desirable properties for explanations.
 
+Furthermore, counterfactuals are an essential aspect of XAI, as they provide a way to evaluate the robustness of a model's predictions by considering what would have happened if certain conditions had been different~\cite{adebayo2018sanity}.
+This is particularly important in high-stakes applications, such as healthcare or finance, where the consequences of incorrect predictions can be severe.
+For example, Adebayo et al.~\cite{adebayo2018sanity} evaluated the reliability of saliency maps on the MNIST and CIFAR-10 image classification datasets by applying counterfactual perturbations like rotation and occlusion to the input images.
+They found that many popular saliency map methods failed to provide faithful explanations, underscoring the importance of using counterfactuals to assess the robustness of model predictions.
+
+Those papers provide a solid ground for experimenting on different models with different methods in order to fully understand models predictions.
 \section{Methods}\label{sec:methodology}
 
 This experiment will be conducted on varius types of data and different models.
