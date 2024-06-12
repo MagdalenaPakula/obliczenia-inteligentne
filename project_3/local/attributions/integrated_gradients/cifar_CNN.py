@@ -8,7 +8,7 @@ from skimage.color import label2rgb
 from skimage.segmentation import slic
 
 from project_2.part_2.data import CIFAR10DataModule
-from project_2.part_2.models.kuba.cifar.large import CifarLargeModel
+from project_2.part_2.models.kuba.cifar.large import CifarLargeModel, _CIFARLargeFeatureExtractor
 from project_3.local.attributions.integrated_gradients.mnist_CNN import plot_original_and_attributions_integrated_grad
 from project_3.models import get_model
 
@@ -59,7 +59,7 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
 def _main():
     model: CifarLargeModel = get_model("kuba_cifar_large.pt")
 
-    for i in range(10):
+    for i in range(100):
         img, label = get_sample_data_cifar(i)
         img.requires_grad = True
 

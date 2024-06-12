@@ -1,0 +1,3 @@
+ROTATION degrees:
+img: bear -> bee: 14.78 degrees
+
