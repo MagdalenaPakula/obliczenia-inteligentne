@@ -1,15 +1,21 @@
 from captum.robust import MinParamPerturbation
 import torch
 from matplotlib import pyplot as plt
+from torchvision import transforms
+
 from project_2.part_2.models.kuba import MnistLargeModel
 from project_3.local.attributions.saliency.mnist import get_sample_data
 from project_3.models import get_model
-
 
 def gaussian_noise_attack(image, std=0.1):
     noise = torch.randn_like(image) * std
     perturbed_image = image + noise
     return perturbed_image.clamp(0, 1)
+
+def random_affine_attack(image, degrees):
+    transform = transforms.Compose([transforms.RandomAffine(degrees)])
+    perturbed_image = transform(image)
+    return perturbed_image
 
 
 def plot_original_and_perturbed(original_image, perturbed_image, true_label, predicted_label):
@@ -43,16 +49,16 @@ def _main():
 
         min_pert = MinParamPerturbation(
             forward_func=model,
-            attack=gaussian_noise_attack,
-            arg_name="std",
-            arg_min=0.0,
-            arg_max=2.0,
-            arg_step=0.01,
+            attack=random_affine_attack,
+            arg_name="degrees",
+            arg_min=10,
+            arg_max=30,
+            arg_step=1,
         )
-        perturbed_image, min_std = min_pert.evaluate(img.unsqueeze(0), target=label)
+        perturbed_image, min_degrees = min_pert.evaluate(img.unsqueeze(0), target=label)
 
         if perturbed_image is not None:
-            print(f"Minimum perturbation std: {min_std}")
+            print(f"min_degrees: {min_degrees}")
             predicted_label = model(perturbed_image).argmax(dim=1).item()
             plot_original_and_perturbed(img, perturbed_image, label, predicted_label)
 
