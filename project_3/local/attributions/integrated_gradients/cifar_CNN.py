@@ -1,12 +1,6 @@
+import torch
 from captum.attr import IntegratedGradients
 from typing import Tuple
-
-import matplotlib.pyplot as plt
-import numpy as np
-import torch
-from captum.attr import visualization as viz
-from matplotlib.colors import LinearSegmentedColormap
-
 from project_2.part_2.data import CIFAR10DataModule
 from project_2.part_2.models.kuba.cifar.large import CifarLargeModel, _CIFARLargeFeatureExtractor
 from project_3.local.attributions.integrated_gradients.mnist_CNN import plot_original_and_attributions_with_colorbar
