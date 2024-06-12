@@ -265,7 +265,7 @@ We extended our analysis by implementing the SLIC superpixel method.
 \begin{figure}[h]\centering
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8}
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8_1}
-    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-slic}
+    \caption{SLIC method on chosen MNIST digits}\label{fig:mnist-cnn-slic}
 \end{figure}
 
 SLIC generates segmented regions that highlight the spatial importance of different parts of the digit.
@@ -280,7 +280,7 @@ At last, we used peturbation technique on different digits to check, how model w
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_3}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_10}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_3}
-    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
+    \caption{Peturbation method on chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
 \end{figure}
 
 We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that Covering the bottom part of the digit 8 leads the model to classify it as 9.
@@ -294,6 +294,17 @@ This technique is a powerful tool for error analysis and diagnosis.
 Using it demonstrates how small changes in input can affect model predictions and trustworthiness.
 
 \subsection{CIFAR10 CNN classifier}\label{subsec:experiment-cifar}
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/frog}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/ship}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/cat2}
+    \caption{Integrated Gradients of chosen CIFAR images}\label{fig:cifar-cnn-int-grad}
+\end{figure}
+
+The CNN for distinguishing objects in images from the CIFAR10 dataset was analyzed using the integrated gradients.
+The resulting visualizations are presented on fig.~\ref{fig:cifar-cnn-int-grad}.
+
 
 \section{Summary}\label{sec:summary}
 Summarize the main conclusions and suggest future work.
