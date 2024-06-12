@@ -121,12 +121,88 @@ where \( \mathbf{m}_k \) is the mean color of superpixel \( S_k \), \( N_k \) is
 After presenting the result of this experiment, we will try to discover the general principles that guide the models in order to understand the overall behavior and assumptions of the trained models.
 
 \section{Results}\label{sec:results}
-Present the results of the local and global explanations.
-Interpret the findings, discuss their significance, and potential implications.
+In this section we will present detailed findings and interpretations obtained from applying various XAI methods on the chosen ANN models, elucidating the factors influencing model predictions and enhancing interpretability.
 
-\subsection{Iris MLP classifier}\label{subsec:experiment-iris}
-\subsection{Wine MLP classifier}\label{subsec:experiment-wine}
-\subsection{Breast cancer MLP classifier}\label{subsec:experiment-cancer}
+\subsection{MLP Models for Iris Flowers, Wines, and Breast Cancer}\label{subsec:experiment-other-datasets}
+For these models LIME method was used.
+The results for the Iris dataset is as follows:
+\begin{itemize}
+    \item Example for class \textit{setosa} is predicted to be \textit{setosa} \\
+    {\tiny
+    \begin{verbatim}
+     (sepal length (cm) <= -0.90, -0.298)
+     (sepal width (cm) > 0.56, -0.202)
+     (petal width (cm) <= -1.18, -0.074)
+     (petal length (cm) <= -1.23, -0.074)
+    \end{verbatim}
+    }
+
+    \item Example for class \textit{versicolor} is predicted to be \textit{versicolor} \\
+    {\tiny
+    \begin{verbatim}
+     (sepal length (cm) > 0.67, 0.265)
+     (0.13 < petal width (cm) <= 0.79, 0.074)
+     (0.34 < petal length (cm) <= 0.76, 0.048)
+     (-0.13 < sepal width (cm) <= 0.56, 0.001)
+    \end{verbatim}
+    }
+
+    \item Example for class \textit{virginica} is predicted to be \textit{virginica} \\
+    {\tiny
+    \begin{verbatim}
+     (petal width (cm) > 0.79, -0.219)
+     (petal length (cm) > 0.76, -0.153)
+     (-0.05 < sepal length (cm) <= 0.67, 0.104)
+     (-0.13 < sepal width (cm) <= 0.56, -0.003)
+    \end{verbatim}
+    }
+\end{itemize}
+
+We can interpret those values as in order for a model to predict \textit{setosa} when the sepal length is less than or equal to -0.90, the sepal width is greater than 0.56, the petal width is less than or equal to -1.18  and the petal length is less than or equal to -1.23.
+In the datasets for Wine and Breast Cancer we received the following exemplary results for classes:
+
+\begin{itemize}
+    \item Example for class \textit{class 0} is predicted to be \textit{class 0} \\
+    {\tiny
+    \begin{verbatim}
+     (alcohol > 0.84, -0.3134332679978472)
+     (proline > 0.76, -0.264433236765466)
+     (alcalinity_of_ash <= -0.69, -0.2251982383093865)
+     (magnesium > 0.51', -0.11390769081064545)
+     (proanthocyanins > 0.63, 0.08002171008559669)
+     (-0.74 < nonflavanoid_phenols <= -0.18, -0.0482748726325857)
+     (-0.66 < malic_acid <= -0.42, 0.047185845557030495)
+     (-0.02 < ash <= 0.70, -0.04026117740681837)
+     (od280/od315_of_diluted_wines > 0.79, -0.028340722297950868)
+     (0.03 < hue <= 0.71, 0.02827508670536462)
+    \end{verbatim}
+    }
+\end{itemize}
+
+\begin{itemize}
+    \item Example for class \textit{benign} is predicted to be \textit{benign} \\
+    {\tiny
+    \begin{verbatim}
+     (worst texture <= -0.75, 0.21842857185438763)
+     (-0.49 < area error <= -0.35, 0.11693408539760825)
+     (texture error <= -0.69, -0.09013183858850903)
+     (-0.62 < radius error <= -0.29, 0.08454431147818825)
+     (mean texture <= -0.73, 0.07439644700747527)
+     (-0.68 < worst compactness <= -0.27, -0.07233220030349469)
+     (mean fractal dimension <= -0.72, -0.06777535676504395)
+     (-0.59 < fractal dimension error <= -0.23, -0.06004003787372975)
+     (-0.69 < compactness error <= -0.28, -0.049467416103845994)
+     (-0.69 < worst fractal dimension <= -0.22, 0.04814347795800571)
+    \end{verbatim}
+    }
+\end{itemize}
+
+All other classes' values are represented accordingly as presented above.
+Those results show that the models are making predictions based on the values of: sepal length, alcohol, worst texture etc.
+They highlight the importance of those features during prediction and it suggests that these features are the most important factors.
+Those results also show that the model is able to separate the classes based on those values.
+What is more, these findings can be used to identify potential biases and errors in the model and improve its performance.
+For example, if the model is biased towards certain classes, the results can be used to identify the features that are contributing to this bias and adjust the model accordingly.
 
 \subsection{MNIST MLP classifier}\label{subsec:experiment-mnist-mlp}
 
