@@ -424,9 +424,7 @@ This scenario highlights the model's susceptibility to background interference w
 The model also shows difficulty distinguishing between visually similar classes under slight perturbations.
 As seen on fig.~\ref{fig:cifar-cnn-peturbation}, small rotations (2.47 and 3.85 degrees) cause the model to misclassify a dog as a cat.
 This suggests that the model's feature extraction process may not effectively differentiate between subtle visual differences in closely related classes.
-
 Moreover, in this experiment the model was working on the not augmented data, due to this the recognition of these images might not be as expected.
-Therefore, we experimented on the dataset with augmented images and the results are presented as below:
 
 These findings underscore the importance of rigorous model evaluation under diverse conditions to ensure reliability in practical applications.
 Models deployed in different fields such as surveillance or medical imaging must maintain high accuracy despite variations in input, making perturbation analysis a critical component of model validation.
