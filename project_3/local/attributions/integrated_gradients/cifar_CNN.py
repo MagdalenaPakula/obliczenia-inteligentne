@@ -24,50 +24,17 @@ def get_sample_data_cifar(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
     return images[index], labels[index]
 
 
-def plot_original_and_attributions_with_slic2(original: torch.Tensor, attributions: torch.Tensor):
-    assert original.dim() == 3, "Original tensor does not have 3 dimensions (channel, height, width)"
-    assert attributions.dim() == 3, "Attributions tensor does not have 3 dimensions (channel, height, width)"
-
-    original_img: np.ndarray = original.permute(1, 2, 0).detach().numpy()
-    attributions_img: np.ndarray = attributions.permute(1, 2, 0).detach().numpy()
-
-    # Apply SLIC segmentation
-    segments = slic(original_img, n_segments=100, compactness=10, sigma=1)
-    slic_image = label2rgb(segments, original_img, kind='overlay')
-
-    # Create the figure
-    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
-
-    # Plot the SLIC segmented image
-    axes[0].imshow(slic_image)
-    axes[0].set_title('SLIC Segmented Image')
-    axes[0].axis('off')
-
-    # Plot the original image
-    axes[1].imshow(original_img)
-    axes[1].set_title('Original Image')
-    axes[1].axis('off')
-
-    print(attributions_img.dtype)
-
-    scaler = MinMaxScaler(feature_range=(-1, 1))
-    attributions_img = scaler.fit_transform(attributions_img)
-    print(f"Attributions min: {attributions_img.min()}")
-    print(f"Attributions max: {attributions_img.max()}")
-    # Plot the attributions image
-    axes[2].imshow(attributions_img, cmap="RdBu", vmin=-1, vmax=1)
-    axes[2].set_title('Integrated Gradients Attributions')
-    axes[2].axis('off')
-
-    plt.tight_layout(pad=2.0)
-    plt.show()
-
 def plot_original_and_attributions_with_slic(original: torch.Tensor, attributions: torch.Tensor):
     assert original.dim() == 3, "Original tensor does not have 3 dimensions (channel, height, width)"
     assert attributions.dim() == 3, "Attributions tensor does not have 3 dimensions (channel, height, width)"
 
     original_img: np.ndarray = original.permute(1, 2, 0).detach().numpy()
     attributions_img: np.ndarray = attributions.permute(1, 2, 0).detach().numpy()
+
+    # Normalize the attributions
+    attributions_min = attributions_img.min()
+    attributions_max = attributions_img.max()
+    attributions_img = (attributions_img - attributions_min) / (attributions_max - attributions_min)
 
     # Apply SLIC on the attributions image
     segments = slic(original_img, n_segments=100, compactness=10, sigma=1)
@@ -87,10 +54,9 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
 
     # Overlayed Integrated Gradients
     viz.visualize_image_attr(attributions_img,
-                             original_image=original_img,
+                             original_image=slic_image,
                              method='blended_heat_map',
-                             sign="all",
-                             cmap="RdBu",
+                             sign="positive",
                              title="Overlayed Integrated Gradients",
                              plt_fig_axis=(fig, ax3))
 
