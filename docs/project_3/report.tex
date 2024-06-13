@@ -283,7 +283,7 @@ At last, we used peturbation technique on different digits to check, how model w
     \caption{Peturbation method on chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
 \end{figure}
 
-We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that Covering the bottom part of the digit 8 leads the model to classify it as 9.
+We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that covering the bottom part of the digit 8 leads the model to classify it as 9.
 Similarly, covering part of the digit 6 results in a misclassification as 4.
 These observations highlight specific regions of the image that significantly influence the model's predictions.
 The perfect example of explanation of the figures on ~\ref{fig:mnist-cnn-integrated-grad} is with the coverage of the top part of 9, which results in misclassification as 4.
@@ -301,11 +301,20 @@ Using it demonstrates how small changes in input can affect model predictions an
     \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/cat2}
     \caption{Integrated Gradients of chosen CIFAR images}\label{fig:cifar-cnn-int-grad}
 \end{figure}
+In our exploration of CNN model trained on the CIFAR10 dataset, we utilized Integrated Gradients to enhance our understanding of how these models classify objects within images.
+The resulting visualizations are depicted on fig.~\ref{fig:cifar-cnn-int-grad}.
 
-The CNN for distinguishing objects in images from the CIFAR10 dataset was analyzed using the integrated gradients.
-The resulting visualizations are presented on fig.~\ref{fig:cifar-cnn-int-grad}.
+Integrated Gradients highlight significant object features within CIFAR10 images, offering valuable insights into the model's decision-making process.
+This focus is particularly effective for images where objects are distinct and prominently displayed, such as the frog and cat examples on fig.~\ref{fig:cifar-cnn-int-grad}.
+Here, the model accurately identifies and highlights salient features of these objects, enhancing interpretability.
+However, challenges arise with images like the ship, where the object’s distinction from the background is less pronounced.
+In such cases, Integrated Gradients struggle to clearly delineate object boundaries due to color similarity or background complexity.
 
-SLIC:
+Addressing this challenge with background interference may involve enhancing model robustness through data augmentation or adapting interpretability techniques tailored to complex visual environments.
+Such insights are crucial for deploying CNN models in real-world scenarios, such as autonomous systems, medical diagnostics, and security surveillance, where accurate object recognition amidst varying environmental conditions is paramount.
+
+To further investigate model prediction, we implemented the SLIC super-pixel method.
+IS IT OK??
 \begin{figure}[ht]\centering
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_5}
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_6}
@@ -313,7 +322,8 @@ SLIC:
     \caption{SLIC method on chosen CIFAR images}\label{fig:cifar-cnn-slic}
 \end{figure}
 
-Counterfacts:
+At last, we used peturbation technique on different images to see, how model would classify them, if the images would be slightly rotated.
+
 \begin{figure}[ht]\centering
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_2}
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_7}
@@ -321,7 +331,8 @@ Counterfacts:
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_6}
     \caption{Peturbation on chosen CIFAR images}\label{fig:cifar-cnn-peturbation}
 \end{figure}
-
+We can observe on fig.~\ref{fig:cifar-cnn-peturbation} that in case of images, where the object of interest prominently displayed, the model handles such peturbations.
+In order for the model to classify the frog as a different object, the minimum rotation needs to be above 82.15 degrees. However,
 
 \section{Summary}\label{sec:summary}
 Summarize the main conclusions and suggest future work.
