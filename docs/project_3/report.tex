@@ -332,7 +332,7 @@ Finally, we applied perturbation technique to various digits to assess how the m
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_3}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_10}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_3}
-    \caption{Peturbation method on chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
+    \caption{Perturbation method on chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
 \end{figure}
 
 We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that covering the bottom part of the digit 8 leads the model to classify it as 9.
@@ -386,7 +386,7 @@ This analysis helps us understand the model's sensitivity to variations in input
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_7}
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_8}
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_6}
-    \caption{Peturbation on chosen CIFAR images}\label{fig:cifar-cnn-peturbation}
+    \caption{Perturbation on chosen CIFAR images}\label{fig:cifar-cnn-peturbation}
 \end{figure}
 
 The perturbation results, depicted on fig.~\ref{fig:cifar-cnn-peturbation}, provide a detailed view of the model's behavior under rotational transformations.
@@ -401,6 +401,9 @@ This scenario highlights the model's susceptibility to background interference w
 The model also shows difficulty distinguishing between visually similar classes under slight perturbations.
 As seen on fig.~\ref{fig:cifar-cnn-peturbation}, small rotations (2.47 and 3.85 degrees) cause the model to misclassify a dog as a cat.
 This suggests that the model's feature extraction process may not effectively differentiate between subtle visual differences in closely related classes.
+
+Moreover, in this experiment the model was working on the not augmented data, due to this the recognition of these images might not be as expected.
+Therefore, we experimented on the dataset with augmented images and the results are presented as below:
 
 These findings underscore the importance of rigorous model evaluation under diverse conditions to ensure reliability in practical applications.
 Models deployed in different fields such as surveillance or medical imaging must maintain high accuracy despite variations in input, making perturbation analysis a critical component of model validation.
