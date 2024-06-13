@@ -77,34 +77,34 @@ This experiment will be conducted on various types of data and ANN models for te
 Models used in this experiment:
 \begin{itemize}
     \item \textbf{MLP models:}
-    \begin{itemize}
-        \item \textbf{Iris flowers, wines, and breast cancer:}
-        \begin{itemize}
-            \item Two hidden layers with 64 and 32 neurons respectively
-            \item ReLU activation function
-            \item Adam optimizer
-        \end{itemize}
+          \begin{itemize}
+              \item \textbf{Iris flowers, wines, and breast cancer:}
+                    \begin{itemize}
+                        \item Two hidden layers with 64 and 32 neurons respectively
+                        \item ReLU activation function
+                        \item Adam optimizer
+                    \end{itemize}
 
-        \item \textbf{Handwritten numbers from the MNIST dataset:}
-        \begin{itemize}
-            \item Two linear layers for mapping input features to hidden dimensions and output classes.
-            \item ReLU activation function
-        \end{itemize}
-    \end{itemize}
+              \item \textbf{Handwritten numbers from the MNIST dataset:}
+                    \begin{itemize}
+                        \item Two linear layers for mapping input features to hidden dimensions and output classes.
+                        \item ReLU activation function
+                    \end{itemize}
+          \end{itemize}
     \item \textbf{CNN models:}
-    \begin{itemize}
-        \item \textbf{Handwritten numbers from the MNIST dataset:}
-        \begin{itemize}
-            \item Two convolutional layers with max pooling, Sigmoid activation and flatten operation for feature extraction
-            \item Three linear layers with Sigmoid activation for the classifier
-        \end{itemize}
+          \begin{itemize}
+              \item \textbf{Handwritten numbers from the MNIST dataset:}
+                    \begin{itemize}
+                        \item Two convolutional layers with max pooling, Sigmoid activation and flatten operation for feature extraction
+                        \item Three linear layers with Sigmoid activation for the classifier
+                    \end{itemize}
 
-        \item \textbf{Images from the CIFAR10 dataset:}
-        \begin{itemize}
-            \item Eight convolutional layers with batch normalization, max pooling, and ReLU activation for feature extraction
-            \item Three linear layers with ReLU activation for the classifier
-        \end{itemize}
-    \end{itemize}
+              \item \textbf{Images from the CIFAR10 dataset:}
+                    \begin{itemize}
+                        \item Eight convolutional layers with batch normalization, max pooling, and ReLU activation for feature extraction
+                        \item Three linear layers with ReLU activation for the classifier
+                    \end{itemize}
+          \end{itemize}
 
 \end{itemize}
 
@@ -120,37 +120,37 @@ After a comprehensive review of the literature, our study focuses on exploring t
 
 \begin{itemize}
     \item \textbf{LIME:} LIME is a model-agnostic technique that explains the predictions of any classifier by learning an interpretable model locally around the prediction.
-    It approximates the decision boundary around a given input \( \mathbf{x} \) using a linear regression model:
-    \[
-    f(\mathbf{x}') = \boldsymbol{\theta} \cdot \mathbf{x}' + b
-    \]
-    where \( \boldsymbol{\theta} \) are the coefficients of the linear model and \( b \) is the bias term.
-    By analyzing \( \boldsymbol{\theta} \), LIME identifies the important features that influenced the prediction \( f(\mathbf{x}') \).
+          It approximates the decision boundary around a given input \( \mathbf{x} \) using a linear regression model:
+          \[
+              f(\mathbf{x}') = \boldsymbol{\theta} \cdot \mathbf{x}' + b
+          \]
+          where \( \boldsymbol{\theta} \) are the coefficients of the linear model and \( b \) is the bias term.
+          By analyzing \( \boldsymbol{\theta} \), LIME identifies the important features that influenced the prediction \( f(\mathbf{x}') \).
 
     \item \textbf{Saliency Maps:}
-    Saliency Maps highlight input features that are most influential for a model's prediction.
-    They are computed by taking the absolute gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \):
-    \[
-    S(\mathbf{x}) = \left|\frac{\partial f(\mathbf{x})}{\partial \mathbf{x}}\right|
-    \]
-    These maps provide insights into how sensitive the model's output is to changes in each input feature \( \mathbf{x}_i \).
+          Saliency Maps highlight input features that are most influential for a model's prediction.
+          They are computed by taking the absolute gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \):
+          \[
+              S(\mathbf{x}) = \left|\frac{\partial f(\mathbf{x})}{\partial \mathbf{x}}\right|
+          \]
+          These maps provide insights into how sensitive the model's output is to changes in each input feature \( \mathbf{x}_i \).
 
     \item \textbf{Integrated Gradients:}
-    Integrated Gradients attribute an output prediction to input features by integrating the gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \) along a linear path from a baseline input \( \mathbf{x}' \) to the actual input \( \mathbf{x} \):
-    \[
-    \phi_i(\mathbf{x}) = (x_i - x'_i) \cdot \int_{\alpha=0}^{1} \frac{\partial f(\mathbf{x}' + \alpha (\mathbf{x} - \mathbf{x}'))}{\partial \mathbf{x}_i} \, d\alpha
-    \]
-    This method provides a comprehensive attribution of the model's prediction to each feature \( \mathbf{x}_i \), reflecting how each feature contributed to the final prediction.
+          Integrated Gradients attribute an output prediction to input features by integrating the gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \) along a linear path from a baseline input \( \mathbf{x}' \) to the actual input \( \mathbf{x} \):
+          \[
+              \phi_i(\mathbf{x}) = (x_i - x'_i) \cdot \int_{\alpha=0}^{1} \frac{\partial f(\mathbf{x}' + \alpha (\mathbf{x} - \mathbf{x}'))}{\partial \mathbf{x}_i} \, d\alpha
+          \]
+          This method provides a comprehensive attribution of the model's prediction to each feature \( \mathbf{x}_i \), reflecting how each feature contributed to the final prediction.
 
     \item \textbf{Minimal Parameter Perturbation:}
-    Minimal Parameter Perturbation is a technique that detects the smallest possible changes to the model parameters that can significantly change the model's output prediction.
-    By identifying these minimal perturbations, we can gain valuable insights into the model's decision-making process and the features that are most critical for its predictions.
+          Minimal Parameter Perturbation is a technique that detects the smallest possible changes to the model parameters that can significantly change the model's output prediction.
+          By identifying these minimal perturbations, we can gain valuable insights into the model's decision-making process and the features that are most critical for its predictions.
 \end{itemize}
 
 In addition, we employ SLIC (Simple Linear Iterative Clustering), a superpixel segmentation algorithm designed to partition images into compact, nearly uniform superpixels \( \{ S_k \} \).
 SLIC achieves this through iterative clustering of pixels based on color similarity and spatial proximity, resulting in segments that enhance the interpretability of explainable AI (XAI) methods:
 \[
-S(\mathbf{x}) = \arg \min_{S_k} \left( \|\mathbf{x} - \mathbf{m}_k\|^2 + \frac{\beta}{N_k} \sum_{\mathbf{x}' \in S_k} \|\mathbf{x} - \mathbf{x}'\|^2 \right)
+    S(\mathbf{x}) = \arg \min_{S_k} \left( \|\mathbf{x} - \mathbf{m}_k\|^2 + \frac{\beta}{N_k} \sum_{\mathbf{x}' \in S_k} \|\mathbf{x} - \mathbf{x}'\|^2 \right)
 \]
 Here, \( \mathbf{m}_k \) denotes the mean color of superpixel \( S_k \), \( N_k \) represents the number of pixels in \( S_k \), and \( \beta \) serves to balance the importance between color and spatial proximities.
 
@@ -165,34 +165,34 @@ In this experiment the Local Interpretable Model-agnostic Explanations (LIME) me
 The results for the Iris dataset is as follows:
 \begin{itemize}
     \item Example for class \textit{setosa} is predicted to be \textit{setosa} \\
-    {\tiny
-    \begin{verbatim}
+          {\tiny
+          \begin{verbatim}
      (sepal length (cm) <= -0.90, -0.298)
      (sepal width (cm) > 0.56, -0.202)
      (petal width (cm) <= -1.18, -0.074)
      (petal length (cm) <= -1.23, -0.074)
     \end{verbatim}
-    }
+          }
 
     \item Example for class \textit{versicolor} is predicted to be \textit{versicolor} \\
-    {\tiny
-    \begin{verbatim}
+          {\tiny
+          \begin{verbatim}
      (sepal length (cm) > 0.67, 0.265)
      (0.13 < petal width (cm) <= 0.79, 0.074)
      (0.34 < petal length (cm) <= 0.76, 0.048)
      (-0.13 < sepal width (cm) <= 0.56, 0.001)
     \end{verbatim}
-    }
+          }
 
     \item Example for class \textit{virginica} is predicted to be \textit{virginica} \\
-    {\tiny
-    \begin{verbatim}
+          {\tiny
+          \begin{verbatim}
      (petal width (cm) > 0.79, -0.219)
      (petal length (cm) > 0.76, -0.153)
      (-0.05 < sepal length (cm) <= 0.67, 0.104)
      (-0.13 < sepal width (cm) <= 0.56, -0.003)
     \end{verbatim}
-    }
+          }
 \end{itemize}
 
 The interpretation of these findings suggests that the model predicts the class \textit{setosa} under specific conditions: when the sepal length is less than or equal to -0.90, the sepal width is greater than 0.56, the petal width is less than or equal to -1.18, and the petal length is less than or equal to -1.23.
@@ -200,8 +200,8 @@ In the datasets for Wine and Breast Cancer, exemplary results for different clas
 
 \begin{itemize}
     \item Example for class \textit{class 0} is predicted to be \textit{class 0} \\
-    {\tiny
-    \begin{verbatim}
+          {\tiny
+          \begin{verbatim}
      (alcohol > 0.84, -0.3134332679978472)
      (proline > 0.76, -0.264433236765466)
      (alcalinity_of_ash <= -0.69, -0.2251982383093865)
@@ -213,13 +213,13 @@ In the datasets for Wine and Breast Cancer, exemplary results for different clas
      (od280/od315_of_diluted_wines > 0.79, -0.028340722297950868)
      (0.03 < hue <= 0.71, 0.02827508670536462)
     \end{verbatim}
-    }
+          }
 \end{itemize}
 
 \begin{itemize}
     \item Example for class \textit{benign} is predicted to be \textit{benign} \\
-    {\tiny
-    \begin{verbatim}
+          {\tiny
+          \begin{verbatim}
      (worst texture <= -0.75, 0.21842857185438763)
      (-0.49 < area error <= -0.35, 0.11693408539760825)
      (texture error <= -0.69, -0.09013183858850903)
@@ -231,7 +231,7 @@ In the datasets for Wine and Breast Cancer, exemplary results for different clas
      (-0.69 < compactness error <= -0.28, -0.049467416103845994)
      (-0.69 < worst fractal dimension <= -0.22, 0.04814347795800571)
     \end{verbatim}
-    }
+          }
 \end{itemize}
 
 The values for all other classes follow a similar pattern as presented above.
@@ -244,6 +244,29 @@ For instance, by pinpointing features that contribute to bias towards certain cl
 \subsection{MNIST MLP classifier}\label{subsec:experiment-mnist-mlp}
 
 \subsubsection{Flatten}
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/saliency_flat/0.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_flat/4.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_flat/9.png}
+    \caption{Digits and saliency maps for digits 0,4, and 9.}\label{fig:flatten-attributions}
+\end{figure}
+
+The simplest MLP model that simply flattens the image to a 784-element vector was analyzed using the saliency method.
+The resulting saliency maps for example digits are shown on fig~\ref{fig:flatten-attributions}.
+From these maps it is possible to deduce the model's ``reasoning'' when classifying certain classes.
+
+For example, with digit 0, it pays great attention to the area in the middle. That is because, contrary to other digits, 0 has a big empty space in the middle.
+We suspect that the model has learnt to recognize this empty middle space and associate it with the digit 0, which is in line with human intuition.
+
+Similarly, for digit 4, there is also an open space at the top, to which the model pays great attention. 
+The model is at the same time not paying much attention to the bottom area, because with the digit 4, it does not contain many discernable characteristics.
+
+In the example with the digit 9, a lot of model's attention is focused on the crossing present in the digit. At the same time, the model is looking at the bottom, because sometimes the digit 9 is drawn with a ``hook'' there.
+
+With all of the digits, we are satisfied that the model is not paying attention to much of the edge pixels, meaning thet it does not focus on the background too much,
+which is the correct behaviour. 
+
 \subsubsection{LBP}
 \subsubsection{HOG}
 
@@ -254,7 +277,7 @@ For instance, by pinpointing features that contribute to bias towards certain cl
     \caption{HOG values and gradient attributions for digits 1,4, and 7.}\label{fig:hog-attributions}
 \end{figure}
 
-The MLP that operated on features extracted using the histogram of oriented gradients was analyzed using the saliency method to determine 
+The MLP that operated on features extracted using the histogram of oriented gradients was analyzed using the saliency method to determine
 if the directions that have the influence on the model are actually those present in the digits.
 The results are visualized on fig.~\ref{fig:hog-attributions}.
 
@@ -338,7 +361,7 @@ Finally, we applied perturbation technique to various digits to assess how the m
 We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that covering the bottom part of the digit 8 leads the model to classify it as 9.
 Similarly, covering part of the digit 6 results in a misclassification as 4.
 These observations highlight specific regions of the image that significantly influence the model's predictions.
-The perfect example of explanation of the figures on ~\ref{fig:mnist-cnn-integrated-grad} is with the coverage of the top part of 9, which results in misclassification as 4.
+The perfect example of explanation of the figures on~\ref{fig:mnist-cnn-integrated-grad} is with the coverage of the top part of 9, which results in misclassification as 4.
 Therefore, it proves the fact that the top part of digit 9 is most influential.
 Similarly, in another instance, the absence of the top curve in a digit causes the model to predict 5 instead of 3.
 
@@ -374,7 +397,7 @@ To further investigate model prediction, we implemented the SLIC super-pixel met
 \end{figure}
 
 SLIC by generating segmented regions, allows us to gain insights into which areas of the image influence a model the most.
-In this case, comparing the examples with implemented SLIC method on ~\ref{fig:cifar-cnn-slic} to the examples on ~\ref{fig:cifar-cnn-int-grad}, we can notice more pixels that were highlighted and the image to be more separated into regions.
+In this case, comparing the examples with implemented SLIC method on~\ref{fig:cifar-cnn-slic} to the examples on ~\ref{fig:cifar-cnn-int-grad}, we can notice more pixels that were highlighted and the image to be more separated into regions.
 However, the results aren't that much more visible like in the example for the MNIST dataset, yet they add a little more insight into understanding model's prediction.
 
 To further assess the robustness and reliability of our CNN model trained on the CIFAR10 dataset, we implemented perturbation techniques.
