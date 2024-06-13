@@ -28,7 +28,7 @@
     The increasing reliance on artificial neural networks in various applications has raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
     This report addresses this challenge by exploring the application of so-called Explainable Artificial Intelligence (XAI) techniques to machine learning models.
     Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or integrated gradients techniques.
-    Our study aims to shed light on the previously trained models, providing a deeper understanding of how they make predictions and present those findings in this report
+    Our study aims to shed light on the selected trained models, providing a deeper understanding of how they make predictions and present those findings in this report
 \end{abstract}
 
 \section{Introduction}\label{sec:introduction}
@@ -42,25 +42,26 @@ This project aims to explore the application of XAI techniques to machine learni
 By shedding light on the previously trained models, we aim to provide a better understanding of how they make predictions and contribute to the development of more transparent and trustworthy AI systems.
 
 \section{Related Work}\label{sec:related-work}
-During this study, we explored various methods used to enhance the interpretability and transparency of ANNs through XAI techniques.
-The first paper in this domain we examined was~\cite{ribeiro2016should} by Ribeiro et al.
+This study explores various techniques used to enhance the interpretability and transparency of Artificial Neural Networks (ANNs) through Explainable Artificial Intelligence (XAI) methods.
+
+The first paper in this domain that we examined was~\cite{ribeiro2016should} by Ribeiro et al.
 This paper was the first to publicly introduce the Local Interpretable Model-Agnostic Explanations (LIME) framework, which generates local, interpretable explanations for the predictions of any machine learning model.
 The key idea behind LIME is to approximate the original complex model with an interpretable model that is locally faithful to the prediction of interest.
 This paper was an important step in the development of XAI techniques, as it demonstrated the feasibility and utility of interpretable explanations.
+
 Since then, the field of XAI has continued to evolve, with many other techniques (e.g. SHAP, TCAV, GradCAM) being proposed to enhance the transparency and interpretability of AI systems.
 However, LIME provides local explanations that are specific to individual predictions and while useful, these local explanations may not offer a comprehensive understanding of the model's overall behavior~\cite{NIPS2017_8a20a862}.
 
-Different approach for understanding model predictions are saliency maps thoroughly explained by Simonyan et al.~\cite{Simonyan14a}.
+Different approach for understanding model predictions include saliency maps, thoroughly explained by Simonyan et al.~\cite{Simonyan14a}.
 This paper presents the method, which computes the gradient of the score of the predicted class with respect to the input image.
 The gradient essentially measures how small changes in each pixel value of the image will affect the output score.
 The absolute values of these gradients are taken to represent the importance of each pixel and pixels with larger gradient magnitudes are considered more important for the classification decision.
 Therefore, saliency maps effectively highlight discriminative image regions and objects, which are easily interpretable by a human eye.
-Such examples are shown and prove the usefulness of this method.
 
-To have a broader view and better understanding using another method we reviewed another influential paper by Sundararajan et al.~\cite{ribeiro2016should}, which provided an alternative surrogate-based methods like LIME or sometimes misleading saliency maps~\cite{adebayo2018sanity}.
-The authors introduce and demonstrate the usefulness of Integrated Gradients through various case studies, including image classification.
+To provide a broader view and better understanding, we reviewed another influential paper by Sundararajan et al.~\cite{ribeiro2016should}, which provided an alternative surrogate-based methods like LIME or sometimes misleading saliency maps~\cite{adebayo2018sanity}.
+The authors introduce and demonstrate the usefulness of integrated gradients through various case studies, including image classification.
 They show that this method can provide meaningful and intuitive explanations of the model's predictions, which can be valuable for tasks like feature importance analysis.
-Additionally, the authors compare Integrated Gradients method to other gradient-based attribution methods, such as Saliency Maps and Deconvolution, and highlight the advantages of it in terms of satisfying desirable properties for explanations.
+Additionally, the authors compare integrated gradients method to other gradient-based attribution methods, such as saliency maps and deconvolution, and highlight the advantages of it in terms of desirable properties for explanations.
 
 Furthermore, counterfactuals are an essential aspect of XAI, as they provide a way to evaluate the robustness of a model's predictions by considering what would have happened if certain conditions had been different~\cite{adebayo2018sanity}.
 This is particularly important in high-stakes applications, such as healthcare or finance, where the consequences of incorrect predictions can be severe.
@@ -68,22 +69,57 @@ For example, Adebayo et al.~\cite{adebayo2018sanity} evaluated the reliability o
 They found that many popular saliency map methods failed to provide faithful explanations, underscoring the importance of using counterfactuals to assess the robustness of model predictions.
 
 Those papers provide a solid ground for experimenting on different models with different methods in order to fully understand models predictions.
-\section{Methods}\label{sec:methodology}
+\section{Methodology}\label{sec:methodology}
+
+\subsection{ANN models}\label{subsec:ann-models}
 
 This experiment will be conducted on various types of data and ANN models for testing the versatility of different XAI methods.
-Models used in this experiment are:
+Models used in this experiment:
 \begin{itemize}
-    \item Three MLP models for classifying iris flowers, distinguishing wines and diagnosing breast cancer
-    \item Three MLP models for classifying handwritten numbers from the MNIST dataset
-    \item CNN model for the MNIST dataset
-    \item CNN model for distinguishing objects in images from the CIFAR10 dataset
+    \item \textbf{MLP models:}
+    \begin{itemize}
+        \item \textbf{Iris flowers, wines, and breast cancer:}
+        \begin{itemize}
+            \item Two hidden layers with 64 and 32 neurons respectively
+            \item ReLU activation function
+            \item Adam optimizer
+        \end{itemize}
+
+        \item \textbf{Handwritten numbers from the MNIST dataset:}
+        \begin{itemize}
+            \item Two linear layers for mapping input features to hidden dimensions and output classes.
+            \item ReLU activation function
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{CNN models:}
+    \begin{itemize}
+        \item \textbf{Handwritten numbers from the MNIST dataset:}
+        \begin{itemize}
+            \item Two convolutional layers with max pooling, Sigmoid activation and flatten operation for feature extraction
+            \item Three linear layers with Sigmoid activation for the classifier
+        \end{itemize}
+
+        \item \textbf{Images from the CIFAR10 dataset:}
+        \begin{itemize}
+            \item Eight convolutional layers with batch normalization, max pooling, and ReLU activation for feature extraction
+            \item Three linear layers with ReLU activation for the classifier
+        \end{itemize}
+    \end{itemize}
+
 \end{itemize}
 
-After thoroughly reviewing research paper, we decided to firstly understand what was important in making a decision for a specific input by finding attributions and counterfacts using the following methods:
+Additionally, for the MLP models recognizing handwritten numbers from the MNIST dataset were added three different feature extraction methods for each model:
+\begin{itemize}
+    \item \textbf{Flatten}: Converts the entire image into a single vector with 784 elements.
+    \item \textbf{HOG} (Histogram of Oriented Gradients): Extracts features based on gradient orientations in local regions.
+    \item \textbf{LBP} (Local Binary Patterns): Extracts features based on local texture patterns.
+\end{itemize}
+
+\subsection{Methods}\label{subsec:methods}
+After a comprehensive review of the literature, our study focuses on exploring the critical factors influencing decision-making for specific inputs through the identification of attributions and counterfactuals using the following methods:
 
 \begin{itemize}
-    \item \textbf{LIME:}
-    is a model-agnostic technique that explains the predictions of any classifier by learning an interpretable model locally around the prediction.
+    \item \textbf{LIME:} LIME is a model-agnostic technique that explains the predictions of any classifier by learning an interpretable model locally around the prediction.
     It approximates the decision boundary around a given input \( \mathbf{x} \) using a linear regression model:
     \[
     f(\mathbf{x}') = \boldsymbol{\theta} \cdot \mathbf{x}' + b
@@ -92,7 +128,7 @@ After thoroughly reviewing research paper, we decided to firstly understand what
     By analyzing \( \boldsymbol{\theta} \), LIME identifies the important features that influenced the prediction \( f(\mathbf{x}') \).
 
     \item \textbf{Saliency Maps:}
-    highlight input features that are most influential for a model's prediction.
+    Saliency Maps highlight input features that are most influential for a model's prediction.
     They are computed by taking the absolute gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \):
     \[
     S(\mathbf{x}) = \left|\frac{\partial f(\mathbf{x})}{\partial \mathbf{x}}\right|
@@ -100,31 +136,32 @@ After thoroughly reviewing research paper, we decided to firstly understand what
     These maps provide insights into how sensitive the model's output is to changes in each input feature \( \mathbf{x}_i \).
 
     \item \textbf{Integrated Gradients:}
-    attribute an output prediction to input features by integrating the gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \) along a linear path from a baseline input \( \mathbf{x}' \) to the actual input \( \mathbf{x} \):
+    Integrated Gradients attribute an output prediction to input features by integrating the gradients of the output \( f(\mathbf{x}) \) with respect to the input \( \mathbf{x} \) along a linear path from a baseline input \( \mathbf{x}' \) to the actual input \( \mathbf{x} \):
     \[
     \phi_i(\mathbf{x}) = (x_i - x'_i) \cdot \int_{\alpha=0}^{1} \frac{\partial f(\mathbf{x}' + \alpha (\mathbf{x} - \mathbf{x}'))}{\partial \mathbf{x}_i} \, d\alpha
     \]
     This method provides a comprehensive attribution of the model's prediction to each feature \( \mathbf{x}_i \), reflecting how each feature contributed to the final prediction.
 
     \item \textbf{Minimal Parameter Perturbation:}
-    is a technique that identifies the smallest possible changes to the model parameters that can significantly change the model's output prediction.
-    By finding these minimal perturbations, we can gain insights into the model's decision-making process and the features that are most important for its predictions.
+    Minimal Parameter Perturbation is a technique that detects the smallest possible changes to the model parameters that can significantly change the model's output prediction.
+    By identifying these minimal perturbations, we can gain valuable insights into the model's decision-making process and the features that are most critical for its predictions.
 \end{itemize}
 
-Additionally, we will use SLIC (Simple Linear Iterative Clustering), which is a superpixel segmentation algorithm that partitions an image into compact, nearly uniform superpixels \( \{ S_k \} \).
-It achieves this by iteratively clustering pixels based on their color similarity and spatial proximity, producing segments that enhance the interpretability of XAI methods:
+In addition, we employ SLIC (Simple Linear Iterative Clustering), a superpixel segmentation algorithm designed to partition images into compact, nearly uniform superpixels \( \{ S_k \} \).
+SLIC achieves this through iterative clustering of pixels based on color similarity and spatial proximity, resulting in segments that enhance the interpretability of explainable AI (XAI) methods:
 \[
 S(\mathbf{x}) = \arg \min_{S_k} \left( \|\mathbf{x} - \mathbf{m}_k\|^2 + \frac{\beta}{N_k} \sum_{\mathbf{x}' \in S_k} \|\mathbf{x} - \mathbf{x}'\|^2 \right)
 \]
-where \( \mathbf{m}_k \) is the mean color of superpixel \( S_k \), \( N_k \) is the number of pixels in \( S_k \), and \( \beta \) balances color proximity and spatial proximity.
+Here, \( \mathbf{m}_k \) denotes the mean color of superpixel \( S_k \), \( N_k \) represents the number of pixels in \( S_k \), and \( \beta \) serves to balance the importance between color and spatial proximities.
 
-After presenting the result of this experiment, we will try to discover the general principles that guide the models in order to understand the overall behavior and assumptions of the trained models.
+Upon presenting the results of this experiment, our aim is to uncover the underlying principles governing the models, with the goal of comprehending their overall behavior and underlying assumptions.
 
 \section{Results}\label{sec:results}
-In this section we will present detailed findings and interpretations obtained from applying various XAI methods on the chosen ANN models, elucidating the factors influencing model predictions and enhancing interpretability.
+This section presents the detailed findings and interpretations resulting from the application of various (XAI) methods to the chosen (ANN) models.
+The analysis explores the factors influencing model predictions and enhances the interpretability of the results.
 
 \subsection{MLP Models for Iris Flowers, Wines, and Breast Cancer}\label{subsec:experiment-other-datasets}
-For these models LIME method was used.
+In this experiment the Local Interpretable Model-agnostic Explanations (LIME) method was employed to interpret the MLP models trained on the Iris, Wine and Breast Cancer dataset.
 The results for the Iris dataset is as follows:
 \begin{itemize}
     \item Example for class \textit{setosa} is predicted to be \textit{setosa} \\
@@ -158,8 +195,8 @@ The results for the Iris dataset is as follows:
     }
 \end{itemize}
 
-We can interpret those values as in order for a model to predict \textit{setosa} when the sepal length is less than or equal to -0.90, the sepal width is greater than 0.56, the petal width is less than or equal to -1.18  and the petal length is less than or equal to -1.23.
-In the datasets for Wine and Breast Cancer we received the following exemplary results for classes:
+The interpretation of these findings suggests that the model predicts the class \textit{setosa} under specific conditions: when the sepal length is less than or equal to -0.90, the sepal width is greater than 0.56, the petal width is less than or equal to -1.18, and the petal length is less than or equal to -1.23.
+In the datasets for Wine and Breast Cancer, exemplary results for different classes are as follows:
 
 \begin{itemize}
     \item Example for class \textit{class 0} is predicted to be \textit{class 0} \\
@@ -197,12 +234,12 @@ In the datasets for Wine and Breast Cancer we received the following exemplary r
     }
 \end{itemize}
 
-All other classes' values are represented accordingly as presented above.
-Those results show that the models are making predictions based on the values of: sepal length, alcohol, worst texture etc.
-They highlight the importance of those features during prediction and it suggests that these features are the most important factors.
-Those results also show that the model is able to separate the classes based on those values.
-What is more, these findings can be used to identify potential biases and errors in the model and improve its performance.
-For example, if the model is biased towards certain classes, the results can be used to identify the features that are contributing to this bias and adjust the model accordingly.
+The values for all other classes follow a similar pattern as presented above.
+These results demonstrate that the models base their predictions on key features such as sepal length, alcohol content, and worst texture etc.
+The prominence of these features underscores their critical role in prediction, suggesting their significance as primary factors influencing model decisions.
+Furthermore, these findings illustrate the models' capability to effectively distinguish between different classes based on these feature values.
+Moreover, these insights are instrumental in identifying potential biases and inaccuracies within the model, thereby facilitating improvements in its performance.
+For instance, by pinpointing features that contribute to bias towards certain classes, adjustments can be made to mitigate these biases and enhance the model's reliability and fairness.
 
 \subsection{MNIST MLP classifier}\label{subsec:experiment-mnist-mlp}
 
@@ -249,18 +286,17 @@ To further investigate this model we used Integrated Gradients method as well.
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/9}
     \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-integrated-grad}
 \end{figure}
-As previously the blue pixels show the areas that most influence the model's predictions and red the least.
+Similar to the previous example, the blue pixels indicate the areas that most influence the model's predictions and red pixels the least.
 
-Obtained integrated gradients perfectly present and explain which areas are taken into account when predicting by a model.
-Examples on fig.~\ref{fig:mnist-cnn-integrated-grad} show that digit 3 is most recognizable by its' two distinctive curves.
-This insight aligns with human intuition about the defining features of the numeral 3.
-Integrated Gradients also reveal nuances in distinguishing between visually similar digits.
-For digits 4 and 9, while they share some similarities, the connected top part plays a critical role in differentiation.
+Integrated Gradients provide a clear depiction and explanation of the areas considered by the model during prediction.
+Examples on fig.~\ref{fig:mnist-cnn-integrated-grad} illustrate that digit 3 is most recognizable by its distinctive curves, aligning with human perception of this numeral's defining features.
+Additionally, integrated gradients reveal subtle distinctions between visually similar digits.
+For instance, in digits 4 and 9, although they share similarities, the connected top part plays a crucial role in differentiation.
 Moreover, this method highlight areas in the digits where the model might make errors or find ambiguity.
-In the central areas of digits 4 and 9, represented by less intense colors (notably red), the model's certainty decreases.
-This suggests these regions resemble characteristics of multiple digits, potentially leading to misclassification.
+In the central regions of digits 4 and 9, represented by less intense colors (notably red), the model's certainty decreases.
+This suggests that these regions resemble characteristics of multiple digits, potentially leading to misclassification.
 
-We extended our analysis by implementing the SLIC superpixel method.
+To further enhance our analysis, we employed the SLIC superpixel method.
 
 \begin{figure}[h]\centering
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8}
@@ -273,7 +309,7 @@ By focusing on these superpixels, we gain insights into which regions the model 
 For example on the fig.~\ref{fig:mnist-cnn-slic} we observe that in case of classification fo difit 8, the most crucial part is the center, where two curves cross each other.
 Integrating this method enhances model transparency and improves understanding of the model prediction.
 
-At last, we used peturbation technique on different digits to check, how model would classify them, if part of the image would be covered.
+Finally, we applied perturbation technique to various digits to assess how the model would classify them if parts of the images were covered.
 
 \begin{figure}[ht]\centering
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_1}
@@ -288,7 +324,7 @@ Similarly, covering part of the digit 6 results in a misclassification as 4.
 These observations highlight specific regions of the image that significantly influence the model's predictions.
 The perfect example of explanation of the figures on ~\ref{fig:mnist-cnn-integrated-grad} is with the coverage of the top part of 9, which results in misclassification as 4.
 Therefore, it proves the fact that the top part of digit 9 is most influential.
-Same results are obtained on the last example, where instead of predicting 3, model predicts 5 due to lack of the top curve.
+Similarly, in another instance, the absence of the top curve in a digit causes the model to predict 5 instead of 3.
 
 This technique is a powerful tool for error analysis and diagnosis.
 Using it demonstrates how small changes in input can affect model predictions and trustworthiness.
@@ -313,13 +349,17 @@ Addressing this challenge with background interference may involve enhancing mod
 Such insights are crucial for deploying CNN models in real-world scenarios, such as autonomous systems, medical diagnostics, and security surveillance, where accurate object recognition amidst varying environmental conditions is paramount.
 
 To further investigate model prediction, we implemented the SLIC super-pixel method.
-IS IT OK??
+
 \begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_2}
+    \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_3}
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_5}
-    \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_6}
-    \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_9}
     \caption{SLIC method on chosen CIFAR images}\label{fig:cifar-cnn-slic}
 \end{figure}
+
+SLIC by generating segmented regions, allows us to gain insights into which areas of the image influence a model the most.
+In this case, comparing the examples with implemented SLIC method on ~\ref{fig:cifar-cnn-slic} to the examples on ~\ref{fig:cifar-cnn-int-grad}, we can notice more pixels that were highlighted and the image to be more separated into regions.
+However, the results aren't that much more visible like in the example for the MNIST dataset, yet they add a little more insight into understanding model's prediction.
 
 To further assess the robustness and reliability of our CNN model trained on the CIFAR10 dataset, we implemented perturbation techniques.
 Specifically, we investigated how the model's classification performance changes when images are slightly rotated.

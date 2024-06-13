@@ -52,7 +52,6 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
                              original_image=slic_image,
                              method='blended_heat_map',
                              sign="absolute_value",
-                             cmap="RdBu",
                              title="Overlayed Integrated Gradients",
                              plt_fig_axis=(fig, ax3))
 
