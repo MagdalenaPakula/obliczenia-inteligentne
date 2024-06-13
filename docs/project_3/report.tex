@@ -27,7 +27,7 @@
 \begin{abstract}
     The increasing reliance on artificial neural networks in various applications has raised concerns about their \textit{black box} nature, making it challenging to understand the decision-making processes behind their predictions.
     This report addresses this challenge by exploring the application of so-called Explainable Artificial Intelligence (XAI) techniques to machine learning models.
-    Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or Integrated Gradients techniques.
+    Specifically, we employ local explanation approaches, including attributions and counterfactual examples, using the Captum library in the PyTorch such as LIME, saliency maps or integrated gradients techniques.
     Our study aims to shed light on the previously trained models, providing a deeper understanding of how they make predictions and present those findings in this report
 \end{abstract}
 
@@ -302,11 +302,10 @@ Using it demonstrates how small changes in input can affect model predictions an
     \caption{Integrated Gradients of chosen CIFAR images}\label{fig:cifar-cnn-int-grad}
 \end{figure}
 In our exploration of CNN model trained on the CIFAR10 dataset, we utilized Integrated Gradients to enhance our understanding of how these models classify objects within images.
-The resulting visualizations are depicted on fig.~\ref{fig:cifar-cnn-int-grad}.
 
 Integrated Gradients highlight significant object features within CIFAR10 images, offering valuable insights into the model's decision-making process.
 This focus is particularly effective for images where objects are distinct and prominently displayed, such as the frog and cat examples on fig.~\ref{fig:cifar-cnn-int-grad}.
-Here, the model accurately identifies and highlights salient features of these objects, enhancing interpretability.
+Here, the model accurately identifies and highlights features of these objects, enhancing interpretability.
 However, challenges arise with images like the ship, where the object’s distinction from the background is less pronounced.
 In such cases, Integrated Gradients struggle to clearly delineate object boundaries due to color similarity or background complexity.
 
@@ -322,7 +321,9 @@ IS IT OK??
     \caption{SLIC method on chosen CIFAR images}\label{fig:cifar-cnn-slic}
 \end{figure}
 
-At last, we used peturbation technique on different images to see, how model would classify them, if the images would be slightly rotated.
+To further assess the robustness and reliability of our CNN model trained on the CIFAR10 dataset, we implemented perturbation techniques.
+Specifically, we investigated how the model's classification performance changes when images are slightly rotated.
+This analysis helps us understand the model's sensitivity to variations in input and its reliance on specific visual features for accurate predictions.
 
 \begin{figure}[ht]\centering
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_2}
@@ -331,8 +332,24 @@ At last, we used peturbation technique on different images to see, how model wou
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_6}
     \caption{Peturbation on chosen CIFAR images}\label{fig:cifar-cnn-peturbation}
 \end{figure}
-We can observe on fig.~\ref{fig:cifar-cnn-peturbation} that in case of images, where the object of interest prominently displayed, the model handles such peturbations.
-In order for the model to classify the frog as a different object, the minimum rotation needs to be above 82.15 degrees. However,
+
+The perturbation results, depicted on fig.~\ref{fig:cifar-cnn-peturbation}, provide a detailed view of the model's behavior under rotational transformations.
+For images where the object of interest is prominently displayed and distinct from the background, the model demonstrates robustness to significant rotations.
+For instance, the frog image requires a rotation above 82.15 degrees before the model misclassifies it.
+This indicates that the model reliably recognizes the frog based on its salient features despite substantial perturbations.
+
+However, images with less distinct objects or complex backgrounds show vulnerability to even minor rotations.
+The ship image, for instance, is misclassified as a frog with only a 3.65-degree rotation.
+This misclassification likely arises due to the green background, which the model mistakenly associates with the frog class.
+This scenario highlights the model's susceptibility to background interference when object and background colors are similar.
+The model also shows difficulty distinguishing between visually similar classes under slight perturbations.
+As seen on fig.~\ref{fig:cifar-cnn-peturbation}, small rotations (2.47 and 3.85 degrees) cause the model to misclassify a dog as a cat.
+This suggests that the model's feature extraction process may not effectively differentiate between subtle visual differences in closely related classes.
+
+These findings underscore the importance of rigorous model evaluation under diverse conditions to ensure reliability in practical applications.
+Models deployed in different fields such as surveillance or medical imaging must maintain high accuracy despite variations in input, making perturbation analysis a critical component of model validation.
+
+Addressing this challenge through targeted training enhancements and interpretability techniques can lead to more robust and reliable models suited for complex real-world tasks.
 
 \section{Summary}\label{sec:summary}
 Summarize the main conclusions and suggest future work.
