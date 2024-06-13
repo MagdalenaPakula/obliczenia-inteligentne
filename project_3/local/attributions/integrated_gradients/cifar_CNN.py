@@ -31,11 +31,6 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
     original_img: np.ndarray = original.permute(1, 2, 0).detach().numpy()
     attributions_img: np.ndarray = attributions.permute(1, 2, 0).detach().numpy()
 
-    # Normalize the attributions
-    attributions_min = attributions_img.min()
-    attributions_max = attributions_img.max()
-    attributions_img = (attributions_img - attributions_min) / (attributions_max - attributions_min)
-
     # Apply SLIC on the attributions image
     segments = slic(original_img, n_segments=100, compactness=10, sigma=1)
     slic_image = label2rgb(segments, original_img, kind='overlay')
@@ -56,7 +51,8 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
     viz.visualize_image_attr(attributions_img,
                              original_image=slic_image,
                              method='blended_heat_map',
-                             sign="positive",
+                             sign="absolute_value",
+                             cmap="RdBu",
                              title="Overlayed Integrated Gradients",
                              plt_fig_axis=(fig, ax3))
 
