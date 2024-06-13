@@ -340,7 +340,7 @@ Additionally, the performance of the model on the testing data was satisfactory,
 To further investigate this model we used Integrated Gradients method as well.
 \begin{figure}[h]\centering
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3}
-    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/4_again2}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/4}
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/9}
     \caption{Integrated Gradients of chosen MNIST digits.}\label{fig:mnist-cnn-integrated-grad}
 \end{figure}
@@ -357,14 +357,14 @@ This suggests that these regions resemble characteristics of multiple digits, po
 To further enhance our analysis, we employed the SLIC superpixel method.
 
 \begin{figure}[h]\centering
+    \includegraphics[width=.6\linewidth]{img/SLIC/mnist/4}
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8}
-    \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8_1}
     \caption{SLIC method on chosen MNIST digits.}\label{fig:mnist-cnn-slic}
 \end{figure}
 
 SLIC generates segmented regions that highlight the spatial importance of different parts of the digit.
 By focusing on these superpixels, we gain insights into which regions the model prioritizes when making decisions.
-For example on the fig.~\ref{fig:mnist-cnn-slic} we observe that in case of classification fo difit 8, the most crucial part is the center, where two curves cross each other.
+For example on the fig.~\ref{fig:mnist-cnn-slic} we observe that in case of classification of digit 4 the important for the model parts are: the horizontal line in the center of the digit and two vertical lines on both side of the horizontal line, while for digit 8 the most crucial part is the center, where two curves cross each other.
 Integrating this method enhances model transparency and improves understanding of the model prediction.
 
 Finally, we applied perturbation technique to various digits to assess how the model would classify them if parts of the images were covered.
