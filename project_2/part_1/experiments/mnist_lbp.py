@@ -15,6 +15,8 @@ from project_2.part_1.MLP import MLP
 from project_2.part_1.experiments import train_model, evaluate_model
 from project_2.part_1.features.two_dimentional.tsne import get_mnist_tsne
 
+MODEL_PATH = "../../../project_3/models/MLP_mnist_lbp.pt"
+
 if __name__ == "__main__":
     dataset = load_dataset_MNIST(transform=lambda x: lbp_image(x, radius=1, n_points=8))
 
@@ -27,3 +29,6 @@ if __name__ == "__main__":
         model = MLP(input_size, hidden_layer_size, output_size)
 
         perform_experiment(dataset, model, epochs=5, learning_rate=0.01)
+
+        torch.save(model, MODEL_PATH)
+        print(f"Model saved to {MODEL_PATH}")
