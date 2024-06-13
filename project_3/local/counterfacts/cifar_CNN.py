@@ -27,7 +27,7 @@ def plot_original_and_perturbed(original_image, perturbed_image, true_label, pre
     ax1.axis('off')
 
     ax2.imshow(perturbed_image)
-    ax2.set_title(f"Perturbed Image\nPredicted Label: {predicted_label}")
+    ax2.set_title(f"Perturbed Image\nTrue Label: {predicted_label}")
     ax2.axis('off')
 
     plt.subplots_adjust(wspace=0.4)
