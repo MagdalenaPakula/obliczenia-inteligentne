@@ -1,13 +1,11 @@
 from typing import Tuple
 
 import matplotlib.pyplot as plt
-import numpy as np
 import torch
 from captum.attr import Saliency
 
 from project_2.part_1 import MLP
 from project_2.part_1.data.MNIST import load_dataset_MNIST
-from project_2.part_1.features.reduced_dimention.hog import hog_feature_extraction
 from project_2.part_1.features.reduced_dimention.lbp import lbp_image
 from project_3.models import get_model
 
@@ -22,7 +20,6 @@ def plot_lbp(lbp_image: torch.Tensor, axis: plt.Axes | None = None) -> plt.Figur
     if axis is None:
         fig, axis = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
 
-    # Convert the 1D LBP tensor to a 2D grayscale image
     lbp_image = lbp_image.reshape(28, 28)
 
     axis.imshow(lbp_image.detach().numpy(), cmap='gray')

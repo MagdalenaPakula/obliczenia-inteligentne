@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
-
 from captum.robust import MinParamPerturbation
 from torchvision import transforms
 
-from project_2.part_2.models.kuba.cifar.large import CifarLargeModel, _CIFARLargeFeatureExtractor
+from project_2.part_2.models.kuba.cifar.large import CifarLargeModel
 from project_3.local.attributions.integrated_gradients.cifar_CNN import get_sample_data_cifar
 from project_3.models import get_model
 

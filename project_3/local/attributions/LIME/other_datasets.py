@@ -1,8 +1,8 @@
 import numpy as np
-from sklearn.neural_network import MLPClassifier
 from lime.lime_tabular import LimeTabularExplainer
-from sklearn.preprocessing import StandardScaler
 from sklearn.datasets import load_iris, load_wine, load_breast_cancer
+from sklearn.neural_network import MLPClassifier
+from sklearn.preprocessing import StandardScaler
 
 
 def lime_on_other_datasets(X, y, feature_names, class_names):

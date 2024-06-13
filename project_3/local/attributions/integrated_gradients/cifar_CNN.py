@@ -1,16 +1,15 @@
 from typing import Tuple
-from captum.attr import visualization as viz
+
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from captum.attr import IntegratedGradients
+from captum.attr import visualization as viz
 from skimage.color import label2rgb
 from skimage.segmentation import slic
-from sklearn.preprocessing import MinMaxScaler
 
 from project_2.part_2.data import CIFAR10DataModule
-from project_2.part_2.models.kuba.cifar.large import CifarLargeModel, _CIFARLargeFeatureExtractor
-from project_3.local.attributions.integrated_gradients.mnist_CNN import plot_original_and_attributions_integrated_grad
+from project_2.part_2.models.kuba.cifar.large import CifarLargeModel
 from project_3.models import get_model
 
 
@@ -57,6 +56,7 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
 
     fig.tight_layout()
     plt.show()
+
 
 def _main():
     model: CifarLargeModel = get_model("kuba_cifar_large.pt")
