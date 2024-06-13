@@ -268,6 +268,25 @@ With all of the digits, we are satisfied that the model is not paying attention 
 which is the correct behaviour. 
 
 \subsubsection{LBP}
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/0}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/5}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/8}
+    \caption{LBP images and gradient attributions for digits 0, 5, and 8.}\label{fig:lbp-attributions}
+\end{figure}
+
+The MLP trained on features extracted using Local Binary Pattern (LBP) was examined using the saliency method to determine the influence of various LBP patterns on the model's predictions.
+Local Binary Pattern (LBP) is a simple yet effective texture descriptor that has been widely used in various computer vision tasks.
+Unlike the Histogram of Oriented Gradients (HOG) that captures the directionality of gradients, the LBP encodes the local spatial structure of an image.
+
+The results for digits 0, 5 and 8 and are depicted on fig.~\ref{fig:lbp-attributions}.
+Presented images aren't much clear for a human eye, but they present model's decision-making process and the importance it places on different local patterns within the LBP representation of the digits.
+Therefore, we can find some distinguishable patterns and differences in each of these digits, but we can also notice the model's paying attention to areas that are not present in the input digit.
+
+Those results show that the model is not just focusing on the most obvious features, but also on the subtle patterns that are not immediately apparent.
+This highlights the model's ability to learn and generalize from the data, and its ability to use the LBP features to make accurate predictions.
+
 \subsubsection{HOG}
 
 \begin{figure}[ht]\centering
@@ -292,7 +311,7 @@ Because of this, such features have a big impact in the models decision.
     \includegraphics[width=.6\linewidth]{img/saliency_mnist/4.png}
     \includegraphics[width=.6\linewidth]{img/saliency_mnist/5.png}
     \includegraphics[width=.6\linewidth]{img/saliency_mnist/1.png}
-    \caption{Saliency maps of chosen MNIST digits}\label{fig:mnist-cnn-saliency}
+    \caption{Saliency maps of chosen MNIST digits.}\label{fig:mnist-cnn-saliency}
 \end{figure}
 
 The CNN for recognizing handwritten digits from the MNIST dataset was analyzed using the saliency methods.
@@ -323,7 +342,7 @@ To further investigate this model we used Integrated Gradients method as well.
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3}
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/4_again2}
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/9}
-    \caption{Integrated Gradients of chosen MNIST digits}\label{fig:mnist-cnn-integrated-grad}
+    \caption{Integrated Gradients of chosen MNIST digits.}\label{fig:mnist-cnn-integrated-grad}
 \end{figure}
 Similar to the previous example, the blue pixels indicate the areas that most influence the model's predictions and red pixels the least.
 
@@ -340,7 +359,7 @@ To further enhance our analysis, we employed the SLIC superpixel method.
 \begin{figure}[h]\centering
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8}
     \includegraphics[width=.6\linewidth]{img/SLIC/mnist/8_1}
-    \caption{SLIC method on chosen MNIST digits}\label{fig:mnist-cnn-slic}
+    \caption{SLIC method on chosen MNIST digits.}\label{fig:mnist-cnn-slic}
 \end{figure}
 
 SLIC generates segmented regions that highlight the spatial importance of different parts of the digit.
@@ -355,7 +374,7 @@ Finally, we applied perturbation technique to various digits to assess how the m
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_bottom/img_3}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_10}
     \includegraphics[width=.6\linewidth]{img/counterfacts/MNIST/cover_top/img_3}
-    \caption{Perturbation method on chosen MNIST digits}\label{fig:mnist-cnn-counterfacts}
+    \caption{Perturbation method on chosen MNIST digits.}\label{fig:mnist-cnn-counterfacts}
 \end{figure}
 
 We can observe on the fig.~\ref{fig:mnist-cnn-counterfacts} that covering the bottom part of the digit 8 leads the model to classify it as 9.
@@ -374,7 +393,7 @@ Using it demonstrates how small changes in input can affect model predictions an
     \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/frog}
     \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/ship}
     \includegraphics[width=.6\linewidth]{img/integrated_grad/cifar_CNN/cat2}
-    \caption{Integrated Gradients of chosen CIFAR images}\label{fig:cifar-cnn-int-grad}
+    \caption{Integrated Gradients of chosen CIFAR images.}\label{fig:cifar-cnn-int-grad}
 \end{figure}
 In our exploration of CNN model trained on the CIFAR10 dataset, we utilized Integrated Gradients to enhance our understanding of how these models classify objects within images.
 
@@ -393,7 +412,7 @@ To further investigate model prediction, we implemented the SLIC super-pixel met
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_2}
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_3}
     \includegraphics[width=.6\linewidth]{img/SLIC/cifar/img_5}
-    \caption{SLIC method on chosen CIFAR images}\label{fig:cifar-cnn-slic}
+    \caption{SLIC method on chosen CIFAR images.}\label{fig:cifar-cnn-slic}
 \end{figure}
 
 SLIC by generating segmented regions, allows us to gain insights into which areas of the image influence a model the most.
@@ -409,7 +428,7 @@ This analysis helps us understand the model's sensitivity to variations in input
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_7}
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_8}
     \includegraphics[width=.6\linewidth]{img/counterfacts/CIFAR/img_6}
-    \caption{Perturbation on chosen CIFAR images}\label{fig:cifar-cnn-peturbation}
+    \caption{Perturbation on chosen CIFAR images.}\label{fig:cifar-cnn-peturbation}
 \end{figure}
 
 The perturbation results, depicted on fig.~\ref{fig:cifar-cnn-peturbation}, provide a detailed view of the model's behavior under rotational transformations.
