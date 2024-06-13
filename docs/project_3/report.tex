@@ -259,13 +259,13 @@ From these maps it is possible to deduce the model's ``reasoning'' when classify
 For example, with digit 0, it pays great attention to the area in the middle. That is because, contrary to other digits, 0 has a big empty space in the middle.
 We suspect that the model has learnt to recognize this empty middle space and associate it with the digit 0, which is in line with human intuition.
 
-Similarly, for digit 4, there is also an open space at the top, to which the model pays great attention. 
+Similarly, for digit 4, there is also an open space at the top, to which the model pays great attention.
 The model is at the same time not paying much attention to the bottom area, because with the digit 4, it does not contain many discernable characteristics.
 
 In the example with the digit 9, a lot of model's attention is focused on the crossing present in the digit. At the same time, the model is looking at the bottom, because sometimes the digit 9 is drawn with a ``hook'' there.
 
 With all of the digits, we are satisfied that the model is not paying attention to much of the edge pixels, meaning thet it does not focus on the background too much,
-which is the correct behaviour. 
+which is the correct behaviour.
 
 \subsubsection{LBP}
 
@@ -445,15 +445,29 @@ As seen on fig.~\ref{fig:cifar-cnn-peturbation}, small rotations (2.47 and 3.85 
 This suggests that the model's feature extraction process may not effectively differentiate between subtle visual differences in closely related classes.
 Moreover, in this experiment the model was working on the not augmented data, due to this the recognition of these images might not be as expected.
 
-These findings underscore the importance of rigorous model evaluation under diverse conditions to ensure reliability in practical applications.
+\section{Summary}\label{sec:summary}
+
+In this work we examined different ANN models using a variety of XAI techniques to gather meaningful insight into the models' decision making processes.
+First experiments were conducted for models working on simpler datasets with few, meaningful features, yielding a textual description of different prediction criteria.
+These results provided information about features and their values, that the model associated with different classes.
+Those can be further submitted to field experts, in order to determine if the model's findings correspond with the expert's experience, or perhaps provide a hint as to new clsasification criteria.
+
+Additionally, experiments were done on visual data, in form of handwritten digits from the MNIST dataset, and images from CIFAR10 dataset.
+We tested both simple MLPs with manual feature extraction and more complex CNNs.
+Due to higher number of features, the textual description would not be feasible in this case.
+For this reason, in case of visual data, we utilized methods that could be visualized --- by highliting the areas of importance for the classification, or by providing a counterexample.
+
+The different methods employed on the models, although not able to completely explain the model's decision making process,
+provided some hints as to how the model worked.
+For example, we were able to detect that some models for classifying the MNIST digits, instead of the digits themselves, were using empty spaces for classification, which is an interesting approach, but coinciding with the human intuition.
+These surprising results show a potential for further research in order to determine if it is the correct behaviour and reasoning, or perhaps a mistake in the method or model itself.
+
+The testing of the models also revealed some flaws with variations to the input, especially with the CIFAR10 dataset, where even small changes to the input image did affect the prediction when they should not have.
+
+These findings highlight the importance of rigorous model evaluation under diverse conditions to ensure reliability in practical applications.
 Models deployed in different fields such as surveillance or medical imaging must maintain high accuracy despite variations in input, making perturbation analysis a critical component of model validation.
 
 Addressing this challenge through targeted training enhancements and interpretability techniques can lead to more robust and reliable models suited for complex real-world tasks.
-
-\section{Summary}\label{sec:summary}
-Summarize the main conclusions and suggest future work.
-
-\section{References}\label{sec:references}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
