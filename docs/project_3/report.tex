@@ -210,6 +210,22 @@ For example, if the model is biased towards certain classes, the results can be 
 \subsubsection{LBP}
 \subsubsection{HOG}
 
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/saliency_hog/1.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_hog/4.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_hog/7.png}
+    \caption{HOG values and gradient attributions for digits 1,4, and 7.}\label{fig:hog-attributions}
+\end{figure}
+
+The MLP that operated on features extracted using the histogram of oriented gradients was analyzed using the saliency method to determine 
+if the directions that have the influence on the model are actually those present in the digits.
+The results are visualized on fig.~\ref{fig:hog-attributions}.
+
+As expected, the features present in the digits are in fact those that have an impact on the model's answer.
+However, the model also pays attention to some other directions, which are not present in the input digit.
+We assume this behavior to be caused by model determining these features to be most differentiating between similar digits.
+Because of this, such features have a big impact in the models decision.
+
 \subsection{MNIST CNN classifier}\label{subsec:experiment-mnist-cnn}
 
 \begin{figure}[ht]\centering
