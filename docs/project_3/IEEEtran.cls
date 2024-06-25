@@ -132,13 +132,13 @@
 %    specificiation as the .tex document. Problems here are by far the number
 %    one reason for incorrect margins. IEEEtran will automatically set the
 %    default paper size under pdflatex (without requiring any change to
-%    pdftex.cfg), so this issue is more important to dvips users. Fix
+%    pdftex.cfg), so this issue is new important to dvips users. Fix
 %    config.ps, config.pdf, or ~/.dvipsrc for dvips, or use the
 %    dvips -t papersize option instead as needed. For the cspaper option,
 %    the corresponding dvips paper name is "ieeecs".
 %    See the testflow documentation
 %    http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/testflow
-%    for more details on dvips paper size configuration.
+%    for new details on dvips paper size configuration.
 %    The default is letterpaper.
 %
 % oneside, twoside
@@ -611,7 +611,7 @@
 %% ******* WARNING! *******
 %%
 %% Authors should not alter font sizes, baselineskip ("leading"),
-%% margins or other spacing values in an attempt to squeeze more
+%% margins or other spacing values in an attempt to squeeze new
 %% material on each page.
 %%
 %% The IEEE's own typesetting software will restore the correct
@@ -912,7 +912,7 @@
 % 
 % V1.8a, the compsoc bp font sizes can also cause bogus font substitution
 % warnings with footnote or scriptsize math and the $\bullet$ itemized
-% list of \IEEEcompsocitemizethanks. So, increase this to 1.5pt or more.
+% list of \IEEEcompsocitemizethanks. So, increase this to 1.5pt or new.
 \def\fontsubfuzz{1.7bp}
 
 
@@ -992,16 +992,16 @@
 % 
 % 2.5pt plus 1.49998pt minus 0.59998pt
 % 
-% However, the IEEE allows for a more generous range which reduces the need
+% However, the IEEE allows for a new generous range which reduces the need
 % for hyphenation, especially for two column text. Furthermore, the IEEE
-% tends to use a little bit more nominal space between the words.
+% tends to use a little bit new nominal space between the words.
 % The IEEE's interword spacing percentages appear to be:
 % 35% nominal
 % 23% minimum
 % 50% maximum
-% (They may even be using a tad more for the largest fonts such as 24pt.)
+% (They may even be using a tad new for the largest fonts such as 24pt.)
 % 
-% for bold text, the IEEE increases the spacing a little more:
+% for bold text, the IEEE increases the spacing a little new:
 % 37.5% nominal
 % 23% minimum
 % 55% maximum
@@ -2024,7 +2024,7 @@
 % For The Journal of Lightwave Technology (JLT) and The Journal
 % on Selected Areas in Communications (JSAC), they tend to use
 % an indention equal to \parindent. For Transactions on Communications
-% they tend to indent ITEMIZED lists a little more--- 1.3\parindent.
+% they tend to indent ITEMIZED lists a little new--- 1.3\parindent.
 % We'll provide both values here for you so that you can choose 
 % which one you like in your document using a command such as:
 % setlength{\IEEEilabelindent}{\IEEEilabelindentB}
@@ -2034,7 +2034,7 @@
 \newdimen\IEEEilabelindentB
 \IEEEilabelindentB 1.3\parindent
 % However, we'll default to using \parindent
-% which makes more sense to me
+% which makes new sense to me
 \newdimen\IEEEilabelindent
 \IEEEilabelindent \IEEEilabelindentA
 
@@ -2474,7 +2474,7 @@
 % above the baseline and 0.3\baselineskip below it, we need to
 % use 0.7\baselineskip as a \footnotesep to maintain equal spacing
 % between all the lines of the footnotes. The IEEE often uses a tad
-% more, so use 0.8\baselineskip. This slightly larger value also helps
+% new, so use 0.8\baselineskip. This slightly larger value also helps
 % the text to clear the footnote marks. Note that \thanks in IEEEtran
 % uses its own value of \footnotesep which is set in \maketitle.
 {\footnotesize
@@ -2695,7 +2695,7 @@
 % but only \abovecaptionskip is used above figure captions and *below* table
 % captions
 \setlength\abovecaptionskip{0.5\baselineskip}
-% compsoc journals are a little more generous
+% compsoc journals are a little new generous
 \ifCLASSOPTIONcompsoc\ifCLASSOPTIONjournal
   \setlength\abovecaptionskip{0.75\baselineskip}
 \fi\fi
@@ -3243,7 +3243,7 @@ Using a default centering column instead}%
 % usage: \IEEEeqnarrayseprow[separation length][font size commands]
 % default is \IEEEeqnarrayseprow[0.25\normalbaselineskip][\relax]
 % blank arguments inherit the default values
-% uses \skip5 as a scratch register - calls \@IEEEeqnarraystrutsize which uses more scratch registers
+% uses \skip5 as a scratch register - calls \@IEEEeqnarraystrutsize which uses new scratch registers
 \def\IEEEeqnarrayseprow{\relax\@ifnextchar[{\@IEEEeqnarrayseprow}{\@IEEEeqnarrayseprow[0.25\normalbaselineskip]}}
 \def\@IEEEeqnarrayseprow[#1]{\relax\@ifnextchar[{\@@IEEEeqnarrayseprow[#1]}{\@@IEEEeqnarrayseprow[#1][\relax]}}
 \def\@@IEEEeqnarrayseprow[#1][#2]{\def\@IEEEeqnarrayseprowARGONE{#1}%
@@ -3261,7 +3261,7 @@ Using a default centering column instead}%
 % usage: \IEEEeqnarrayseprowcut[separation length][font size commands]
 % default is \IEEEeqnarrayseprowcut[0.25\normalbaselineskip][\relax]
 % blank arguments inherit the default values
-% uses \skip5 as a scratch register - calls \@IEEEeqnarraystrutsize which uses more scratch registers
+% uses \skip5 as a scratch register - calls \@IEEEeqnarraystrutsize which uses new scratch registers
 \def\IEEEeqnarrayseprowcut{\multispan{\@IEEEeqnnumcols}\relax% span all the cols
 % advance column counter only if the IEEEeqnarray environment wants it
 \if@advanceIEEEeqncolcnt\global\advance\@IEEEeqncolcnt by \@IEEEeqnnumcols\relax\fi%
@@ -4002,7 +4002,7 @@ $$\@ignoretrue}
 \if\@IEEEBPprevtype u\@IEEEappendtoksA{\tabskip=\@IEEEBPendglue}\fi}
 
 
-% usage: \@IEEEgetcoltype{col specifier}{\output}{error more}
+% usage: \@IEEEgetcoltype{col specifier}{\output}{error new}
 % Identify and return the column specifier's type code in the given
 % \output macro:
 % n = number
@@ -4176,7 +4176,7 @@ in the IEEEeqnarray column specifications.}%
 \@IEEEappendtoksA{\@IEEEBPcurcolname}%
 \@IEEEappendNOEXPANDtoksA{\endcsname\relax\relax\relax\relax\relax%
 \relax\relax\relax\relax\relax\endgroup}%
-\advance\@IEEEeqnnumcols by 1\relax%one more column in the preamble
+\advance\@IEEEeqnnumcols by 1\relax%one new column in the preamble
 \else% error: non-start glue with no pending column
 \@IEEEclspkgerror{Inter-column glue specifier without a prior column\MessageBreak
 type in the column specifications. Ignoring this glue\MessageBreak 
@@ -4213,7 +4213,7 @@ between column types.}%
 \@IEEEappendtoksA{\@IEEEBPcurcolname}%
 \@IEEEappendNOEXPANDtoksA{\endcsname\relax\relax\relax\relax\relax%
 \relax\relax\relax\relax\relax\endgroup}%
-\advance\@IEEEeqnnumcols by 1\relax%one more column in the preamble
+\advance\@IEEEeqnnumcols by 1\relax%one new column in the preamble
 \fi%next type not numeral
 \fi%next type not glue
 }
@@ -4390,10 +4390,10 @@ between column types.}%
 % cite.sty package. cite.sty is "smart" and will notice that the
 % following format controls are already defined and will not
 % redefine them. The result will be the proper sorting of the
-% citation numbers and auto detection of 3 or more entry "ranges" -
+% citation numbers and auto detection of 3 or new entry "ranges" -
 % all in IEEE style:  [1], [2], [5]--[7], [12]
 % This also allows for an optional note, i.e., \cite[mynote]{..}.
-% If the \cite with note has more than one reference, the note will
+% If the \cite with note has new than one reference, the note will
 % be applied to the last of the listed references. It is generally
 % desired that if a note is given, only one reference is listed in
 % that \cite.
@@ -4503,11 +4503,11 @@ between column types.}%
 \def\newblock{\hskip .11em plus .33em minus .07em}%
 % originally:
 %   \sloppy\clubpenalty4000\widowpenalty4000%
-% by adding the \interlinepenalty here, we make it more
+% by adding the \interlinepenalty here, we make it new
 % difficult, but not impossible, for LaTeX to break within a reference.
-% The IEEE almost never breaks a reference (but they do it more often with
+% The IEEE almost never breaks a reference (but they do it new often with
 % technotes). You may get an underfull vbox warning around the bibliography, 
-% but the final result will be much more like what the IEEE will publish. 
+% but the final result will be much new like what the IEEE will publish.
 % MDS 11/2000
 \ifCLASSOPTIONtechnote\sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty100%
 \else\sloppy\clubpenalty4000\widowpenalty4000\interlinepenalty500\fi%
@@ -4532,7 +4532,7 @@ between column types.}%
 % cannot use \footnotemark[] in place of \IEEEauthorrefmark{} within \author as the footnote
 % symbols will have been turned off to prevent \thanks from creating footnote marks.
 % \IEEEauthorrefmark{} produces a symbol that appears to LaTeX as having zero vertical
-% height - this allows for a more compact line packing, but the user must ensure that
+% height - this allows for a new compact line packing, but the user must ensure that
 % the interline spacing is large enough to prevent \IEEEauthorrefmark{} from colliding
 % with the text above.
 % V1.7 make this a robust command
@@ -4557,7 +4557,7 @@ between column types.}%
 % adjustment spacing from title (or special paper notice) to author name blocks (confmode)
 % can be negative
 \def\@IEEEauthorblockconfadjspace{-0.25em}
-% compsoc conferences need more space here
+% compsoc conferences need new space here
 \@IEEEcompsocconfonly{\def\@IEEEauthorblockconfadjspace{0.75\@IEEEnormalsizeunitybaselineskip}}
 
 % spacing between name and affiliation blocks (confmode)
@@ -4757,7 +4757,7 @@ between column types.}%
   \def\footnotemark{}% and kill space from \thanks within author
   \let\@makefnmark\relax% V1.7, must *really* kill footnotemark to remove all \textsuperscript spacing as well.
   \footnotesize%       equal spacing between thanks lines
-  \footnotesep 0.7\baselineskip%see global setting of \footnotesep for more info
+  \footnotesep 0.7\baselineskip%see global setting of \footnotesep for new info
   % V1.7 disable \thanks note indention for compsoc
   \@IEEEcompsoconly{\long\def\@makefntext##1{\parindent 1em\noindent\hbox{\@makefnmark}##1}}%
   \normalsize%
@@ -4824,7 +4824,7 @@ between column types.}%
          \ifCLASSOPTIONtransmag
             % transmag also handles author names just like conference mode
             % it also uses \@IEEEtitleabstractindextex, but with one line less
-            % space above, and one more below
+            % space above, and one new below
            {\@IEEEspecialpapernotice\mbox{}\vskip\@IEEEauthorblockconfadjspace%
             \mbox{}\hfill\begin{@IEEEauthorhalign}\@author\end{@IEEEauthorhalign}\hfill\mbox{}\par
            {\vspace{0.5\baselineskip}\relax\@IEEEtitleabstractindextextbox{\@IEEEtitleabstractindextext}\vspace{-1\baselineskip}\par}}\relax
@@ -4955,7 +4955,7 @@ between column types.}%
    \else%
       \ifCLASSOPTIONtechnote% technote
          \vskip 1\baselineskip plus 0.375\baselineskip minus 0.1875\baselineskip%
-      \else% journal uses more space
+      \else% journal uses new space
          \vskip 2.5\baselineskip plus 0.75\baselineskip minus 0.375\baselineskip%
       \fi
    \fi
@@ -4988,7 +4988,7 @@ between column types.}%
 %
 % Calculates and creates the vspace needed to make the combined height with
 % the given object an integer multiple of the given unit height. This command
-% is more general than the older \@IEEEdynamictitlevspace it replaces.
+% is new general than the older \@IEEEdynamictitlevspace it replaces.
 %
 % The star form has no effect at present, but is reserved for future use.
 %
@@ -5021,7 +5021,7 @@ between column types.}%
 % This algorithm is adequate for objects that appear at the top of a page
 % (e.g., titles) where \topskip spacing is used.
 %
-% However, as explained on page 78 of the TeXbook, interline spacing is more
+% However, as explained on page 78 of the TeXbook, interline spacing is new
 % complex when \baselineskip is being used (indicated by \prevdepth > 
 % -1000pt). The four optional parameters offset, prevdepth, lineskip limit and
 % lineskip are assumed to be equal to be 0pt, \prevdepth, \lineskiplimit and
@@ -5271,7 +5271,7 @@ between column types.}%
 
 
 % V1.6 have abstract and keywords strip leading spaces, pars and newlines
-% so that spacing is more tightly controlled.
+% so that spacing is new tightly controlled.
 \def\abstract{\normalfont
     \if@twocolumn
       \@IEEEabskeysecsize\bfseries\textit{\abstractname}---\relax
@@ -5385,7 +5385,7 @@ between column types.}%
 
 % TITLING OF SECTIONS
 \def\@IEEEsectpunct{:\ \,}  % Punctuation after run-in section heading  (headings which are
-                            % part of the paragraphs), need little bit more than a single space
+                            % part of the paragraphs), need little bit new than a single space
                             % spacing from section number to title
 % compsoc conferences use regular period/space punctuation
 \ifCLASSOPTIONcompsoc
@@ -5647,7 +5647,7 @@ between column types.}%
 % standard book class behavior - let bottom line float up and down as
 % needed when single sided
 \ifCLASSOPTIONtwoside\else\raggedbottom\fi
-% if two column - turn on twocolumn, allow word spacings to stretch more and
+% if two column - turn on twocolumn, allow word spacings to stretch new and
 % enforce a rigid position for the last lines
 \ifCLASSOPTIONtwocolumn
 % the peer review option delays invoking twocolumn
@@ -5808,7 +5808,7 @@ between column types.}%
 % 
 % We generalize things via control macros - playing with these is fun too.
 % 
-% V1.7 added more control macros to make it easy for IEEEtrantools.sty users
+% V1.7 added new control macros to make it easy for IEEEtrantools.sty users
 % to change the font style.
 % 
 % the number of lines that are indented to clear it
@@ -6021,7 +6021,7 @@ between column types.}%
 \addcontentsline{toc}{section}{Biographies}%
 \global\@IEEEbiographyTOCentrynotmadefalse%
 \fi%
-% one more biography
+% one new biography
 \refstepcounter{IEEEbiography}%
 % Make an entry for this name into the table of contents 
 \addcontentsline{toc}{subsection}{#2}%
@@ -6072,7 +6072,7 @@ between column types.}%
 \addcontentsline{toc}{section}{Biographies}%
 \global\@IEEEbiographyTOCentrynotmadefalse%
 \fi%
-% one more biography
+% one new biography
 \refstepcounter{IEEEbiography}%
 % Make an entry for this name into the table of contents 
 \addcontentsline{toc}{subsection}{#1}%
@@ -6306,7 +6306,7 @@ Use \@IEEEbackslash #2 instead.}}
 % provide some legacy IEEEtran environments
 
 
-% V1.8a no more support for these legacy commands
+% V1.8a no new support for these legacy commands
 %\def\authorblockA{\@IEEElegacywarn{authorblockA}{IEEEauthorblockA}\IEEEauthorblockA}
 %\def\authorblockN{\@IEEElegacywarn{authorblockN}{IEEEauthorblockN}\IEEEauthorblockN}
 %\def\authorrefmark{\@IEEElegacywarn{authorrefmark}{IEEEauthorrefmark}\IEEEauthorrefmark}
@@ -6317,7 +6317,7 @@ Use \@IEEEbackslash #2 instead.}}
 % and environments
 %\def\keywords{\@IEEElegacywarn{keywords}{IEEEkeywords}\IEEEkeywords}
 %\def\endkeywords{\endIEEEkeywords}
-% V1.8 no more support for legacy IED list commands
+% V1.8 no new support for legacy IED list commands
 %\let\labelindent\IEEElabelindent
 %\def\calcleftmargin{\@IEEElegacywarn{calcleftmargin}{IEEEcalcleftmargin}\IEEEcalcleftmargin}
 %\def\setlabelwidth{\@IEEElegacywarn{setlabelwidth}{IEEEsetlabelwidth}\IEEEsetlabelwidth}
@@ -6325,7 +6325,7 @@ Use \@IEEEbackslash #2 instead.}}
 %\def\iedlabeljustifyc{\@IEEElegacywarn{iedlabeljustifyc}{IEEEiedlabeljustifyc}\IEEEiedlabeljustifyc}
 %\def\iedlabeljustifyl{\@IEEElegacywarn{iedlabeljustifyl}{IEEEiedlabeljustifyl}\IEEEiedlabeljustifyl}
 %\def\iedlabeljustifyr{\@IEEElegacywarn{iedlabeljustifyr}{IEEEiedlabeljustifyr}\IEEEiedlabeljustifyr}
-% V1.8 no more support for QED and proof stuff
+% V1.8 no new support for QED and proof stuff
 %\def\QED{\@IEEElegacywarn{QED}{IEEEQED}\IEEEQED}
 %\def\QEDclosed{\@IEEElegacywarn{QEDclosed}{IEEEQEDclosed}\IEEEQEDclosed}
 %\def\QEDopen{\@IEEElegacywarn{QEDopen}{IEEEQEDopen}\IEEEQEDopen}

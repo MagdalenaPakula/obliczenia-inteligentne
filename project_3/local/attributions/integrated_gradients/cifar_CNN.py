@@ -9,7 +9,8 @@ from skimage.color import label2rgb
 from skimage.segmentation import slic
 
 from project_2.part_2.data import CIFAR10DataModule
-from project_2.part_2.models.kuba.cifar.large import CifarLargeModel
+from project_2.part_2.models.kuba.cifar.large import CifarLargeModel, _CIFARLargeFeatureExtractor
+from project_3.local.attributions.integrated_gradients.mnist_CNN import plot_original_and_attributions_integrated_grad
 from project_3.models import get_model
 
 
@@ -74,8 +75,8 @@ def _main():
         predicted_label = model(img.unsqueeze(0)).argmax().item()
         print(f"True label: {label.item()}, Predicted label: {predicted_label}")
 
-        # plot_original_and_attributions_integrated_grad(img, gradients)
-        plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
+        plot_original_and_attributions_integrated_grad(img, gradients.squeeze(0))
+        #plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
 
 
 if __name__ == '__main__':

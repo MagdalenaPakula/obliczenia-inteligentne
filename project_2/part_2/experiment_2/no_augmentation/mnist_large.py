@@ -20,7 +20,7 @@ def _main():
     def create_model() -> pl.LightningModule:
         return MnistLargeModel(num_classes=10)
 
-    perform_experiment_2(create_module, create_model, epochs=4)
+    perform_experiment_2(create_module, create_model, epochs=20)
 
 
 if __name__ == '__main__':

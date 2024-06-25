@@ -33,6 +33,14 @@ def plot_original_and_attributions_integrated_grad(original: torch.Tensor, attri
                              title="Overlayed Integrated Gradients",
                              plt_fig_axis=(fig, ax2))
 
+    # viz.visualize_image_attr(attributions_img,
+    #                          original_image=original_img,
+    #                          method='blended_heat_map',
+    #                          sign="positive",
+    #                          cmap="Blues",  #
+    #                          title="Overlayed Integrated Gradients (positive)",
+    #                          plt_fig_axis=(fig, ax2))
+
     fig.tight_layout()
     plt.show()
 
@@ -78,16 +86,17 @@ def _main():
 
     for i in range(10):
         img, label = get_sample_data(i)
-        img.requires_grad = True
+        if label == 0:
+            img.requires_grad = True
 
-        ig = IntegratedGradients(model)
-        model.eval()
-        model.zero_grad()
-        gradients = ig.attribute(img.unsqueeze(0), target=label.item())
+            ig = IntegratedGradients(model)
+            model.eval()
+            model.zero_grad()
+            gradients = ig.attribute(img.unsqueeze(0), target=label.item())
 
-        plot_original_and_attributions_integrated_grad(img, gradients.squeeze(0))
+            plot_original_and_attributions_integrated_grad(img, gradients.squeeze(0))
 
-        plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
+            #plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
 
 
 if __name__ == '__main__':

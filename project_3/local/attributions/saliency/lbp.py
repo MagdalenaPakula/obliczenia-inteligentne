@@ -27,7 +27,7 @@ def plot_original_and_attributions(original: torch.Tensor, attributions: torch.T
     fig, axis = plt.subplots(1, 2)
     axis[0].imshow(original_img, cmap='gray')
     axis[0].set_axis_off()
-    axis[0].set_title('Original image')
+    axis[0].set_title('LBP image')
     viz.visualize_image_attr(attributions_img, original_img,
                              method='blended_heat_map',
                              sign='absolute_value',
