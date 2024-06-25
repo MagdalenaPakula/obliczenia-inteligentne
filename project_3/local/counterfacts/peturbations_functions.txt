@@ -1,0 +1,26 @@
+min_pert = MinParamPerturbation(
+            forward_func=lambda x: model(x),
+            attack=random_affine_attack,
+            arg_name="degrees",
+            arg_min=0,
+            arg_max=30,
+            arg_step=1,
+        )
+
+min_pert = MinParamPerturbation(
+    forward_func=lambda x: model(x),
+    attack=gaussian_noise_attack,
+    arg_name="std",
+    arg_min=0.0,
+    arg_max=1.0,
+    arg_step=0.01,
+)
+
+min_pert = MinParamPerturbation(
+            forward_func=lambda x: model(x),
+            attack=random_rotation_attack,
+            arg_name="degrees",
+            arg_min=0,
+            arg_max=30,
+            arg_step=0.01,
+        )
