@@ -246,9 +246,9 @@ For instance, by pinpointing features that contribute to bias towards certain cl
 \subsubsection{Flatten}
 
 \begin{figure}[ht]\centering
-    \includegraphics[width=.6\linewidth]{img/saliency_flat/0.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_flat/4.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_flat/9.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_flat/0.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_flat/4.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_flat/9.png}
     \caption{Digits and saliency maps for digits 0,4, and 9.}\label{fig:flatten-attributions}
 \end{figure}
 
@@ -270,21 +270,30 @@ which is the correct behaviour.
 \subsubsection{LBP}
 
 \begin{figure}[ht]\centering
-    \includegraphics[width=.6\linewidth]{img/saliency_lbp/0}
-    \includegraphics[width=.6\linewidth]{img/saliency_lbp/5}
-    \includegraphics[width=.6\linewidth]{img/saliency_lbp/8}
-    \caption{LBP images and gradient attributions for digits 0, 5, and 8.}\label{fig:lbp-attributions}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/new/img}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/new/img_1}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/new/img_8}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/new/img_6}
+    \includegraphics[width=.6\linewidth]{img/saliency_lbp/new/img_2}
+    \caption{LBP images and gradient attributions for digits 0, 6, 8, 4 and 9.}\label{fig:lbp-attributions}
 \end{figure}
 
 The MLP trained on features extracted using Local Binary Pattern (LBP) was examined using the saliency method to determine the influence of various LBP patterns on the model's predictions.
 Local Binary Pattern (LBP) is a simple yet effective texture descriptor that has been widely used in various computer vision tasks.
 Unlike the Histogram of Oriented Gradients (HOG) that captures the directionality of gradients, the LBP encodes the local spatial structure of an image.
 
-The results for digits 0, 5 and 8 and are depicted on fig.~\ref{fig:lbp-attributions}.
-Presented images aren't much clear for a human eye, but they present model's decision-making process and the importance it places on different local patterns within the LBP representation of the digits.
-Therefore, we can find some distinguishable patterns and differences in each of these digits, but we can also notice the model's paying attention to areas that are not present in the input digit.
+The results for digits 0, 6, 8, 4 and 9 are depicted on fig.~\ref{fig:lbp-attributions}.
+As LBP method creates the binary pattern on images, we can see improvement or regression when it comes to visibility of the image's digit.
+When comparing these saliency maps to the digits presented on fig~\ref{fig:flatten-attributions} we can certainly notice the improvement of models' understaing of each digit.
+Digit 0 is recognized by the same pattern as in flatten extraction, digit 9 has more areas that are combined rather than separate pixels like in previous example.
+It is worth noticing that image of digit 4 and 9 are quite similiar, but due to LBP feature extraction, the model enhanced the pixels intensity and its differences such as top part of both images, where the digit 4 does not connect, while digit 9 does.
+We can notice on these images that saliency map also takes into the account the background of the image, meaning whether the line or pattern does not exist on the image, therefore the model takes prediction.
+This happens particularly on the digit 6, where model checks for a pattern at the top of this digit to see whether the top line is connected or not.
 
-Those results show that the model is not just focusing on the most obvious features, but also on the subtle patterns that are not immediately apparent.
+Not only LBP may enhance the interpretability and effectiveness of texture analysis tasks, but seeing subtle changes in model's view of the digit when applying LBP may be crucial in further development of this method.
+Moreover, such not aggressive change like LBP feature extraction is seen to be more precise, taking into account areas, not pixels and not as random as on fig~\ref{fig:flatten-attributions}, which proves the usefulness of this method.
+
+Those results show that the model is not just focusing on the most obvious features, but also on the subtle patterns that are not immediately apparent by a human eye.
 This highlights the model's ability to learn and generalize from the data, and its ability to use the LBP features to make accurate predictions.
 
 \subsubsection{HOG}
@@ -308,9 +317,9 @@ Because of this, such features have a big impact in the models decision.
 \subsection{MNIST CNN classifier}\label{subsec:experiment-mnist-cnn}
 
 \begin{figure}[ht]\centering
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/5.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/1.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/5.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/1.png}
     \caption{Saliency maps of chosen MNIST digits.}\label{fig:mnist-cnn-saliency}
 \end{figure}
 
@@ -343,11 +352,11 @@ It can be seen that in all of the cases model pays significant importance to the
 This is correct with the intuition, as connecting these lines would make the digit a 9 instead of 4.
 
 \begin{figure}[ht]\centering
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_1.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_2.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_3.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_4.png}
-    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_5.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4_1.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4_2.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4_3.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4_4.png}
+    \includegraphics[width=.5\linewidth]{img/saliency_mnist/4_5.png}
     \caption{Different cases of digit 4}\label{fig:saliency-mnist-4-multiple}
 \end{figure}
 
@@ -367,6 +376,37 @@ For instance, in digits 4 and 9, although they share similarities, the connected
 Moreover, this method highlight areas in the digits where the model might make errors or find ambiguity.
 In the central regions of digits 4 and 9, represented by less intense colors (notably red), the model's certainty decreases.
 This suggests that these regions resemble characteristics of multiple digits, potentially leading to misclassification.
+
+In order to formulate more general conclusions about the model, it was tested on multiple different versions of the same digit.
+Figure~\ref{fig:integrated-grad-mnist-multiple} shows integrated gradients for different versions of digit 3.
+It can be seen that in all of the cases model pays significant importance to the top part of the digit, in the majority of cases it pays attention to the middle of the digit, where 2 curves are, which alignes with the conclusion for digit 3 in the above fig.~\ref{fig:mnist-cnn-integrated-grad}.
+In all cases the negative areas suggest that sharp line, dynamic change rather than subtle curves adversely impacts the CNN model.
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3/img}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3/img_1}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3/img_2}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3/img_3}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3/img_4}
+    \caption{Different cases of digit 3}\label{fig:integrated-grad-mnist-multiple}
+\end{figure}
+
+Moreover, we also tested the model on digit 5, which is presented on the fig.~\ref{fig:integrated-grad-mnist-multiple-5}.
+In this case, 5 might be similar in some ways to digit 3.
+However we can clearly see that when it comes to digit 5 the model pays the highest importance to the straight top line.
+Also important are: the slightly curved line at the bottom but also to the middle curve.
+This digit is particularly interesting due to the huge differences in writing's style which might be a challenge for a model.
+Nonetheless, the model handles those digits exceptionally well and pays attention to the same areas.
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/5/img}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/5/img_1}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/5/img_2}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/5/img_3}
+    \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/5/img_4}
+    \caption{Different cases of digit 5}\label{fig:integrated-grad-mnist-multiple-5}
+\end{figure}
+
 
 To further enhance our analysis, we employed the SLIC superpixel method.
 

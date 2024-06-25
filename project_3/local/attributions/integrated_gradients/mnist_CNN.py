@@ -84,11 +84,12 @@ def plot_original_and_attributions_with_slic(original: torch.Tensor, attribution
 def _main():
     model: MnistLargeModel = get_model("kuba_mnist_big.pt")
 
-    for i in range(10):
+    for i in range(100):
         img, label = get_sample_data(i)
-        if label == 0:
-            img.requires_grad = True
+        img.requires_grad = True
 
+        # Check if label is 3
+        if label.item() == 5:
             ig = IntegratedGradients(model)
             model.eval()
             model.zero_grad()
@@ -97,6 +98,7 @@ def _main():
             plot_original_and_attributions_integrated_grad(img, gradients.squeeze(0))
 
             #plot_original_and_attributions_with_slic(img, gradients.squeeze(0))
+
 
 
 if __name__ == '__main__':
