@@ -1,49 +1,55 @@
 from typing import Tuple
 
-import cv2
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from matplotlib import pyplot as plt
-from skimage.feature import local_binary_pattern
+from captum.attr import Saliency
+from captum.attr import visualization as viz
 
-from project_2.part_1.data.MNIST import load_dataset_MNIST, visualize_MNIST
+from project_2.part_1 import MLP
+from project_2.part_1.data.MNIST import load_dataset_MNIST
+from project_2.part_1.features.reduced_dimention.lbp import lbp_feature_extraction
+from project_3.models import get_model
 
 
-def get_transformed_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
+def get_sample_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
     dataset = load_dataset_MNIST(transform=lbp_feature_extraction)['test_dataset']
     return dataset[index]
 
-def get_original_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
-    dataset = load_dataset_MNIST()['test_dataset']
-    return dataset[index]
 
+def plot_original_and_attributions(original: torch.Tensor, attributions: torch.Tensor):
+    assert original.dim() == 2, "Original tensor does not have 2 dimensions (height, width)"
+    assert attributions.dim() == 2, "Attributions tensor does not have 2 dimensions (height, width)"
 
-def lbp_feature_extraction(image):
-    image = image.squeeze().numpy()
-    lbp = local_binary_pattern(image, 8, 1, method='uniform')
-    return torch.from_numpy(lbp)
+    original_img: np.ndarray = original.detach().unsqueeze(2).numpy()
+    attributions_img: np.ndarray = attributions.detach().unsqueeze(2).numpy()
+
+    fig, axis = plt.subplots(1, 2)
+    axis[0].imshow(original_img, cmap='gray')
+    axis[0].set_axis_off()
+    axis[0].set_title('Original image')
+    viz.visualize_image_attr(attributions_img, original_img,
+                             method='blended_heat_map',
+                             sign='absolute_value',
+                             plt_fig_axis=(fig, axis[1]),
+                             use_pyplot=False)
+    axis[1].set_title('Overlayed attributions')
+    fig.show()
 
 
 def _main():
-    # Get the original and LBP-transformed images
-    original_image, label = get_original_data(index=0)
-    lbp_image, label = get_transformed_data(index=0)
+    model: MLP = get_model("MLP_mnist_lbp_12.pt")
 
-    # Create a figure with two subplots
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+    for i in range(10):
+        img, label = get_sample_data(i + 10)
+        img.requires_grad = True
 
-    # Plot the original image
-    ax1.imshow(original_image.squeeze(), cmap='gray')
-    ax1.set_title(f'Original Image - Label: {label}')
-    ax1.set_xticks(np.arange(0, 28, step=4))
-    ax1.set_yticks(np.arange(0, 28, step=4))
-    ax1.grid(True, color='gray', linestyle='--', linewidth=0.5)
+        saliency = Saliency(model)
+        model.eval()
+        model.zero_grad()
+        gradients = saliency.attribute(img.unsqueeze(0), target=label)
 
-    # Plot the LBP image
-    ax2.imshow(lbp_image, cmap='gray')
-    ax2.set_title(f'LBP Image - Label: {label}')
-
-    plt.show()
+        plot_original_and_attributions(img.detach().reshape(28, 28), gradients.squeeze(0).reshape(28, 28))
 
 
 if __name__ == '__main__':
