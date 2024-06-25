@@ -1,51 +1,33 @@
 from typing import Tuple
 
-import matplotlib.pyplot as plt
+import cv2
+import numpy as np
 import torch
-from captum.attr import Saliency
+from matplotlib import pyplot as plt
+from skimage.feature import local_binary_pattern
 
-from project_2.part_1 import MLP
-from project_2.part_1.data.MNIST import load_dataset_MNIST
-from project_2.part_1.features.reduced_dimention.lbp import lbp_image
-from project_3.models import get_model
+from project_2.part_1.data.MNIST import load_dataset_MNIST, visualize_MNIST
 
 
-def get_sample_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
-    dataset = load_dataset_MNIST(transform=lbp_image)['test_dataset']
+def get_transformed_data(index: int = 0) -> Tuple[torch.Tensor, torch.Tensor]:
+    dataset = load_dataset_MNIST(transform=lbp_feature_extraction)['test_dataset']
     return dataset[index]
 
 
-def plot_lbp(lbp_image: torch.Tensor, axis: plt.Axes | None = None) -> plt.Figure | None:
-    fig = None
-    if axis is None:
-        fig, axis = plt.subplots(nrows=1, ncols=1, figsize=(10, 10))
-
-    lbp_image = lbp_image.reshape(28, 28)
-
-    axis.imshow(lbp_image.detach().numpy(), cmap='gray')
-    axis.set_title('LBP')
-    axis.axis('off')
-    if fig is not None:
-        return fig
+def lbp_feature_extraction(image):
+    image = image.squeeze().numpy()
+    lbp = local_binary_pattern(image, 8, 1, method='uniform')
+    return torch.from_numpy(lbp)
 
 
 def _main():
-    model: MLP = get_model("MLP_mnist_lbp.pt")
-    for i in range(10):
-        img, label = get_sample_data(i + 10)
-        img.requires_grad = True
-        saliency = Saliency(model)
-        model.eval()
-        model.zero_grad()
-        gradients = saliency.attribute(img.unsqueeze(0), target=label)
-        fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(20, 10))
-        fig.suptitle(f"Digit: {label}", fontsize=20)
-        plot_lbp(img.detach(), axis=axes[0])
-        axes[0].set_title('(LBP) representation of the image')
-        plot_lbp(gradients.squeeze(0), axis=axes[1])
-        axes[1].set_title('Saliency Map of the image')
-        fig.show()
+    image, label = get_transformed_data(index=0)
 
+    # Plot the LBP image
+    plt.figure(figsize=(5, 5))
+    plt.imshow(image, cmap='gray')
+    plt.title(f'LBP Image - Label: {label}')
+    plt.show()
 
 if __name__ == '__main__':
     _main()
