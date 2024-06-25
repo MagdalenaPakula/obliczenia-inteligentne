@@ -337,6 +337,20 @@ Overfitting could cause the model to focus on some background pixels, that are n
 However, it should be noted that during the model evaluation, we did not observe a drop in accuracy on the test set during training --- a typical sign of overfitting.
 Additionally, the performance of the model on the testing data was satisfactory, which speaks against the potential issues with the model.
 
+In order to formulate more general conculusions about the model, it was tested on multiple different versions of the same digit.
+Figure~\ref{fig:saliency-mnist-4-multiple} shows saliency maps for different versions of digit 4.
+It can be seen that in all of the cases model pays significant importance to the top of the digit, making sure that the 2 lines are separated.
+This is correct with the intuition, as connecting these lines would make the digit a 9 instead of 4.
+
+\begin{figure}[ht]\centering
+    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_1.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_2.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_3.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_4.png}
+    \includegraphics[width=.6\linewidth]{img/saliency_mnist/4_5.png}
+    \caption{Different cases of digit 4}\label{fig:saliency-mnist-4-multiple}
+\end{figure}
+
 To further investigate this model we used Integrated Gradients method as well.
 \begin{figure}[h]\centering
     \includegraphics[width=.6\linewidth]{img/integrated_grad/mnist_CNN/3}
