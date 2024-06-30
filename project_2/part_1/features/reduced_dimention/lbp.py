@@ -6,74 +6,44 @@ from skimage.feature import local_binary_pattern
 from project_2.part_1.data.MNIST import load_dataset_MNIST
 
 
-def lbp_image(image, radius=1, n_points=8):
-    image = image.numpy().squeeze()  # Convert from tensor to numpy array
-    lbp_img = local_binary_pattern(image, n_points, radius, method='uniform')
-    # return torch.tensor(lbp_img, dtype=torch.float32).unsqueeze(0).unsqueeze(0)  # Ensure correct shape
+def lbp_feature_extraction(image: torch.Tensor, radius: int = 3, n_points: int = 24, method: str = 'uniform',
+                           normalize: bool = True, visualize: bool = False) -> torch.Tensor:
+    image_np = image.squeeze().numpy()
 
-    # Flatten and normalize LBP image
-    lbp_img = lbp_img.flatten()
-    lbp_img = (lbp_img - np.min(lbp_img)) / (np.max(lbp_img) - np.min(lbp_img))
-    return torch.tensor(lbp_img, dtype=torch.float32)    # Ensure correct shape
+    lbp_features = local_binary_pattern(image_np, n_points, radius, method=method)
 
+    lbp_features_tensor = torch.tensor(lbp_features.flatten(), dtype=torch.float32)
 
-def lbp_histogram(lbp_image, n_bins=10):
-    lbp_image = lbp_image.squeeze().numpy()
-    hist, _ = np.histogram(lbp_image, bins=n_bins, range=(0, n_bins), density=True)
-    hist /= np.sum(hist)  # Normalizacja histogramu
-    return hist
+    if normalize:
+        lbp_features_tensor = (lbp_features_tensor - lbp_features_tensor.min()) / (
+                    lbp_features_tensor.max() - lbp_features_tensor.min())
 
+    if visualize:
+        fig, ax = plt.subplots(1, 2)
+        ax[0].imshow(image_np, cmap='gray')
+        ax[0].title.set_text('Original Image')
+        ax[1].imshow(lbp_features, cmap='gray')
+        ax[1].title.set_text('LBP Features')
+        plt.show()
 
-def visualize_LBP(data: torch.utils.data.Dataset):
-    plt.figure(figsize=(10, 14))
-    for i in range(80):
-        image, target = data[i]
-        image = image.squeeze().numpy()  # Convert tensor to numpy array for visualization
-        plt.subplot(10, 8, i + 1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(image, cmap='gray')
-        plt.xlabel(target)
-    plt.show()
+    assert lbp_features_tensor.ndimension() == 1, "Extracted features has to be 1D tensor"
+    return lbp_features_tensor
 
 
 if __name__ == "__main__":
-    # Load MNIST dataset
-    datasets_mnist = load_dataset_MNIST(transform=lambda x: lbp_image(x, radius=1, n_points=8))
+    dataset_mnist = load_dataset_MNIST()
 
-    # Extract LBP features and visualize the dataset
-    lbp_features = []
-    for image, _ in datasets_mnist['train_dataset']:
-        hist = lbp_histogram(image)
-        lbp_features.append(hist)
-    lbp_features = np.array(lbp_features)
+    i = 0
+    visited = set()
+    while len(visited) < 10:
+        image = dataset_mnist['train_dataset'].data[i]
+        label = dataset_mnist['train_dataset'].targets[i].item()
+        i += 1
+        if label in visited:
+            continue
+        visited.add(label)
 
-    # Visualize LBP-transformed MNIST dataset
-    print("Visualizing LBP-transformed MNIST dataset:")
-    visualize_LBP(datasets_mnist['train_dataset'])
-
-    # Visualize the first 3 LBP images and their histograms
-    print("Visualizing the first 3 LBP-transformed images and their histograms:")
-    for i in range(3):
-        example_image, label = datasets_mnist['train_dataset'][i]
-
-        # Visualize the LBP-transformed image
-        plt.figure()
-        plt.xticks(np.arange(0, 28, step=4))  # Add ticks along the bottom
-        plt.yticks(np.arange(0, 28, step=4))  # Add ticks along the left
-        plt.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Add grid lines
-        plt.imshow(example_image.numpy().squeeze(), cmap='gray')
-        plt.title(f"Digit: {label}")
-        plt.xlabel("Pixels")
-        plt.ylabel("Pixels")
-        plt.show()
-
-        # Compute and visualize the LBP histogram
-        lbp_hist = lbp_histogram(example_image)
-        plt.figure()
-        plt.bar(range(len(lbp_hist)), lbp_hist, width=0.5, edgecolor='black')
-        plt.title(f'Histogram of LBP codes for Digit {label}')
-        plt.xlabel('LBP code')
-        plt.ylabel('Frequency')
-        plt.show()
+        print("\nReduced-dimension feature extraction: Local Binary Pattern (LBP):")
+        feature_extraction = lbp_feature_extraction(image, visualize=True)
+        print(feature_extraction)
+        print(feature_extraction.shape)

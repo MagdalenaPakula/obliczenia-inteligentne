@@ -1,0 +1,11 @@
+ROTATION degrees:
+img: cat -> frog : minimum degrees needed for different classification: size: 14.28
+img_1: ship -> automobil : minimum degrees needed for different classification: 2.58
+img_2: frog -> bird : minimum degrees needed for different classification: 82.15
+img_3: frog -> deer : minimum degrees needed for different classification: 6.97
+img_4: frog -> cat : minimum degrees needed for different classification: 24.16
+img_5: cat -> frog : minimum degrees needed for different classification: 18.55
+img_6: dog -> cat : minimum degrees needed for different classification: 2.47
+img_7: ship -> frog : minimum degrees needed for different classification: 3.65
+img_8: dog -> cat : minimum degrees needed for different classification: 3.85
+
